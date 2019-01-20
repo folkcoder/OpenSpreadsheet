@@ -1,0 +1,1066 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SpreadsheetHelper</name>
+    </assembly>
+    <members>
+        <member name="T:SpreadsheetHelper.BidirectionalDictionary`2">
+            <summary>
+            Extends the <see cref="T:System.Collections.Generic.Dictionary`2"/> collection to support fast reverse lookups.
+            </summary>
+            <typeparam name="TKey">The dictionary's key type.</typeparam>
+            <typeparam name="TValue">The dictionary's value type.</typeparam>
+        </member>
+        <member name="M:SpreadsheetHelper.BidirectionalDictionary`2.Add(`0,`1)">
+            <summary>
+            Adds a new key-value pair to the collection.
+            </summary>
+            <param name="key">The key to be added.</param>
+            <param name="value">The value to be added.</param>
+        </member>
+        <member name="M:SpreadsheetHelper.BidirectionalDictionary`2.TryGetKey(`1,`0@)">
+            <summary>
+            Attempts to retrieve a key associated with the provided value.
+            </summary>
+            <param name="value">The value being queried.</param>
+            <param name="key">An output parameter that will contain the found key, if any.</param>
+            <returns>A value indicating whether a key associated with the provided value was identified.</returns>
+        </member>
+        <member name="T:SpreadsheetHelper.Configuration.ClassMap`1">
+            <summary>
+            Maps class properties to spreadsheet fields.
+            </summary>
+            <typeparam name="TClass">The <see cref="T:System.Type"/> of class to map.</typeparam>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ClassMap`1.PropertyMaps">
+            <summary>
+            Gets a collection of the class map individual property mappings.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.ClassMap`1.Map``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Maps a property to the class map.
+            </summary>
+            <typeparam name="TProperty">The property type to be mapped.</typeparam>
+            <param name="property">The property to be mapped.</param>
+            <returns>A property map associated with the property.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.ClassMap`1.Map">
+            <summary>
+            Maps a default property map to the class map; used for constants and values not mapped to a particular class property.
+            </summary>
+            <returns>A default property map.</returns>
+        </member>
+        <member name="T:SpreadsheetHelper.Configuration.ColumnStyle">
+            <summary>
+            Encapsulates properties associated with a spreadsheet column.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.BackgroundColor">
+            <summary>
+            Gets or sets the background color.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.BackgroundPatternType">
+            <summary>
+            Gets or sets the background pattern type.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.BorderColor">
+            <summary>
+            Gets or sets the border color.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.BorderPlacement">
+            <summary>
+            Gets or sets the border placement.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.BorderStyle">
+            <summary>
+            Gets or sets the border style.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.CustomNumberFormat">
+            <summary>
+            Gets or sets a custom numbering format.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.Font">
+            <summary>
+            Gets or sets the font.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.ForegroundColor">
+            <summary>
+            Gets or sets the text color.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.HoizontalAlignment">
+            <summary>
+            Gets or sets the horizontal alignment.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.IsNumberFormatSpecified">
+            <summary>
+            Gets a value indicating whether a number format has been explicitly specified.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.NumberFormat">
+            <summary>
+            Gets or sets a number format.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ColumnStyle.VerticalAlignment">
+            <summary>
+            Gets or sets the vertical alignment.
+            </summary>
+        </member>
+        <member name="T:SpreadsheetHelper.Configuration.ConfigurationValidator">
+            <summary>
+            Provides methods to validate configuration properties.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ConfigurationValidator.Errors">
+            <summary>
+            Gets a collection of validation errors.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ConfigurationValidator.HasErrors">
+            <summary>
+            Gets a value indicating whether the validator has errors.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.ConfigurationValidator.#ctor(System.Collections.Generic.IEnumerable{SpreadsheetHelper.Configuration.PropertyMap})">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadsheetHelper.Configuration.ConfigurationValidator"/> class.
+            </summary>
+            <param name="propertyMaps">The property maps to be validated.</param>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.ConfigurationValidator.Validate">
+            <summary>
+            Validates the property maps.
+            </summary>
+        </member>
+        <member name="T:SpreadsheetHelper.Configuration.PropertyMap">
+            <summary>
+            Mapping info between a class property and a spreadsheet column.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadsheetHelper.Configuration.PropertyMap"/> class.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.#ctor(System.Reflection.PropertyInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadsheetHelper.Configuration.PropertyMap"/> class.
+            </summary>
+            <param name="propertyInfo">The property data associated with the map.</param>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMap.PropertyData">
+            <summary>
+            Gets the data associated with the property map.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.ColumnType(SpreadsheetHelper.Enums.ColumnType)">
+            <summary>
+            Sets the column type for both read and write operations.
+            </summary>
+            <param name="columnType">The column type to be applied.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.Constant(System.Object)">
+            <summary>
+            Sets a constant value to be used for both read and write operations.
+            </summary>
+            <param name="value">The constant value to be used. When reading, the value must be the same type as the mapped property.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.ConstantRead(System.Object)">
+            <summary>
+            Sets a constant value to be used for read operations.
+            </summary>
+            <param name="value">The constant value to be used. The value must be of the same type as the mapped property.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.ConstantWrite(System.Object)">
+            <summary>
+            Sets a constant value to be used for write operations.
+            </summary>
+            <param name="value">The constant value to be used.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.Default(System.Object)">
+            <summary>
+            Sets a default value to be used for read and write operations when the property value is null.
+            </summary>
+            <param name="value">The default value to be used. When reading, the value must be the same type as the mapped property.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.DefaultRead(System.Object)">
+            <summary>
+            Sets a default value to be used for read operations when the property value is null.
+            </summary>
+            <param name="value">The default value to be used. The value must be the same type as the mapped property.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.DefaultWrite(System.Object)">
+            <summary>
+            Sets a default value to be used for write operations when the property value is null.
+            </summary>
+            <param name="value">The default value to be used.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.Ignore(System.Boolean)">
+            <summary>
+            Sets a value indicating whether the associated property should be ignored on read and write operations.
+            </summary>
+            <param name="value">A value indicating whether the associated property should be ignored.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.IgnoreRead(System.Boolean)">
+            <summary>
+            Sets a value indicating whether the associated property should be ignored on read operations.
+            </summary>
+            <param name="value">A value indicating whether the associated property should be ignored.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.IgnoreWrite(System.Boolean)">
+            <summary>
+            Sets a value indicating whether the associated property should be ignored on write operations.
+            </summary>
+            <param name="value">A value indicating whether the associated property should be ignored.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.Index(System.UInt32)">
+            <summary>
+            Sets the one-based column index of the associated property to be used for read and write operations.
+            </summary>
+            <param name="index">The property's column index.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.IndexRead(System.UInt32)">
+            <summary>
+            Sets the one-based column index of the associated property to be used for read operations.
+            </summary>
+            <param name="index">The property's column index.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.IndexWrite(System.UInt32)">
+            <summary>
+            Sets the one-based column index of the associated property to be used for write operations.
+            </summary>
+            <param name="index">The property's column index.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.Name(System.String)">
+            <summary>
+            Sets the column header name to be used for read and write operations.
+            </summary>
+            <param name="name">The property's column header name.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.NameRead(System.String)">
+            <summary>
+            Sets the column header name to be used for read operations.
+            </summary>
+            <param name="name">The property's column header name.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.NameWrite(System.String)">
+            <summary>
+            Sets the column header name to be used for read operations.
+            </summary>
+            <param name="name">The property's column header name.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMap.Style(SpreadsheetHelper.Configuration.ColumnStyle)">
+            <summary>
+            Sets the column style.
+            </summary>
+            <param name="columnStyle">The style to be applied.</param>
+            <returns>The changed PropertyMap.</returns>
+        </member>
+        <member name="T:SpreadsheetHelper.Configuration.PropertyMapData">
+            <summary>
+            Encapsulates properties associated with an individual property map.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMapData.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadsheetHelper.Configuration.PropertyMapData"/> class.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.PropertyMapData.#ctor(System.Reflection.PropertyInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadsheetHelper.Configuration.PropertyMapData"/> class.
+            </summary>
+            <param name="propertyInfo">The property data associated with the map.</param>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.ColumnType">
+            <summary>
+            Gets or sets the map's column type.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.Constant">
+            <summary>
+            Gets or sets a constant value to be used for read and write operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.ConstantRead">
+            <summary>
+            Gets or sets a constant value to be used for read operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.ConstantWrite">
+            <summary>
+            Gets or sets a constant value to be used for write operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.Default">
+            <summary>
+            Gets or sets a default value to be used for read and write operations when the property value is null.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.DefaultRead">
+            <summary>
+            Gets or sets a default value to be used for write operations when the property value is null.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.DefaultWrite">
+            <summary>
+            Gets or sets a default value to be used for write operations when the property value is null.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.Ignore">
+            <summary>
+            Gets or sets a value indicating whether the associated property should be ignored on read and write operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.IgnoreRead">
+            <summary>
+            Gets or sets a value indicating whether the associated property should be ignored on read operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.IgnoreWrite">
+            <summary>
+            Gets or sets a value indicating whether the associated property should be ignored on write operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.Index">
+            <summary>
+            Sets the one-based column index of the associated property to be used for read and write operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.IndexRead">
+            <summary>
+            Sets the one-based column index of the associated property to be used for read operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.IndexWrite">
+            <summary>
+            Sets the one-based column index of the associated property to be used for write operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.Name">
+            <summary>
+            Sets the column header name to be used for read and write operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.NameRead">
+            <summary>
+            Sets the column header name to be used for read operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.NameWrite">
+            <summary>
+            Sets the column header name to be used for write operations.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.Property">
+            <summary>
+            Gets the property data associated with the map.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.PropertyMapData.Style">
+            <summary>
+            Gets or sets the column style.
+            </summary>
+        </member>
+        <member name="T:SpreadsheetHelper.Configuration.StylesCollection">
+            <summary>
+            Stores spreadsheet style definitions.
+            </summary>
+            <remarks>For some elements, attributes must be present in a particular order in order to validate against the OpenXml schema.</remarks>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadsheetHelper.Configuration.StylesCollection"/> class.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.StylesCollection.Borders">
+            <summary>
+            Gets a collection of borders and their associated stylehseet position index.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.StylesCollection.CellFormats">
+            <summary>
+            Gets a collection of cell formats and their associated stylehseet position index.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.StylesCollection.CellStyleFormats">
+            <summary>
+            Gets a collection of cell style formats and their associated stylehseet position index.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.StylesCollection.Fills">
+            <summary>
+            Gets a collection of fills and their associated stylehseet position index.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.StylesCollection.Fonts">
+            <summary>
+            Gets a collection of fonts and their associated stylehseet position index.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.StylesCollection.NumberingFormats">
+            <summary>
+            Gets a collection of number formats and their associated stylehseet position index.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddBorder(SpreadsheetHelper.Enums.BorderPlacement,DocumentFormat.OpenXml.Spreadsheet.BorderStyleValues,System.Drawing.Color@)">
+            <summary>
+            Adds a border to the stylesheet.
+            </summary>
+            <param name="placement">The border's cell placement.</param>
+            <param name="style">The border's style.</param>
+            <param name="color">The border's color.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddBorder(DocumentFormat.OpenXml.Spreadsheet.Border)">
+            <summary>
+            Adds a border to the stylesheet.
+            </summary>
+            <param name="border">The OpenXml border element to be added.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddCellFormat(System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,DocumentFormat.OpenXml.Spreadsheet.HorizontalAlignmentValues,DocumentFormat.OpenXml.Spreadsheet.VerticalAlignmentValues)">
+            <summary>
+            Adds a cell format to the stylesheet.
+            </summary>
+            <param name="borderId">The stylesheet position index of the cell format's border property.</param>
+            <param name="fillId">The stylesheet position index of the cell format's fill property.</param>
+            <param name="fontId">The stylesheet position index of the cell format's font property.</param>
+            <param name="cellStyleFormatId">The stylesheet position index of the cell format's cell style format property.</param>
+            <param name="numberFormatId">The stylesheet position index of the cell format's number format property.</param>
+            <param name="horizontalAlignment">The cell format's horizontal alignment.</param>
+            <param name="verticalAlignment">The cell format's vertical alignment.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddCellFormat(DocumentFormat.OpenXml.Spreadsheet.CellFormat)">
+            <summary>
+            Adds a cell format to the stylesheet.
+            </summary>
+            <param name="cellFormat">The OpenXml cell format element to be added.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddCellStyleFormat(System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,DocumentFormat.OpenXml.Spreadsheet.HorizontalAlignmentValues,DocumentFormat.OpenXml.Spreadsheet.VerticalAlignmentValues)">
+            <summary>
+            Adds a cell style format to the stylesheet.
+            </summary>
+            <param name="borderId">The stylesheet position index of the cell style format's border property.</param>
+            <param name="fillId">The stylesheet position index of the cell format's fill property.</param>
+            <param name="fontId">The stylesheet position index of the cell format's font property.</param>
+            <param name="cellStyleFormatId">The stylesheet position index of the cell format's cell style format property.</param>
+            <param name="numberFormatId">The stylesheet position index of the cell format's number format property.</param>
+            <param name="horizontalAlignment">The cell format's horizontal alignment.</param>
+            <param name="verticalAlignment">The cell format's vertical alignment.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddCellStyleFormat(DocumentFormat.OpenXml.Spreadsheet.CellFormat)">
+            <summary>
+            Adds a cell style format to the stylesheet.
+            </summary>
+            <param name="cellStyleFormat">The OpenXml cell style format element to be added.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddFill(DocumentFormat.OpenXml.Spreadsheet.Fill)">
+            <summary>
+            Adds a fill to the stylesheet.
+            </summary>
+            <param name="fill">The OpenXml fill element to be added.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddFont(System.Drawing.Font,System.Drawing.Color@)">
+            <summary>
+            Adds a font to the styles collection.
+            </summary>
+            <param name="font">The font to be added.</param>
+            <param name="textColor">The font color to be applied.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddFont(DocumentFormat.OpenXml.Spreadsheet.Font)">
+            <summary>
+            Adds a font to the stylesheet.
+            </summary>
+            <param name="font">The OpenXml font element to be added.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddNumberingFormat(System.String)">
+            <summary>
+            Adds a numbering format to the stylesheet.
+            </summary>
+            <param name="formatCode">The number mask to be added.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddNumberingFormat(DocumentFormat.OpenXml.Spreadsheet.NumberingFormat)">
+            <summary>
+            Adds a numbering format to the stylesheet.
+            </summary>
+            <param name="numberingFormat">The OpenXml numbering format to be added.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.AddPatternFill(System.Drawing.Color@,DocumentFormat.OpenXml.Spreadsheet.PatternValues)">
+            <summary>
+            Adds a pattern fill to the stylesheet.
+            </summary>
+            <param name="color">The fill's color.</param>
+            <param name="patternType">The fill's pattern type.</param>
+            <returns>The stylesheet position index associated with the element.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Configuration.StylesCollection.ConstructBorder(SpreadsheetHelper.Enums.BorderPlacement,DocumentFormat.OpenXml.Spreadsheet.BorderStyleValues,System.Drawing.Color@)">
+            <summary>
+            Creates an <see cref="T:DocumentFormat.OpenXml.Spreadsheet.Border"/> element.
+            </summary>
+            <remarks>Appended XML nodes cannot use the same object instance, so that the Color object must be calculated for each border placement.</remarks>
+        </member>
+        <member name="T:SpreadsheetHelper.Configuration.WorksheetStyle">
+            <summary>
+            Encapsulates properties associated with a worksheet style definition.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.HeaderBackgroundColor">
+            <summary>
+            Gets or sets the header background color.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.HeaderBackgroundPatternType">
+            <summary>
+            Gets or sets the header background pattern type.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.HeaderFont">
+            <summary>
+            Gets or sets the header font.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.HeaderForegroundColor">
+            <summary>
+            Gets or sets the header foreground color.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.HeaderHoizontalAlignment">
+            <summary>
+            Gets or sets the header horizontal alignment.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.HeaderRowIndex">
+            <summary>
+            Gets or sets the header row index for writing.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.HeaderVerticalAlignment">
+            <summary>
+            Gets or set's the header vertical alignment.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.MaxColumnWidth">
+            <summary>
+            Gets or sets the maximum column width.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.MinColumnWidth">
+            <summary>
+            Gets or sets the minimum column width.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.ShouldAutoFilter">
+            <summary>
+            Gets or sets a value indicating whether the worksheet should automatically apply filters.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.ShouldAutoFitColumns">
+            <summary>
+            Gets or sets a value indicating whether the worksheet should adjust column widths to their contents.
+            </summary>
+            <remarks>Setting this value to true may have noticeable performance impacts for large data sets.</remarks>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.ShouldFreezeTopRow">
+            <summary>
+            Gets or sets a value indicating whether the header row should be frozen.
+            </summary>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.WorksheetStyle.ShouldWriteHeaderRow">
+            <summary>
+            Gets or sets a value indicating whether the header row should be written.
+            </summary>
+        </member>
+        <member name="T:SpreadsheetHelper.Enums.BorderPlacement">
+            <summary>
+            Encapsulates valid cell border placement values.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.BorderPlacement.None">
+            <summary>
+            No borders.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.BorderPlacement.Left">
+            <summary>
+            Border on the left side of the cell.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.BorderPlacement.Right">
+            <summary>
+            Border on the right side of the cell.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.BorderPlacement.Top">
+            <summary>
+            Border on the top side of the cell.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.BorderPlacement.Bottom">
+            <summary>
+            Border on the bottom side of the cell.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.BorderPlacement.Outside">
+            <summary>
+            Border on the entire outside of the cell.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.BorderPlacement.DiagonalUp">
+            <summary>
+            Border from the bottom left to the top right of the cell.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.BorderPlacement.DiagonalDown">
+            <summary>
+            Border from the bottom right to the top left of the cell.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.BorderPlacement.All">
+            <summary>
+            All possible borders.
+            </summary>
+        </member>
+        <member name="T:SpreadsheetHelper.Enums.ColumnType">
+            <summary>
+            Encapsulates valid spreadsheet column types.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.ColumnType.Unset">
+            <summary>
+            No explicit column type defined.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.ColumnType.Boolean">
+            <summary>
+            A column containing boolean values.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.ColumnType.Date">
+            <summary>
+            A column containing datetime values.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.ColumnType.Formula">
+            <summary>
+            A column containing formulas.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.ColumnType.Number">
+            <summary>
+            A column containing numeric values.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.ColumnType.RichText">
+            <summary>
+            A column containing rich text values.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.ColumnType.Text">
+            <summary>
+            A column containing text values.
+            </summary>
+        </member>
+        <member name="T:SpreadsheetHelper.Enums.OpenXmlNumberingFormat">
+            <summary>
+            Encapsulates valid builtin cell numbering formats.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.General">
+            <summary>
+            A general format that will make a best guess at displaying data.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.Number">
+            <summary>
+            A general format for numeric data (mask "0").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.Decimal">
+            <summary>
+            A general format for decimal data (mask "0.00").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.NumberWithCommas">
+            <summary>
+            A numeric format that uses comma separators (mask "#,##0").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.Currency">
+            <summary>
+            A numeric format that rounds decimal points to two places (mask "#,##0.00").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.Percentage">
+            <summary>
+            A numeric format that multiplies the value by 100 and displays the result with a percentage sign, truncating any decimal amounts (mask "0%").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.PercentageDecimal">
+            <summary>
+            A numeric format that multiplies the value by 100 and displays the result with a percentage sign, displaying any decimal amounts (mask "0.00%").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.Scientific">
+            <summary>
+            A numeric format that uses exponential notation (mask "0.00E+00").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.FractionOneDigit">
+            <summary>
+            A numeric format that rounds to the nearest single-digit fraction value (mask "# ?/?").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.FractionTwoDigits">
+            <summary>
+            A numeric format that rounds to the nearest two-digit fraction value (mask "# ??/??").
+            </summary>        
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.DateMonthDayYear">
+            <summary>
+            A datetime format that displays a date in m/d/yyyy format (e.g., 1/9/2019).
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.DateDayMonthYear">
+            <summary>
+            A datetime format that displays a date in d-mmm-yy format (e.g., 9-Jan-19).
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.DateDayMonth">
+            <summary>
+            A datetime format that displays a date in d-mmm format (e.g., 9-Jan).
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.DateMonthYear">
+            <summary>
+            A datetime format that displays a date in mmm-yy format (e.g., Jan-19).
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.TimestampHourMinute12">
+            <summary>
+            A datetime format that displays a time in h:m AM/PM format, using a twelve-hour clock (e.g., 5:54 PM).
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.TimestampHouMinuteSecond12">
+            <summary>
+            A datetime format that displays a time in h:m:s AM/PM format, using a twelve-hour clock (e.g., 5:54:35 PM).
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.TimestampHourMinute24">
+            <summary>
+            A datetime format that displays a time in h:m format, using a twenty-four-hour clock (e.g., 17:54).
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.TimestampHouMinuteSecond24">
+            <summary>
+            A datetime format that displays a time in h:m:s format, using a twenty-four-hour clock (e.g., 17:54:35).
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.DatestampWithTime">
+            <summary>
+            A datetime format that displays a datetime in m/d/yyyy h:m format (e.g., 1/9/2019 17:54).
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.NumberWithNegativeInParens">
+            <summary>
+            A numeric format that displays negative numbers surrounded by parentheses (mask "#,##0 ;(#,##0)").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.NumberWithNegativeInRedParens">
+            <summary>
+            A numeric format that displays negative numbers in red text, surrounded by parentheses (mask "#,##0 ;[Red](#,##0)").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.DecimalWithNegativeInParens">
+            <summary>
+            A numeric format that displays negative numbers surrounded by parentheses (mask "#,##0.00;(#,##0.00)").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.DecimalWithNegativeInRedParens">
+            <summary>
+            A decimal format that displays negative numbers in red text, surrounded by parentheses (mask "#,##0.00;[Red](#,##0.00)").
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.TimestampMinuteSecond">
+            <summary>
+            A timestamp format that displays a time in m:ss format (e.g., 1:15).
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.TimestampConditionalHourMinuteSecond">
+            <summary>
+            A timestamp format that displays a time in [h]:m:ss format, displaying the hour position only if applicable (e.g., 7:1:15).
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.Enums.OpenXmlNumberingFormat.Text">
+            <summary>
+            A format for text.
+            </summary>
+        </member>
+        <member name="T:SpreadsheetHelper.Spreadsheet">
+            <summary>
+            Provides a wrapper around the Open XML SDF to more easily create spreadsheet files with one or more worksheets.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.Spreadsheet.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadsheetHelper.Spreadsheet"/> class.
+            </summary>
+            <param name="filePath">The full path and file name of the XLSX file to be generated.</param>
+        </member>
+        <member name="M:SpreadsheetHelper.Spreadsheet.CreateWorksheetReader``2(System.String,System.UInt32)">
+            <summary>
+            Creates a new worksheet reader.
+            </summary>
+            <typeparam name="TClass">The class type encapsulating the data to be read from the worksheet.</typeparam>
+            <typeparam name="TClassMap">A class map identifying how the data will be read.</typeparam>
+            <param name="worksheetName">The name of the worksheet to be read.</param>
+            <param name="headerRowIndex">The one-based row index of the header row. A value of 0 indicates a worksheet with no header.</param>
+            <returns>A new worksheet reader.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Spreadsheet.CreateWorksheetWriter``2(System.String,SpreadsheetHelper.Configuration.WorksheetStyle)">
+            <summary>
+            Creates a new worksheet writer.
+            </summary>
+            <typeparam name="TClass">The class type encapsulating the data to be written to the worksheet.</typeparam>
+            <typeparam name="TClassMap">A class map identifying how the data will be written.</typeparam>
+            <param name="worksheetName">The name of the worksheet to be written.</param>
+            <param name="worksheetStyle">The worksheet's style definition.</param>
+            <returns>A new worksheet writer.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Spreadsheet.CreateWorksheetWriter``2(System.String,System.Int32,SpreadsheetHelper.Configuration.WorksheetStyle)">
+            <summary>
+            Creates a new worksheet writer.
+            </summary>
+            <typeparam name="TClass">The class type encapsulating the data to be written to the worksheet.</typeparam>
+            <typeparam name="TClassMap">A class map identifying how the data will be written.</typeparam>
+            <param name="worksheetName">The name of the worksheet to be written.</param>
+            <param name="worksheetIndex">The worksheet's zero-based position index within the workbook.</param>
+            <param name="worksheetStyle">The worksheet's style definition.</param>
+            <returns>A new worksheet writer.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Spreadsheet.ReadWorksheet``2(System.String,System.UInt32)">
+            <summary>
+            Reads the worksheet with the provided worksheet name and maps its data to a typed collection.
+            </summary>
+            <typeparam name="TClass">The class type encapsulating the data to be read from the worksheet.</typeparam>
+            <typeparam name="TClassMap">A class map identifying how the data will be read.</typeparam>
+            <param name="worksheetName">The name of the worksheet to be read.</param>
+            <param name="headerRowIndex">The one-based row index of the header row. A value of 0 indicates a worksheet with no header.</param>
+            <returns>A collection containing the worksheet's mapped data.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.Spreadsheet.WriteWorksheet``2(System.String,System.Collections.Generic.IEnumerable{``0},SpreadsheetHelper.Configuration.WorksheetStyle)">
+            <summary>
+            Writes the provided data to a new worksheet.
+            </summary>
+            <typeparam name="TClass">The class type encapsulating the data to be written to the worksheet.</typeparam>
+            <typeparam name="TClassMap">A class map identifying how the data will be written.</typeparam>
+            <param name="worksheetName">The name of the worksheet to be written.</param>
+            <param name="records">The data to be written.</param>
+            <param name="worksheetStyle">The worksheet's style definition.</param>
+        </member>
+        <member name="M:SpreadsheetHelper.Spreadsheet.WriteWorksheet``2(System.String,System.Int32,System.Collections.Generic.IEnumerable{``0},SpreadsheetHelper.Configuration.WorksheetStyle)">
+            <summary>
+            Writes the provided data to a new worksheet.
+            </summary>
+            <typeparam name="TClass">The class type encapsulating the data to be written to the worksheet.</typeparam>
+            <typeparam name="TClassMap">A class map identifying how the data will be written.</typeparam>
+            <param name="worksheetName">The name of the worksheet to be written.</param>
+            <param name="worksheetIndex">The worksheet's zero-based position index within the workbook.</param>
+            <param name="records">The data to be written.</param>
+            <param name="worksheetStyle">The worksheet's style definition.</param>
+        </member>
+        <member name="M:SpreadsheetHelper.Spreadsheet.Close">
+            <summary>
+            Closes the <see cref="T:SpreadsheetHelper.Spreadsheet"/> object and the underlying stream, and releases any the system resources associated with the file.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.Spreadsheet.Dispose">
+            <summary>
+            Closes the <see cref="T:SpreadsheetHelper.Spreadsheet"/> object and the underlying stream, and releases any the system resources associated with the file.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.Spreadsheet.Dispose(System.Boolean)">
+            <summary>
+            Closes the <see cref="T:SpreadsheetHelper.Spreadsheet"/> object and the underlying stream, and optionally releases any the system resources associated with the file.
+            </summary>
+        </member>
+        <member name="T:SpreadsheetHelper.WorksheetReader`2">
+            <summary>
+            Writes data to a worksheet.
+            </summary>
+            <typeparam name="TClass">The class type to be written.</typeparam>
+            <typeparam name="TClassMap">A map defining how to write record data to the worksheet.</typeparam>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetReader`2.#ctor(System.String,DocumentFormat.OpenXml.Packaging.SpreadsheetDocument,SpreadsheetHelper.BidirectionalDictionary{System.String,System.String},System.UInt32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadsheetHelper.WorksheetReader`2"/> class.
+            </summary>
+            <param name="worksheetName"></param>
+            <param name="spreadsheetDocument"></param>
+            <param name="sharedStrings"></param>
+            <param name="headerRowIndex"></param>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetReader`2.ReadRow">
+            <summary>
+            Read a single row at the current position and map its data to an object.
+            </summary>
+            <returns>A mapped object.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetReader`2.ReadRows">
+            <summary>
+            Read all rows starting from the current position and map the data to a collection of objects.
+            </summary>
+            <returns>A collection of mapped objects.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetReader`2.SkipRow">
+            <summary>
+            Skip a single row.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetReader`2.SkipRows(System.UInt32)">
+            <summary>
+            Skip one or more rows.
+            </summary>
+            <param name="count">The number of rows to skip.</param>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetReader`2.GetColumnIndexFromCellReference(System.String)">
+            <summary>
+            Determines a cell's one-based column index from its Excel cell position (e.g., A1).
+            </summary>
+            <param name="cellReference">The cell reference to be converted.</param>
+            <returns>The cell's numeric column index.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetReader`2.Close">
+            <summary>
+            Closes the <see cref="T:SpreadsheetHelper.WorksheetReader`2"/> object and the underlying stream, and releases any the system resources associated with the reader.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetReader`2.Dispose">
+            <summary>
+            Closes the <see cref="T:SpreadsheetHelper.WorksheetReader`2"/> object and the underlying stream, and releases any the system resources associated with the reader.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetReader`2.Dispose(System.Boolean)">
+            <summary>
+            Closes the <see cref="T:SpreadsheetHelper.WorksheetReader`2"/> object and the underlying stream, and optionally releases any the system resources associated with the reader.
+            </summary>
+        </member>
+        <member name="T:SpreadsheetHelper.WorksheetWriter`2">
+            <summary>
+            Writes data to a worksheet.
+            </summary>
+            <typeparam name="TClass">The class type to be written.</typeparam>
+            <typeparam name="TClassMap">A map defining how to write record data to the worksheet.</typeparam>
+        </member>
+        <member name="F:SpreadsheetHelper.WorksheetWriter`2.columnStyles">
+            <summary>
+            Holds relationship between column indexes (key) to its cell format id in the spreadsheet stylesheet (value). Header cell style has a key of 0.
+            </summary>
+        </member>
+        <member name="F:SpreadsheetHelper.WorksheetWriter`2.columnTypes">
+            <summary>
+            Holds relationshop between column indexes (key) to its associated CellValues type.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetWriter`2.#ctor(System.String,System.Int32,DocumentFormat.OpenXml.Packaging.SpreadsheetDocument,SpreadsheetHelper.Configuration.WorksheetStyle,SpreadsheetHelper.BidirectionalDictionary{System.String,System.String},SpreadsheetHelper.Configuration.StylesCollection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadsheetHelper.WorksheetWriter`2"/> class.
+            </summary>
+            <param name="worksheetName">The worksheet's name.</param>
+            <param name="worksheetPositionIndex">The position where the worksheet should be inserted in the workbook.</param>
+            <param name="spreadsheetDocument">A reference to the worksheet's parent <see cref="F:SpreadsheetHelper.WorksheetWriter`2.spreadsheetDocument"/>.</param>
+            <param name="worksheetStyle">The workseet's style definitions.</param>
+            <param name="sharedStrings">The shared strings collection shared by all worksheets.</param>
+            <param name="spreadsheetStyles">The spreadsheet stylesheet shared by all worksheets.</param>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetWriter`2.SkipRow">
+            <summary>
+            Skip a single row.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetWriter`2.SkipRows(System.UInt32)">
+            <summary>
+            Skip one or more rows.
+            </summary>
+            <param name="count">The number of rows to skip.</param>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetWriter`2.WriteHeader">
+            <summary>
+            Writes the worksheet header at the current position.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetWriter`2.WriteRecord(`0)">
+            <summary>
+            Writes the provided record at the current position.
+            </summary>
+            <param name="record">The record to be written.</param>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetWriter`2.WriteRecords(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Writes the provided records at the current position.
+            </summary>
+            <param name="records">The records to be written.</param>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetWriter`2.ConstructExcelCellReference(System.UInt32,System.UInt32)">
+            <summary>
+            Converts between a numeric row and column index to an Excel cell position (e.g., A1).
+            </summary>
+            <param name="rowIndex">The row index.</param>
+            <param name="columnIndex">The column index.</param>
+            <returns>An Excel cell reference.</returns>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetWriter`2.Close">
+            <summary>
+            Closes the <see cref="T:SpreadsheetHelper.WorksheetWriter`2"/> object and the underlying stream, writes any 
+            remaining worksheet data, and releases any the system resources associated with the writer.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetWriter`2.Dispose">
+            <summary>
+            Closes the <see cref="T:SpreadsheetHelper.WorksheetWriter`2"/> object and the underlying stream, writes any 
+            remaining worksheet data, and releases any the system resources associated with the writer.
+            </summary>
+        </member>
+        <member name="M:SpreadsheetHelper.WorksheetWriter`2.Dispose(System.Boolean)">
+            <summary>
+            Closes the <see cref="T:SpreadsheetHelper.WorksheetWriter`2"/> object and the underlying stream, writes any 
+            remaining worksheet data, and optionally releases any the system resources associated with the writer.
+            </summary>
+        </member>
+    </members>
+</doc>
