@@ -1,6 +1,6 @@
 # SpreadsheetHelper
 
-SpreadsheetHelper is a fast and lightweight wrapper around the OpenXml spreadsheet SDK, employing an easy-to-use fluent interface to define relations between entities and spreadsheet rows. The library uses the Simple API for XML (SAX) method for both reading and writing.
+SpreadsheetHelper is a fast and lightweight wrapper around the OpenXml spreadsheet library, employing an easy-to-use fluent interface to define relations between entities and spreadsheet rows. The library uses the Simple API for XML (SAX) method for both reading and writing.
 
 The primary use case for SpreadsheetHelper is efficiently importing and exporting typed collections, where each row roughly corresponds to a class instance. It is not meant to offer fine-grained control of data or formatting at the cell level; if you need this level of control, check out [ClosedXml](https://github.com/ClosedXML/ClosedXML) or [EPPlus](https://github.com/JanKallman/EPPlus).
 
