@@ -168,8 +168,8 @@ using (var spreadsheet = new Spreadsheet(filepath))
 
 SpreadsheetHelper has slightly better memory performance than ClosedXml and EPPlus, but runs slightly slower than EPPlus. For reading, all three libraries are pretty performant.
 
-| Library | Records | Fields | Operation | Runtime | Memory Used |
-| ------------- |
+| Library | Records | Fields | Runtime | Memory Used |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
 | [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 3 | 987.6 ms | 212.02 MB
 | [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 3 | 417.7 ms | 151.51 MB
 | [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 3 | 663.5 ms | 109.32 MB
@@ -185,8 +185,8 @@ SpreadsheetHelper has slightly better memory performance than ClosedXml and EPPl
 
 SpreadsheetHelper is significantly faster and more memory-friendly than ClosedXml, and slightly more so than EPPlus.
 
-| Library | Records | Fields | Operation | Runtime | Memory Used |
-| ------------- |
+| Library | Records | Fields | Runtime | Memory Used |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
 | [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 30 | 17.162 s | 212.05 MB
 | [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 30 | 3.877 s | 151.51 MB
 | [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 30 | 3.654 s | 109.32 MB
