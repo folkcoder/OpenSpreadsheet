@@ -24,7 +24,7 @@
 
         public ReadWriteOptions()
         {
-            var folderPath = Path.Combine(Environment.CurrentDirectory, "excel tests");
+            var folderPath = Path.Combine(Environment.CurrentDirectory, "test_outputs");
             var directory = Directory.CreateDirectory(folderPath);
             this.filepath = Path.Combine(folderPath, "read_write_options.xlsx");
             if (File.Exists(this.filepath))
@@ -60,7 +60,6 @@
                 }
 
                 spreadsheet.WriteWorksheet<TestClass, TestClassMap>(headerRowNotDefault, records, new WorksheetStyle() { HeaderRowIndex = headerRowIndex });
-
                 spreadsheet.WriteWorksheet<TestClass, TestClassMap>("specified worksheet index", 0, records);
             }
         }
@@ -99,15 +98,6 @@
                 var recordsCustomHeaderRow = spreadsheet.ReadWorksheet<TestClass, TestClassMap>(headerRowNotDefault, headerRowIndex);
                 Assert.Equal(recordCount, recordsCustomHeaderRow.Count());
             }
-        }
-
-        [Fact]
-        public void TestWrite()
-        {
-            var validator = new SpreadsheetValidator();
-            validator.Validate(this.filepath);
-
-            Assert.False(validator.HasErrors);
         }
 
         [Fact]
@@ -150,6 +140,15 @@
             }
 
             Assert.True(false);
+        }
+
+        [Fact]
+        public void TestWrite()
+        {
+            var validator = new SpreadsheetValidator();
+            validator.Validate(this.filepath);
+
+            Assert.False(validator.HasErrors);
         }
 
         private static IEnumerable<TestClass> CreateTestRecords(int count)

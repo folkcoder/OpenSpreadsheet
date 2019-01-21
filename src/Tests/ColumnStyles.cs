@@ -26,7 +26,7 @@
 
         public ColumnStyles()
         {
-            var folderPath = Path.Combine(Environment.CurrentDirectory, "excel tests");
+            var folderPath = Path.Combine(Environment.CurrentDirectory, "test_outputs");
             var directory = Directory.CreateDirectory(folderPath);
             this.filepath = Path.Combine(folderPath, "column_styles.xlsx");
             if (File.Exists(this.filepath))

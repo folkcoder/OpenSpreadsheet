@@ -8,9 +8,21 @@
     /// <summary>
     /// Provides methods to validate configuration properties.
     /// </summary>
-    public class ConfigurationValidator
+    public class ConfigurationValidator<TClass, TClassMap>
+        where TClass : class
+        where TClassMap : ClassMap<TClass>
     {
-        private readonly IEnumerable<PropertyMap> propertyMaps;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfigurationValidator{TClass, TClassMap}"/> class.
+        /// </summary>
+        /// <typeparam name="TClass"></typeparam>
+        /// <typeparam name="TClassMap"></typeparam>
+        public ConfigurationValidator()
+        {
+            this.classMap = Activator.CreateInstance<TClassMap>();
+        }
+
+        private readonly ClassMap<TClass> classMap;
 
         /// <summary>
         /// Gets a collection of validation errors.
@@ -23,12 +35,6 @@
         public bool HasErrors => this.Errors.Count > 0;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationValidator"/> class.
-        /// </summary>
-        /// <param name="propertyMaps">The property maps to be validated.</param>
-        public ConfigurationValidator(IEnumerable<PropertyMap> propertyMaps) => this.propertyMaps = propertyMaps;
-
-        /// <summary>
         /// Validates the property maps.
         /// </summary>
         public void Validate()
@@ -36,21 +42,19 @@
             this.Errors.Clear();
 
             // read
-            this.ValidateIndexesAreUnique(this.propertyMaps.Where(x => !x.PropertyData.IgnoreRead && x.PropertyData.IndexRead > 0).Select(x => x.PropertyData.IndexRead), ConfigurationType.Read);
-            this.ValidateReadProperties(this.propertyMaps.Where(x => !x.PropertyData.IgnoreRead && x.PropertyData.Property != null));
-            foreach (var map in this.propertyMaps.Where(x => !x.PropertyData.IgnoreRead))
+            this.ValidateIndexesAreUnique(this.classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreRead && x.PropertyData.IndexRead > 0).Select(x => x.PropertyData.IndexRead), ConfigurationType.Read);
+            this.ValidateReadProperties(this.classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreRead && x.PropertyData.Property != null));
+            foreach (var map in this.classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreRead))
             {
                 this.ValidateConstant(map.PropertyData.ConstantRead, map);
                 this.ValidateDefault(map.PropertyData.DefaultRead, map);
-                this.ValidateIndexHasValue(map.PropertyData.IndexRead, map, ConfigurationType.Read);
                 this.ValidateIndexWithinExcelMaxRange(map.PropertyData.IndexRead, map, ConfigurationType.Read);
             }
 
             // write
-            this.ValidateIndexesAreUnique(this.propertyMaps.Where(x => !x.PropertyData.IgnoreWrite && x.PropertyData.IndexWrite > 0).Select(x => x.PropertyData.IndexWrite), ConfigurationType.Write);
-            foreach (var map in this.propertyMaps.Where(x => !x.PropertyData.IgnoreWrite))
+            this.ValidateIndexesAreUnique(this.classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreWrite && x.PropertyData.IndexWrite > 0).Select(x => x.PropertyData.IndexWrite), ConfigurationType.Write);
+            foreach (var map in this.classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreWrite))
             {
-                this.ValidateIndexHasValue(map.PropertyData.IndexWrite, map, ConfigurationType.Write);
                 this.ValidateIndexWithinExcelMaxRange(map.PropertyData.IndexWrite, map, ConfigurationType.Write);
                 this.ValidateHeaderNameWithinExcelMaxLength(map.PropertyData.NameWrite, map);
             }
@@ -116,14 +120,6 @@
                 {
                     uniqueIndexes.Add(index);
                 }
-            }
-        }
-
-        private void ValidateIndexHasValue(uint index, PropertyMap map, ConfigurationType configurationType)
-        {
-            if (index == 0)
-            {
-                this.Errors.Add(new ArgumentException($"{configurationType.ToString()} property '{map.PropertyData.Property.Name}' does not have a defined column index. The Excel column collection begins at index 1."));
             }
         }
 

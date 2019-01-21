@@ -116,28 +116,29 @@
             Gets or sets the vertical alignment.
             </summary>
         </member>
-        <member name="T:SpreadsheetHelper.Configuration.ConfigurationValidator">
+        <member name="T:SpreadsheetHelper.Configuration.ConfigurationValidator`2">
             <summary>
             Provides methods to validate configuration properties.
             </summary>
         </member>
-        <member name="P:SpreadsheetHelper.Configuration.ConfigurationValidator.Errors">
+        <member name="M:SpreadsheetHelper.Configuration.ConfigurationValidator`2.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadsheetHelper.Configuration.ConfigurationValidator`2"/> class.
+            </summary>
+            <typeparam name="TClass"></typeparam>
+            <typeparam name="TClassMap"></typeparam>
+        </member>
+        <member name="P:SpreadsheetHelper.Configuration.ConfigurationValidator`2.Errors">
             <summary>
             Gets a collection of validation errors.
             </summary>
         </member>
-        <member name="P:SpreadsheetHelper.Configuration.ConfigurationValidator.HasErrors">
+        <member name="P:SpreadsheetHelper.Configuration.ConfigurationValidator`2.HasErrors">
             <summary>
             Gets a value indicating whether the validator has errors.
             </summary>
         </member>
-        <member name="M:SpreadsheetHelper.Configuration.ConfigurationValidator.#ctor(System.Collections.Generic.IEnumerable{SpreadsheetHelper.Configuration.PropertyMap})">
-            <summary>
-            Initializes a new instance of the <see cref="T:SpreadsheetHelper.Configuration.ConfigurationValidator"/> class.
-            </summary>
-            <param name="propertyMaps">The property maps to be validated.</param>
-        </member>
-        <member name="M:SpreadsheetHelper.Configuration.ConfigurationValidator.Validate">
+        <member name="M:SpreadsheetHelper.Configuration.ConfigurationValidator`2.Validate">
             <summary>
             Validates the property maps.
             </summary>

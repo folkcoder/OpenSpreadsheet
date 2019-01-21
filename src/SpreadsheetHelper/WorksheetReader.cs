@@ -39,18 +39,84 @@
             this.sharedStrings = sharedStrings;
             this.spreadsheetDocument = spreadsheetDocument;
 
-            // create default instance of class, supplying defined optional arguments if applicable
-            var classMap = Activator.CreateInstance<TClassMap>();
-            this.propertyMaps = classMap.PropertyMaps
-                .Where(x => !x.PropertyData.IgnoreRead)
-                .ToDictionary(x => x.PropertyData.IndexRead, x => x);
-
             // reader setup
             var worksheetId = this.spreadsheetDocument.WorkbookPart.Workbook.Descendants<Sheet>().First(s => worksheetName.Equals(s.Name)).Id;
             var worksheetPart = this.spreadsheetDocument.WorkbookPart.GetPartById(worksheetId);
             this.reader = OpenXmlReader.Create(worksheetPart);
             this.reader.Read();
-            this.SkipRows(headerRowIndex);
+            this.Headers = ReadHeader(headerRowIndex);
+
+            // map setup
+            this.propertyMaps = CreateOrderedPropertyMaps();
+        }
+
+        public Dictionary<uint, string> Headers { get; }
+
+        private Dictionary<uint, PropertyMap> CreateOrderedPropertyMaps()
+        {
+            var indexes = new Dictionary<uint, PropertyMap>();
+
+            var classMap = Activator.CreateInstance<TClassMap>();
+            var propertyMaps = classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreRead);
+
+            foreach (var map in propertyMaps.Where(x => x.PropertyData.IndexRead > 0))
+            {
+                indexes.Add(map.PropertyData.IndexRead, map);
+            }
+
+            var mapsWithUndefinedIndexes = propertyMaps.Where(x => x.PropertyData.IndexRead == 0 && x.PropertyData.ConstantRead == null);
+            if (mapsWithUndefinedIndexes != null && this.Headers == null)
+            {
+                throw new InvalidOperationException("");
+            }
+
+            foreach (var map in mapsWithUndefinedIndexes)
+            {
+                string mapName = map.PropertyData.NameRead ?? map.PropertyData.Property.Name;
+                var matchedColumnIndex = this.Headers.FirstOrDefault(x => x.Value == mapName);
+
+                if (matchedColumnIndex.Value == null)
+                {
+                    throw new InvalidOperationException();
+                }
+
+                map.PropertyData.IndexRead = matchedColumnIndex.Key;
+                indexes.Add(map.PropertyData.IndexRead, map);
+            }
+
+            return indexes;
+        }
+
+        private Dictionary<uint, string> ReadHeader(uint headerRowIndex)
+        {
+            if (headerRowIndex == 0)
+            {
+                return null;
+            }
+
+            this.SkipRows(headerRowIndex - 1);
+
+            var headers = new Dictionary<uint, string>();
+            this.AdvanceToRowStart();
+            if (this.reader.EOF)
+            {
+                throw new InvalidOperationException("");
+            }
+
+            this.reader.ReadFirstChild();
+            do
+            {
+                if (this.reader.ElementType == typeof(Cell))
+                {
+                    var cell = (Cell)this.reader.LoadCurrentElement();
+                    var cellValue = GetCellValue(this.sharedStrings, cell);
+                    var columnIndex = GetColumnIndexFromCellReference(cell.CellReference);
+
+                    headers.Add(columnIndex, cellValue);
+                }
+            } while (this.reader.ReadNextSibling());
+
+            return headers;
         }
 
         /// <summary>
@@ -65,9 +131,7 @@
                 return null;
             }
 
-            // TODO: Allow for optional constructor parameters
             var record = Activator.CreateInstance<TClass>();
-
             this.reader.ReadFirstChild();
 
             do

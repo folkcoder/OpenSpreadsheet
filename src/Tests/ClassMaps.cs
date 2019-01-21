@@ -8,8 +8,7 @@
         [Fact]
         public void TestConstantsValidation()
         {
-            var classMap = new TestClassMapConstants();
-            var validator = new ConfigurationValidator(classMap.PropertyMaps);
+            var validator = new ConfigurationValidator<TestClass, TestClassMapConstants>();
             validator.Validate();
             Assert.True(validator.Errors.Count == 1);
         }
@@ -17,8 +16,7 @@
         [Fact]
         public void TestDefaultsValidation()
         {
-            var classMap = new TestClassMapDefaults();
-            var validator = new ConfigurationValidator(classMap.PropertyMaps);
+            var validator = new ConfigurationValidator<TestClass, TestClassMapDefaults>();
             validator.Validate();
             Assert.True(validator.Errors.Count == 1);
         }
@@ -27,7 +25,7 @@
         public void TestDuplicateIndexesValidation()
         {
             var classMap = new TestClassMapDuplicateIndexes();
-            var validator = new ConfigurationValidator(classMap.PropertyMaps);
+            var validator = new ConfigurationValidator<TestClass, TestClassMapDuplicateIndexes>();
             validator.Validate();
             Assert.True(validator.HasErrors);
         }
@@ -36,7 +34,7 @@
         public void TestDuplicateReadPropertiesValidation()
         {
             var classMap = new TestClassMapDuplicateReadProperties();
-            var validator = new ConfigurationValidator(classMap.PropertyMaps);
+            var validator = new ConfigurationValidator<TestClass, TestClassMapDuplicateReadProperties>();
             validator.Validate();
             Assert.True(validator.HasErrors);
         }
@@ -45,7 +43,7 @@
         public void TestIndexOutOfRangeValidation()
         {
             var classMap = new TestClassMapIndexOutOfRange();
-            var validator = new ConfigurationValidator(classMap.PropertyMaps);
+            var validator = new ConfigurationValidator<TestClass, TestClassMapIndexOutOfRange>();
             validator.Validate();
             Assert.True(validator.Errors.Count == 2);
         }
@@ -54,18 +52,9 @@
         public void TestLongHeadersValidation()
         {
             var classMap = new TestClassMapLongHeaders();
-            var validator = new ConfigurationValidator(classMap.PropertyMaps);
+            var validator = new ConfigurationValidator<TestClass, TestClassMapLongHeaders>();
             validator.Validate();
             Assert.True(validator.Errors.Count == 1);
-        }
-
-        [Fact]
-        public void TestMissingIndexesValidation()
-        {
-            var classMap = new TestClassMapMissingIndexes();
-            var validator = new ConfigurationValidator(classMap.PropertyMaps);
-            validator.Validate();
-            Assert.True(validator.Errors.Count == 2); // read and write
         }
 
         internal class TestClass

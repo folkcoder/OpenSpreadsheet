@@ -3,8 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
     <LangVersion>7.2</LangVersion>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <Version>1.0.0.0</Version>
+    <Authors>Steve Stanzak</Authors>
+    <Company />
+    <Product>SpreadsheetHelper</Product>
+    <Description>A fast and efficient wrapper around the OpenXml Excel library</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

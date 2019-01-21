@@ -42,6 +42,8 @@
             typeof(byte), typeof(decimal), typeof(double), typeof(float), typeof(int), typeof(long), typeof(sbyte), typeof(short), typeof(uint), typeof(ulong), typeof(ushort),
         };
 
+        private readonly Dictionary<uint, string> columnCellReferences = new Dictionary<uint, string>();
+
         /// <summary>
         /// Holds relationship between column indexes (key) to its cell format id in the spreadsheet stylesheet (value). Header cell style has a key of 0.
         /// </summary>
@@ -53,7 +55,7 @@
         private readonly Dictionary<uint, CellValues> columnTypes = new Dictionary<uint, CellValues>();
 
         private readonly Dictionary<uint, int> columnWidths = new Dictionary<uint, int>();
-        private readonly IEnumerable<PropertyMap> orderedPropertyMaps;
+        private readonly List<PropertyMap> orderedPropertyMaps;
         private readonly BidirectionalDictionary<string, string> sharedStrings;
         private readonly SpreadsheetDocument spreadsheetDocument;
         private readonly StylesCollection spreadsheetStyles;
@@ -61,6 +63,8 @@
         private readonly int worksheetPositionIndex;
         private readonly WorksheetStyle worksheetStyle;
         private readonly OpenXmlWriter writer;
+
+        private static OpenXmlAttribute cellReferenceAttribute = new OpenXmlAttribute(rowIndexAttribute, null, null);
         private uint currentRowIndex;
         private bool isDisposed = false;
         private WorksheetPart worksheetPart;
@@ -88,8 +92,7 @@
             this.worksheetPart = this.spreadsheetDocument.WorkbookPart.AddNewPart<WorksheetPart>();
 
             // property maps
-            var classMap = Activator.CreateInstance<TClassMap>();
-            this.orderedPropertyMaps = classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreWrite).OrderBy(x => x.PropertyData.IndexWrite);
+            this.orderedPropertyMaps = CreateOrderedPropertyMaps().ToList();
 
             // worksheet setup
             this.CacheWorksheetData();
@@ -175,8 +178,6 @@
             }
         }
 
-        private readonly Dictionary<uint, string> columnCellReferences = new Dictionary<uint, string>();
-
         /// <summary>
         /// Converts between a numeric row and column index to an Excel cell position (e.g., A1).
         /// </summary>
@@ -209,17 +210,6 @@
         private static string ConvertBoolToOpenXmlFormat(bool value) => value ? "1" : "0";
 
         private static string ConvertDateTimeToOpenXmlFormat(in DateTime dateTime) => dateTime.ToOADate().ToString(CultureInfo.InvariantCulture);
-
-        private static string ResolveHeader(PropertyMap propertyMap)
-        {
-            if (string.IsNullOrWhiteSpace(propertyMap.PropertyData.NameWrite))
-            {
-                // account for columns not mapped to a property (e.g., constants) with no name specified
-                return propertyMap.PropertyData.Property == null ? string.Empty : propertyMap.PropertyData.Property.Name;
-            }
-
-            return propertyMap.PropertyData.NameWrite;
-        }
 
         private Sheet ConstructSheetPart()
         {
@@ -269,6 +259,37 @@
             return sheetViews;
         }
 
+        private IEnumerable<PropertyMap> CreateOrderedPropertyMaps()
+        {
+            var classMap = Activator.CreateInstance<TClassMap>();
+            var propertyMaps = classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreWrite);
+            var indexes = new HashSet<uint>();
+
+            uint currentIndex = 1;
+            foreach (var map in propertyMaps.Where(x => x.PropertyData.IndexWrite > 0))
+            {
+                indexes.Add(map.PropertyData.IndexWrite);
+            }
+
+            foreach (var map in propertyMaps.Where(x => x.PropertyData.IndexWrite == 0))
+            {
+                while (true)
+                {
+                    if (!indexes.Contains(currentIndex))
+                    {
+                        map.PropertyData.IndexWrite = currentIndex;
+                        indexes.Add(currentIndex);
+                        currentIndex++;
+                        break;
+                    }
+
+                    currentIndex++;
+                }
+            }
+
+            return propertyMaps.OrderBy(x => x.PropertyData.IndexWrite);
+        }
+
         private string InsertSharedString(string text)
         {
             bool stringExists = this.sharedStrings.TryGetValue(text, out string sharedStringIndex);
@@ -281,6 +302,17 @@
             this.sharedStrings.Add(text, newIndex);
 
             return newIndex;
+        }
+
+        private static string ResolveHeader(PropertyMap propertyMap)
+        {
+            if (string.IsNullOrWhiteSpace(propertyMap.PropertyData.NameWrite))
+            {
+                // account for columns not mapped to a property (e.g., constants) with no name specified
+                return propertyMap.PropertyData.Property == null ? string.Empty : propertyMap.PropertyData.Property.Name;
+            }
+
+            return propertyMap.PropertyData.NameWrite;
         }
 
         private string ResolveCellValue<TRecord>(PropertyMap propertyMap, TRecord record)
@@ -320,8 +352,6 @@
                     return value.ToString();
             }
         }
-
-        private static OpenXmlAttribute cellReferenceAttribute = new OpenXmlAttribute(rowIndexAttribute, null, null);
 
         private void WriteCellValue(string cellValue, string cellReference, CellValues cellType, List<OpenXmlAttribute> attributes)
         {

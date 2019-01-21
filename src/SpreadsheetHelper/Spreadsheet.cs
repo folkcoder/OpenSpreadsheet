@@ -344,8 +344,7 @@
             var classMapType = typeof(TClassMap);
             if (!this.validatedClassMaps.Contains(classMapType))
             {
-                var classMap = (TClassMap)Activator.CreateInstance(classMapType);
-                var validator = new ConfigurationValidator(classMap.PropertyMaps);
+                var validator = new ConfigurationValidator<TClass, TClassMap>();
                 validator.Validate();
                 if (validator.HasErrors)
                 {
