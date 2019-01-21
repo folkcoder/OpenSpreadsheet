@@ -20,10 +20,13 @@
         where TClassMap : ClassMap<TClass>
     {
         private const string rowIndexAttribute = "r";
+
+        private readonly Dictionary<string, uint> columnCellReferences = new Dictionary<string, uint>();
         private readonly Dictionary<uint, PropertyMap> propertyMaps;
         private readonly OpenXmlReader reader;
         private readonly BidirectionalDictionary<string, string> sharedStrings;
         private readonly SpreadsheetDocument spreadsheetDocument;
+
         private uint currentRowIndex = 1;
         private bool isDisposed;
 
@@ -50,6 +53,9 @@
             this.propertyMaps = CreateOrderedPropertyMaps();
         }
 
+        /// <summary>
+        /// Gets a collection of key value pairs containing a header column index and its name.
+        /// </summary>
         public Dictionary<uint, string> Headers { get; }
 
         private Dictionary<uint, PropertyMap> CreateOrderedPropertyMaps()
@@ -283,17 +289,23 @@
         /// </summary>
         /// <param name="cellReference">The cell reference to be converted.</param>
         /// <returns>The cell's numeric column index.</returns>
-        private static uint GetColumnIndexFromCellReference(string cellReference)
+        private uint GetColumnIndexFromCellReference(string cellReference)
         {
             var columnLetters = cellReference.Where(c => !char.IsNumber(c)).ToArray();
-            int sum = 0;
+            string columnReference = new string(columnLetters);
+            if (this.columnCellReferences.ContainsKey(columnReference))
+            {
+                return this.columnCellReferences[columnReference];
+            }
 
+            int sum = 0;
             for (int i = 0; i < columnLetters.Length; i++)
             {
                 sum *= 26;
                 sum += (columnLetters[i] - 'A' + 1);
             }
 
+            this.columnCellReferences.Add(columnReference, (uint)sum);
             return (uint)sum;
         }
 

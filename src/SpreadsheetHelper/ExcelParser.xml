@@ -936,6 +936,11 @@
             <param name="sharedStrings"></param>
             <param name="headerRowIndex"></param>
         </member>
+        <member name="P:SpreadsheetHelper.WorksheetReader`2.Headers">
+            <summary>
+            Gets a collection of key value pairs containing a header column index and its name.
+            </summary>
+        </member>
         <member name="M:SpreadsheetHelper.WorksheetReader`2.ReadRow">
             <summary>
             Read a single row at the current position and map its data to an object.
