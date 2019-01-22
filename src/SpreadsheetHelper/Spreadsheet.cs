@@ -54,7 +54,7 @@
         /// <param name="headerRowIndex">The one-based row index of the header row. A value of 0 indicates a worksheet with no header.</param>
         /// <returns>A new worksheet reader.</returns>
         public WorksheetReader<TClass, TClassMap> CreateWorksheetReader<TClass, TClassMap>(string worksheetName, uint headerRowIndex = 1)
-            where TClass : class
+            where TClass : class, new()
             where TClassMap : ClassMap<TClass>
         {
             this.ValidateClassMap<TClass, TClassMap>();
@@ -116,7 +116,7 @@
         /// <param name="headerRowIndex">The one-based row index of the header row. A value of 0 indicates a worksheet with no header.</param>
         /// <returns>A collection containing the worksheet's mapped data.</returns>
         public IEnumerable<TClass> ReadWorksheet<TClass, TClassMap>(string worksheetName, uint headerRowIndex = 1)
-            where TClass : class
+            where TClass : class, new()
             where TClassMap : ClassMap<TClass>
         {
             using (var worksheetReader = this.CreateWorksheetReader<TClass, TClassMap>(worksheetName, headerRowIndex))

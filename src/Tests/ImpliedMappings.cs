@@ -3,9 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using SpreadsheetHelper;
     using SpreadsheetHelper.Configuration;
     using Xunit;
@@ -34,19 +31,30 @@
             }
         }
 
-        //[Fact]
-        //public void TestUnspecifiedIndexesValidation()
-        //{
-        //    using (var spreadsheet = new Spreadsheet(this.filepath))
-        //    {
-        //        using (var reader = spreadsheet.CreateWorksheetReader<TestClass, TestClassMapUnspecifiedIndexes>(unspecifiedIndexesSheetName))
-        //        {
-        //        }
+        [Fact]
+        public void TestUnspecifiedIndexesValidation()
+        {
+            using (var spreadsheet = new Spreadsheet(this.filepath))
+            {
+                foreach (var record in spreadsheet.ReadWorksheet<TestClass, TestClassMapUnspecifiedIndexes>(unspecifiedIndexesSheetName))
+                {
+                    Assert.Equal("1", record.TestData1);
+                    Assert.Equal("2", record.TestData2);
+                    Assert.Equal("3", record.TestData3);
+                    Assert.Equal("4", record.TestData4);
+                    Assert.Equal("5", record.TestData5);
+                }
 
-        //        var recordsCustomHeaderRow = spreadsheet.ReadWorksheet<TestClass, TestClassMap>(headerRowNotDefault, headerRowIndex);
-        //        Assert.Equal(recordCount, recordsCustomHeaderRow.Count());
-        //    }
-        //}
+                foreach (var record in spreadsheet.ReadWorksheet<TestClass, TestClassMapImpliedIndexesRead>(unspecifiedIndexesSheetName))
+                {
+                    Assert.Equal("1", record.TestData1);
+                    Assert.Equal("2", record.TestData2);
+                    Assert.Equal("3", record.TestData3);
+                    Assert.Equal("4", record.TestData4);
+                    Assert.Equal("5", record.TestData5);
+                }
+            }
+        }
 
         [Fact]
         public void TestWrite()
@@ -72,6 +80,18 @@
             public string TestData3 { get; set; }
             public string TestData4 { get; set; }
             public string TestData5 { get; set; }
+        }
+
+        internal class TestClassMapImpliedIndexesRead : ClassMap<TestClass>
+        {
+            public TestClassMapImpliedIndexesRead()
+            {
+                Map(x => x.TestData5);
+                Map(x => x.TestData2);
+                Map(x => x.TestData1);
+                Map(x => x.TestData3);
+                Map(x => x.TestData4);
+            }
         }
 
         internal class TestClassMapUnspecifiedIndexes : ClassMap<TestClass>

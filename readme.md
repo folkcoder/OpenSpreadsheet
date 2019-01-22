@@ -13,7 +13,10 @@ SpreadsheetHelper uses a fluent interface to map object properties to spreadshee
 
 **Basic Example**
 
-Classes being mapped must have a parameterless constructor. A basic ClassMap requires a property (usually) and an index. The name is optional; for writing, if no name is provided the mapped property's name will be used. 
+Each entity to be read or written to a spreadsheet needs to have a ClassMap defining the relationship between the class's properties and the spreadsheet. A couple notes on the basics:
++ Classes being mapped must have either a parameterless constructor or a constructor with optional arguments.
++ Indexes are optional. When reading, SpreadsheetHelper will attempt to match the spreadsheet header with the defined mapping name, or the property name if not defined. For writing, the mapping order will be used unless the index is explicitly defined.
++ The name map is optional. When reading, the name is used to match a property to a header name if not index is defined. When writing, the name will provide the header, defaulting to the property name. 
 
 Most configuration properties have both a read and write version, if applicable. If you need to a class to have different mappings for reading and writing operations, simply use the appropriate map method.
 
@@ -170,15 +173,15 @@ SpreadsheetHelper has slightly better memory performance than ClosedXml and EPPl
 
 | Library | Records | Fields | Runtime | Memory Used |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 3 | 987.6 ms | 212.02 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 3 | 417.7 ms | 151.51 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 3 | 663.5 ms | 109.32 MB
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 100,000 | 3 | 1,981.3 ms | 424.68 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 100,000 | 3 | 833.3 ms | 302.11 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 100,000 | 3 | 1,323.9 ms | 217.72 MB
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 250,000 | 3 | 4,967.7 ms | 1046.61 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 250,000 | 3 | 2,082.8 ms | 744.05 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 250,000 | 3 | 3,278.5 ms | 541.94 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 3 | 910.3 ms | 212.02 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 3 | 378.5 ms | 151.51 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 3 | 627.8 ms | 114.18 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 100,000 | 3 | 1,832.6 ms | 424.59 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 100,000 | 3 | 753.3 ms | 302.11 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 100,000 | 3 | 1,208.4 ms | 227.16 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 250,000 | 3 | 4,520.8 ms | 1046.65 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 250,000 | 3 | 1,875.8 ms | 744.00 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 250,000 | 3 | 3,042.5 ms | 565.11 MB
 
 
 **Writing**
@@ -187,21 +190,20 @@ SpreadsheetHelper is significantly faster and more memory-friendly than ClosedXm
 
 | Library | Records | Fields | Runtime | Memory Used |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 30 | 17.162 s | 212.05 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 30 | 3.877 s | 151.51 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 30 | 3.654 s | 109.32 MB
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 100,000 | 30 | 35.328 s | 6957.00 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 100,000 | 30 | 7.708 s | 2243.08 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 100,000 | 30 | 7.244 s | 1742.74 MB
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 250,000 | 30 | 82.006 s | 17277.52 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 250,000 | 30 | 19.753 s | 5514.32 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 250,000 | 30 | 18.524 s | 4340.02 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 30 | 15.118 s | 3474.2 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 30 | 3.543 s | 1133.19 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 30 | 3.054 s | 824.51 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 100,000 | 30 | 31.505 s | 6956.1 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 100,000 | 30 | 7.106 s | 2240.81 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 100,000 | 30 | 6.163 s | 1639.73 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 250,000 | 30 | 76.771 s | 17272.07 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 250,000 | 30 | 17.765 s | 5508.58 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 250,000 | 30 | 15.524 s | 4082.52 MB
 
 
 
 
 ## Future Plans
 
-+ Make index maps optional. For writing, unspecified indexes would default to map order, and read indexes would attempt to map column indexes by header name.
 + Make additional tweaks to configurtion maps to make them easier to use and validate.
 + Migrate library to .NET Core. A long-outstanding bug in the corefx library is preventing this transition (https://github.com/dotnet/corefx/issues/24457).
