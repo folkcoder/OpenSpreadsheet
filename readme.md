@@ -1,21 +1,21 @@
-# SpreadsheetHelper
+# OpenSpreadsheet
 
-SpreadsheetHelper is a fast and lightweight wrapper around the OpenXml spreadsheet library, employing an easy-to-use fluent interface to define relations between entities and spreadsheet rows. The library uses the Simple API for XML (SAX) method for both reading and writing.
+OpenSpreadsheet is a fast and lightweight wrapper around the OpenXml spreadsheet library, employing an easy-to-use fluent interface to define relations between entities and spreadsheet rows. The library uses the Simple API for XML (SAX) method for both reading and writing.
 
-The primary use case for SpreadsheetHelper is efficiently importing and exporting typed collections, where each row roughly corresponds to a class instance. It is not meant to offer fine-grained control of data or formatting at the cell level; if you need this level of control, check out [ClosedXml](https://github.com/ClosedXML/ClosedXML) or [EPPlus](https://github.com/JanKallman/EPPlus).
+The primary use case for OpenSpreadsheet is efficiently importing and exporting typed collections, where each row roughly corresponds to a class instance. It is not meant to offer fine-grained control of data or formatting at the cell level; if you need this level of control, check out [ClosedXml](https://github.com/ClosedXML/ClosedXML) or [EPPlus](https://github.com/JanKallman/EPPlus).
 
 
 ## Syntax
 
 ### Configuration
 
-SpreadsheetHelper uses a fluent interface to map object properties to spreadsheet rows.
+OpenSpreadsheet uses a fluent interface to map object properties to spreadsheet rows.
 
 **Basic Example**
 
 Each entity to be read or written to a spreadsheet needs to have a ClassMap defining the relationship between the class's properties and the spreadsheet. A couple notes on the basics:
 + Classes being mapped must have either a parameterless constructor or a constructor with optional arguments.
-+ Indexes are optional. When reading, SpreadsheetHelper will attempt to match the spreadsheet header with the defined mapping name, or the property name if not defined. For writing, the mapping order will be used unless the index is explicitly defined.
++ Indexes are optional. When reading, OpenSpreadsheet will attempt to match the spreadsheet header with the defined mapping name, or the property name if not defined. For writing, the mapping order will be used unless the index is explicitly defined.
 + The name map is optional. When reading, the name is used to match a property to a header name if not index is defined. When writing, the name will provide the header, defaulting to the property name. 
 
 Most configuration properties have both a read and write version, if applicable. If you need to a class to have different mappings for reading and writing operations, simply use the appropriate map method.
@@ -169,36 +169,36 @@ using (var spreadsheet = new Spreadsheet(filepath))
 
 **Reading**
 
-SpreadsheetHelper is significantly faster and better on memory than ClosedXml, but is generally slower than EPPlus. For reading, all three libraries are pretty performant.
+OpenSpreadsheet is significantly faster and better on memory than ClosedXml, but is generally slower than EPPlus. For reading, all three libraries are pretty performant.
 
 | Library | Records | Fields | Runtime | Memory Used |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 3 | 971.2 ms | 211.46 MB
 | [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 3 | 394.9 ms | 139.05 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 3 | 745.7 ms | 121.14 MB
+| [OpenSpreadsheet](https://github.com/FolkCoder/OpenSpreadsheet) | 50,000 | 3 | 745.7 ms | 121.14 MB
 | [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 100,000 | 3 | 1,932.7 ms | 423.67 MB
 | [EPPlus](https://github.com/JanKallman/EPPlus) | 100,000 | 3 | 807.2 ms | 277.15 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 100,000 | 3 | 1,502.6 ms | 241.69 MB
+| [OpenSpreadsheet](https://github.com/FolkCoder/OpenSpreadsheet) | 100,000 | 3 | 1,502.6 ms | 241.69 MB
 | [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 250,000 | 3 | 4,747.9 ms | 1044.93 MB
 | [EPPlus](https://github.com/JanKallman/EPPlus) | 250,000 | 3 | 2,003.8 ms| 686.58 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 250,000 | 3 | 3,694.0 ms | 602.89 MB
+| [OpenSpreadsheet](https://github.com/FolkCoder/OpenSpreadsheet) | 250,000 | 3 | 3,694.0 ms | 602.89 MB
 | [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 500,000 | 3 | 113.359 ms | 2094.14 MB
 | [EPPlus](https://github.com/JanKallman/EPPlus) | 500,000 | 3 | 75.751 ms| 1372.95 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 500,000 | 3 | 79.665 ms | 1205.57 MB
+| [OpenSpreadsheet](https://github.com/FolkCoder/OpenSpreadsheet) | 500,000 | 3 | 79.665 ms | 1205.57 MB
 
 
 **Writing**
 
-SpreadsheetHelper is significantly faster and memory-friendly than ClosedXml, and slightly more so than EPPlus.
+OpenSpreadsheet is significantly faster and memory-friendly than ClosedXml, and slightly more so than EPPlus.
 
 | Library | Records | Fields | Runtime | Memory Used |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 30 | 12.013 s | 2459.94 MB
 | [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 30 | 3.351 s | 1039.68 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 30 | 2.401 s | 1006.11 MB
+| [OpenSpreadsheet](https://github.com/FolkCoder/OpenSpreadsheet) | 50,000 | 30 | 2.401 s | 1006.11 MB
 | [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 100,000 | 30 | 23.908 s | 4928.38 MB
 | [EPPlus](https://github.com/JanKallman/EPPlus) | 100,000 | 30 | 6.658 s | 2053.81 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 100,000 | 30 | 4.865 s | 2005.31 MB
+| [OpenSpreadsheet](https://github.com/FolkCoder/OpenSpreadsheet) | 100,000 | 30 | 4.865 s | 2005.31 MB
 | [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 250,000 | 30 | 59.999 s | 12027.75 MB
 | [EPPlus](https://github.com/JanKallman/EPPlus) | 250,000 | 30 | 16.526 s | 5041.11 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 250,000 | 30 | 11.997 s | 4815.44 MB
+| [OpenSpreadsheet](https://github.com/FolkCoder/OpenSpreadsheet) | 250,000 | 30 | 11.997 s | 4815.44 MB

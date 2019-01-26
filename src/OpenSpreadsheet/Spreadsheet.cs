@@ -1,4 +1,4 @@
-﻿namespace SpreadsheetHelper
+﻿namespace OpenSpreadsheet
 {
     using System;
     using System.Collections.Generic;
@@ -8,8 +8,7 @@
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Packaging;
     using DocumentFormat.OpenXml.Spreadsheet;
-
-    using SpreadsheetHelper.Configuration;
+    using OpenSpreadsheet.Configuration;
 
     /// <summary>
     /// Provides a wrapper around the Open XML SDF to more easily create spreadsheet files with one or more worksheets.

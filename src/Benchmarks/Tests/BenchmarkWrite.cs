@@ -7,8 +7,8 @@
     using BenchmarkDotNet.Attributes;
     using ClosedXML.Excel;
     using OfficeOpenXml;
-    using SpreadsheetHelper;
-    using SpreadsheetHelper.Configuration;
+    using OpenSpreadsheet;
+    using OpenSpreadsheet.Configuration;
 
     [MemoryDiagnoser]
     public class BenchmarkWrite
@@ -79,7 +79,7 @@
         }
 
         [Benchmark]
-        public void TestSpreadsheetHelper()
+        public void TestOpenSpreadsheet()
         {
             string outputPath = Path.GetTempPath() + Guid.NewGuid().ToString() + ".xlsx";
             using (var spreadsheet = new Spreadsheet(outputPath))

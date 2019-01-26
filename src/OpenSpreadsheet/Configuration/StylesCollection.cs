@@ -1,10 +1,9 @@
-﻿namespace SpreadsheetHelper.Configuration
+﻿namespace OpenSpreadsheet.Configuration
 {
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
-
-    using SpreadsheetHelper.Enums;
+    using OpenSpreadsheet.Enums;
 
     using OpenXml = DocumentFormat.OpenXml.Spreadsheet;
 

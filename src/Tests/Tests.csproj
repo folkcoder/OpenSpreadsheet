@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SpreadsheetHelper\SpreadsheetHelper.csproj" />
+    <ProjectReference Include="..\OpenSpreadsheet\OpenSpreadsheet.csproj" />
   </ItemGroup>
 
 </Project>

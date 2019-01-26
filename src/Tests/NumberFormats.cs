@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using SpreadsheetHelper;
-    using SpreadsheetHelper.Configuration;
-    using SpreadsheetHelper.Enums;
+    using OpenSpreadsheet;
+    using OpenSpreadsheet.Configuration;
+    using OpenSpreadsheet.Enums;
 
     using Tests.Models;
     using Xunit;

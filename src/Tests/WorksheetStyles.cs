@@ -5,8 +5,8 @@
     using System.Drawing;
     using System.IO;
 
-    using SpreadsheetHelper;
-    using SpreadsheetHelper.Configuration;
+    using OpenSpreadsheet;
+    using OpenSpreadsheet.Configuration;
 
     using Xunit;
 

@@ -1,4 +1,4 @@
-﻿namespace SpreadsheetHelper.Enums
+﻿namespace OpenSpreadsheet.Enums
 {
     /// <summary>
     /// Encapsulates valid builtin cell numbering formats.

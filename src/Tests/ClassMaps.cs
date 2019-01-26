@@ -1,6 +1,6 @@
 ﻿namespace Tests
 {
-    using SpreadsheetHelper.Configuration;
+    using OpenSpreadsheet.Configuration;
     using Xunit;
 
     public class ClassMaps

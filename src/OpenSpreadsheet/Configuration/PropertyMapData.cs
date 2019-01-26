@@ -1,8 +1,8 @@
-﻿namespace SpreadsheetHelper.Configuration
+﻿namespace OpenSpreadsheet.Configuration
 {
     using System.Reflection;
 
-    using SpreadsheetHelper.Enums;
+    using OpenSpreadsheet.Enums;
 
     /// <summary>
     /// Encapsulates properties associated with an individual property map.

@@ -9,7 +9,7 @@
     <Authors>Steve Stanzak</Authors>
     <Product>SpreadsheetHelper</Product>
     <Description>A fast and efficient wrapper around the OpenXml Excel library</Description>
-    <PackageId>FolkCoder.SpreadsheetHelper</PackageId>
+    <PackageId>OpenSpreadsheet</PackageId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

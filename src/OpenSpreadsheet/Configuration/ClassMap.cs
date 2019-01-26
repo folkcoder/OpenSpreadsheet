@@ -1,4 +1,4 @@
-﻿namespace SpreadsheetHelper.Configuration
+﻿namespace OpenSpreadsheet.Configuration
 {
     using System;
     using System.Collections.Generic;

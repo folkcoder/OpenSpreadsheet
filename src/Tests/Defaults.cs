@@ -5,8 +5,8 @@
     using System.IO;
     using System.Linq;
 
-    using SpreadsheetHelper;
-    using SpreadsheetHelper.Configuration;
+    using OpenSpreadsheet;
+    using OpenSpreadsheet.Configuration;
 
     using Tests.Models;
 

@@ -1,4 +1,4 @@
-﻿namespace SpreadsheetHelper
+﻿namespace OpenSpreadsheet
 {
     using System;
     using System.Collections.Generic;
@@ -10,8 +10,8 @@
     using DocumentFormat.OpenXml.Packaging;
     using DocumentFormat.OpenXml.Spreadsheet;
 
-    using SpreadsheetHelper.Configuration;
-    using SpreadsheetHelper.Enums;
+    using OpenSpreadsheet.Configuration;
+    using OpenSpreadsheet.Enums;
 
     /// <summary>
     /// Writes data to a worksheet.

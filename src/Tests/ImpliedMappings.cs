@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using SpreadsheetHelper;
-    using SpreadsheetHelper.Configuration;
+    using OpenSpreadsheet;
+    using OpenSpreadsheet.Configuration;
     using Xunit;
 
     public class ImpliedMappings

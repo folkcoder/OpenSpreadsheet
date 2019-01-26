@@ -7,8 +7,8 @@
     using BenchmarkDotNet.Attributes;
     using ClosedXML.Excel;
     using OfficeOpenXml;
-    using SpreadsheetHelper;
-    using SpreadsheetHelper.Configuration;
+    using OpenSpreadsheet;
+    using OpenSpreadsheet.Configuration;
 
     [MemoryDiagnoser]
     public class BenchmarkRead
@@ -80,7 +80,7 @@
         }
 
         [Benchmark]
-        public void TestSpreadsheetHelper()
+        public void TestOpenSpreadsheet()
         {
             using (var spreadsheet = new Spreadsheet(this.inputPath))
             {
