@@ -119,6 +119,23 @@
         }
 
         [Fact]
+        public void AddNonuniqueSheetToExistingWorkbook()
+        {
+            const string newWorksheetName = "new worksheet";
+
+            var records = CreateTestRecords(25);
+            using (var spreadsheet = new Spreadsheet(this.filepath))
+            {
+                spreadsheet.WriteWorksheet<TestClass, TestClassMap>(newWorksheetName, records);
+            }
+
+            using (var spreadsheet = new Spreadsheet(this.filepath))
+            {
+                ArgumentException ex = Assert.Throws<ArgumentException>(() => spreadsheet.WriteWorksheet<TestClass, TestClassMap>(newWorksheetName, records));
+            }
+        }
+
+        [Fact]
         public void AddWorksheetsWithSameName()
         {
             const string newWorksheetName = "worksheet name";

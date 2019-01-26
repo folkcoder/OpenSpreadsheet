@@ -3,7 +3,7 @@
   <PropertyGroup>
 	<UseSharedCompilation>false</UseSharedCompilation>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net471</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>

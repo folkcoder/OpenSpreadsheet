@@ -169,41 +169,36 @@ using (var spreadsheet = new Spreadsheet(filepath))
 
 **Reading**
 
-SpreadsheetHelper has slightly better memory performance than ClosedXml and EPPlus, but runs slightly slower than EPPlus. For reading, all three libraries are pretty performant.
+SpreadsheetHelper is significantly faster and better on memory than ClosedXml, but is generally slower than EPPlus. For reading, all three libraries are pretty performant.
 
 | Library | Records | Fields | Runtime | Memory Used |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 3 | 910.3 ms | 212.02 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 3 | 378.5 ms | 151.51 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 3 | 627.8 ms | 114.18 MB
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 100,000 | 3 | 1,832.6 ms | 424.59 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 100,000 | 3 | 753.3 ms | 302.11 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 100,000 | 3 | 1,208.4 ms | 227.16 MB
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 250,000 | 3 | 4,520.8 ms | 1046.65 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 250,000 | 3 | 1,875.8 ms | 744.00 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 250,000 | 3 | 3,042.5 ms | 565.11 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 3 | 971.2 ms | 211.46 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 3 | 394.9 ms | 139.05 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 3 | 745.7 ms | 121.14 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 100,000 | 3 | 1,932.7 ms | 423.67 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 100,000 | 3 | 807.2 ms | 277.15 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 100,000 | 3 | 1,502.6 ms | 241.69 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 250,000 | 3 | 4,747.9 ms | 1044.93 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 250,000 | 3 | 2,003.8 ms| 686.58 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 250,000 | 3 | 3,694.0 ms | 602.89 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 500,000 | 3 | 113.359 ms | 2094.14 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 500,000 | 3 | 75.751 ms| 1372.95 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 500,000 | 3 | 79.665 ms | 1205.57 MB
 
 
 **Writing**
 
-SpreadsheetHelper is significantly faster and more memory-friendly than ClosedXml, and slightly more so than EPPlus.
+SpreadsheetHelper is significantly faster and memory-friendly than ClosedXml, and slightly more so than EPPlus.
 
 | Library | Records | Fields | Runtime | Memory Used |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 30 | 15.118 s | 3474.2 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 30 | 3.543 s | 1133.19 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 30 | 3.054 s | 824.51 MB
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 100,000 | 30 | 31.505 s | 6956.1 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 100,000 | 30 | 7.106 s | 2240.81 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 100,000 | 30 | 6.163 s | 1639.73 MB
-| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 250,000 | 30 | 76.771 s | 17272.07 MB
-| [EPPlus](https://github.com/JanKallman/EPPlus) | 250,000 | 30 | 17.765 s | 5508.58 MB
-| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 250,000 | 30 | 15.524 s | 4082.52 MB
-
-
-
-
-## Future Plans
-
-+ Make additional tweaks to configurtion maps to make them easier to use and validate.
-+ Migrate library to .NET Core. A long-outstanding bug in the corefx library is preventing this transition (https://github.com/dotnet/corefx/issues/24457).
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 50,000 | 30 | 12.013 s | 2459.94 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 50,000 | 30 | 3.351 s | 1039.68 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 50,000 | 30 | 2.401 s | 1006.11 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 100,000 | 30 | 23.908 s | 4928.38 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 100,000 | 30 | 6.658 s | 2053.81 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 100,000 | 30 | 4.865 s | 2005.31 MB
+| [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 250,000 | 30 | 59.999 s | 12027.75 MB
+| [EPPlus](https://github.com/JanKallman/EPPlus) | 250,000 | 30 | 16.526 s | 5041.11 MB
+| [SpreadsheetHelper](https://github.com/FolkCoder/SpreadsheetHelper) | 250,000 | 30 | 11.997 s | 4815.44 MB

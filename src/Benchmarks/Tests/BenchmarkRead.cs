@@ -16,7 +16,7 @@
         private const string worksheetName = "test sheet";
         private string inputPath;
 
-        [Params(50000, 100000, 250000)]
+        [Params(50000, 100000, 250000, 500000)]
         public int RecordCount { get; set; }
 
         [GlobalSetup]

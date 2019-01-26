@@ -36,6 +36,7 @@
                 this.spreadsheetDocument = SpreadsheetDocument.Open(filePath, true);
                 this.LoadSharedStringTable();
                 this.LoadWorkbookStyles();
+                this.LoadWorksheetNames();
             }
             else
             {
@@ -334,6 +335,14 @@
                         } while (reader.ReadNextSibling());
                     }
                 }
+            }
+        }
+
+        private void LoadWorksheetNames()
+        {
+            foreach (Sheet sheet in this.spreadsheetDocument.WorkbookPart.Workbook.Sheets)
+            {
+                this.worksheetNames.Add(sheet.Name);
             }
         }
 
