@@ -1,4 +1,5 @@
 # OpenSpreadsheet
+[![Nuget Badge](https://img.shields.io/nuget/v/OpenSpreadsheet.svg?style=for-the-badge)](https://www.nuget.org/packages/OpenSpreadsheet/)
 
 OpenSpreadsheet is a fast and lightweight wrapper around the OpenXml spreadsheet library, employing an easy-to-use fluent interface to define relations between entities and spreadsheet rows. The library uses the Simple API for XML (SAX) method for both reading and writing.
 
