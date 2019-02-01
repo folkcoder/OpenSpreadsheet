@@ -12,6 +12,8 @@
         where TClass : class
         where TClassMap : ClassMap<TClass>
     {
+        private readonly ClassMap<TClass> classMap;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurationValidator{TClass, TClassMap}"/> class.
         /// </summary>
@@ -21,8 +23,6 @@
         {
             this.classMap = Activator.CreateInstance<TClassMap>();
         }
-
-        private readonly ClassMap<TClass> classMap;
 
         /// <summary>
         /// Gets a collection of validation errors.
@@ -62,7 +62,7 @@
             this.Errors.OrderBy(x => x.Message);
         }
 
-        private void ValidateConstant(object constantValue, PropertyMap map)
+        private void ValidateConstant(object constantValue, PropertyMap<TClass> map)
         {
             if (constantValue == null)
             {
@@ -82,7 +82,7 @@
             }
         }
 
-        private void ValidateDefault(object defaultValue, PropertyMap map)
+        private void ValidateDefault(object defaultValue, PropertyMap<TClass> map)
         {
             if (defaultValue == null)
             {
@@ -96,7 +96,7 @@
             }
         }
 
-        private void ValidateHeaderNameWithinExcelMaxLength(string name, PropertyMap map)
+        private void ValidateHeaderNameWithinExcelMaxLength(string name, PropertyMap<TClass> map)
         {
             const int maxHeaderLength = 255;
 
@@ -123,7 +123,7 @@
             }
         }
 
-        private void ValidateIndexWithinExcelMaxRange(uint index, PropertyMap map, ConfigurationType configurationType)
+        private void ValidateIndexWithinExcelMaxRange(uint index, PropertyMap<TClass> map, ConfigurationType configurationType)
         {
             const int maxColumnIndex = 16384;
 
@@ -133,7 +133,7 @@
             }
         }
 
-        private void ValidateReadProperties(IEnumerable<PropertyMap> propertyMaps)
+        private void ValidateReadProperties(IEnumerable<PropertyMap<TClass>> propertyMaps)
         {
             var props = new HashSet<PropertyInfo>();
             foreach (var map in propertyMaps)

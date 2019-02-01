@@ -14,7 +14,7 @@
         /// <summary>
         /// Gets a collection of the class map individual property mappings.
         /// </summary>
-        public virtual IList<PropertyMap> PropertyMaps { get; } = new List<PropertyMap>();
+        public virtual IList<PropertyMap<TClass>> PropertyMaps { get; } = new List<PropertyMap<TClass>>();
 
         /// <summary>
         /// Maps a property to the class map.
@@ -22,7 +22,7 @@
         /// <typeparam name="TProperty">The property type to be mapped.</typeparam>
         /// <param name="property">The property to be mapped.</param>
         /// <returns>A property map associated with the property.</returns>
-        public virtual PropertyMap Map<TProperty>(Expression<Func<TClass, TProperty>> property)
+        public virtual PropertyMap<TClass> Map<TProperty>(Expression<Func<TClass, TProperty>> property)
         {
             if (property == null)
             {
@@ -34,7 +34,7 @@
                 if (unaryExp.Operand is MemberExpression memberExp)
                 {
                     var propertyInfo = (PropertyInfo)memberExp.Member;
-                    var propertyMap = new PropertyMap(propertyInfo);
+                    var propertyMap = new PropertyMap<TClass>(propertyInfo);
                     this.PropertyMaps.Add(propertyMap);
                     return propertyMap;
                 }
@@ -42,7 +42,7 @@
             else if (property.Body is MemberExpression memberExp)
             {
                 var propertyInfo = (PropertyInfo)memberExp.Member;
-                var propertyMap = new PropertyMap(propertyInfo);
+                var propertyMap = new PropertyMap<TClass>(propertyInfo);
                 this.PropertyMaps.Add(propertyMap);
                 return propertyMap;
             }
@@ -54,9 +54,9 @@
         /// Maps a default property map to the class map; used for constants and values not mapped to a particular class property.
         /// </summary>
         /// <returns>A default property map.</returns>
-        public virtual PropertyMap Map()
+        public virtual PropertyMap<TClass> Map()
         {
-            var propertyMap = new PropertyMap();
+            var propertyMap = new PropertyMap<TClass>();
             this.PropertyMaps.Add(propertyMap);
             return propertyMap;
         }

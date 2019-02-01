@@ -22,9 +22,12 @@
         private const float defaultFloat = 99.9F;
         private const int defaultInt = -1212454;
         private const long defaultLong = 999999999999999999;
-        private const string defaultsSheetName = "Defaults";
         private const string defaultText = "default string";
         private const long defaultTicks = 636826572370000000;
+
+        private const string defaultsReadSheetName = "read";
+        private const string defaultsWriteSheetName = "write";
+
         private const int recordCount = 25;
         private readonly string filepath;
 
@@ -41,7 +44,8 @@
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 var records = CreateTestRecords(recordCount);
-                spreadsheet.WriteWorksheet<NullableDataTypes, TestClassMapDefaults>(defaultsSheetName, CreateTestRecords(recordCount));
+                spreadsheet.WriteWorksheet<NullableDataTypes, TestClassMapEmpty>(defaultsReadSheetName, records);
+                spreadsheet.WriteWorksheet<NullableDataTypes, TestClassMapDefaults>(defaultsWriteSheetName, records);
             }
         }
 
@@ -50,7 +54,7 @@
         {
             using (var spreadsheet = new Spreadsheet(filepath))
             {
-                var records = spreadsheet.ReadWorksheet<NullableDataTypes, TestClassMapDefaults>(defaultsSheetName).ToList();
+                var records = spreadsheet.ReadWorksheet<NullableDataTypes, TestClassMapEmpty>(defaultsReadSheetName).ToList();
                 Assert.Equal(records.Count, recordCount);
                 foreach (var record in records)
                 {
@@ -68,20 +72,60 @@
             }
         }
 
-        //[Fact]
-        //public void TestSpreadsheetWriting()
-        //{
-        //    var validator = new SpreadsheetValidator();
-        //    validator.Validate(this.filepath);
+        [Fact]
+        public void TestWrite()
+        {
+            using (var spreadsheet = new Spreadsheet(filepath))
+            {
+                var records = spreadsheet.ReadWorksheet<NullableDataTypes, TestClassMapDefaults>(defaultsWriteSheetName).ToList();
+                Assert.Equal(records.Count, recordCount);
+                foreach (var record in records)
+                {
+                    Assert.Equal(record.Bool, defaultBool);
+                    Assert.Equal(record.Byte, defaultByte);
+                    Assert.Equal(record.Char, defaultChar);
+                    Assert.Equal(record.DateTime, new DateTime(defaultTicks));
+                    Assert.Equal(record.Decimal, defaultDecimal);
+                    Assert.Equal(record.Double, defaultDouble);
+                    Assert.Equal(record.Float, defaultFloat);
+                    Assert.Equal(record.Int, defaultInt);
+                    Assert.Equal(record.Long, defaultLong);
+                    Assert.Equal(record.Text, defaultText);
+                }
+            }
+        }
 
-        //    Assert.False(validator.HasErrors);
-        //}
+        [Fact]
+        public void TestSpreadsheetWriting()
+        {
+            var validator = new SpreadsheetValidator();
+            validator.Validate(this.filepath);
+
+            Assert.False(validator.HasErrors);
+        }
 
         private static IEnumerable<NullableDataTypes> CreateTestRecords(int count)
         {
             for (int i = 0; i < count; i++)
             {
                 yield return new NullableDataTypes();
+            }
+        }
+
+        internal class TestClassMapEmpty : ClassMap<NullableDataTypes>
+        {
+            public TestClassMapEmpty()
+            {
+                Map(x => x.Bool).Index(1).ConstantWrite(string.Empty).DefaultRead(defaultBool);
+                Map(x => x.Byte).Index(2).ConstantWrite(string.Empty).DefaultRead(defaultByte);
+                Map(x => x.Char).Index(3).ConstantWrite(string.Empty).DefaultRead(defaultChar);
+                Map(x => x.DateTime).Index(4).ConstantWrite(string.Empty).DefaultRead(new DateTime(defaultTicks));
+                Map(x => x.Decimal).Index(5).ConstantWrite(string.Empty).DefaultRead(defaultDecimal);
+                Map(x => x.Double).Index(6).ConstantWrite(string.Empty).DefaultRead(defaultDouble);
+                Map(x => x.Float).Index(7).ConstantWrite(string.Empty).DefaultRead(defaultFloat);
+                Map(x => x.Int).Index(8).ConstantWrite(string.Empty).DefaultRead(defaultInt);
+                Map(x => x.Long).Index(9).ConstantWrite(string.Empty).DefaultRead(defaultLong);
+                Map(x => x.Text).Index(10).ConstantWrite(string.Empty).DefaultRead(defaultText);
             }
         }
 

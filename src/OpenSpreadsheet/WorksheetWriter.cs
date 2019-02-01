@@ -55,7 +55,7 @@
         private readonly Dictionary<uint, CellValues> columnTypes = new Dictionary<uint, CellValues>();
 
         private readonly Dictionary<uint, int> columnWidths = new Dictionary<uint, int>();
-        private readonly List<PropertyMap> orderedPropertyMaps;
+        private readonly List<PropertyMap<TClass>> orderedPropertyMaps;
         private readonly BidirectionalDictionary<string, string> sharedStrings;
         private readonly SpreadsheetDocument spreadsheetDocument;
         private readonly StylesCollection spreadsheetStyles;
@@ -259,7 +259,7 @@
             return sheetViews;
         }
 
-        private IEnumerable<PropertyMap> CreateOrderedPropertyMaps()
+        private IEnumerable<PropertyMap<TClass>> CreateOrderedPropertyMaps()
         {
             var classMap = Activator.CreateInstance<TClassMap>();
             var propertyMaps = classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreWrite);
@@ -304,7 +304,7 @@
             return newIndex;
         }
 
-        private static string ResolveHeader(PropertyMap propertyMap)
+        private static string ResolveHeader(PropertyMap<TClass> propertyMap)
         {
             if (string.IsNullOrWhiteSpace(propertyMap.PropertyData.NameWrite))
             {
@@ -315,12 +315,17 @@
             return propertyMap.PropertyData.NameWrite;
         }
 
-        private string ResolveCellValue<TRecord>(PropertyMap propertyMap, TRecord record)
+        private string ResolveCellValue(PropertyMap<TClass> propertyMap, TClass record)
         {
             var columnType = this.columnTypes[propertyMap.PropertyData.IndexWrite];
 
             object value;
-            if (propertyMap.PropertyData.ConstantWrite != null)
+
+            if (propertyMap.PropertyData.WriteUsing != null)
+            {
+                value = propertyMap.PropertyData.WriteUsing(record);
+            }
+            else if (propertyMap.PropertyData.ConstantWrite != null)
             {
                 value = propertyMap.PropertyData.ConstantWrite;
             }
@@ -386,7 +391,6 @@
         {
             this.writer.WriteEndElement(); // SheetData
 
-            // autofilter
             if (this.worksheetStyle.ShouldAutoFilter)
             {
                 var lastIndex = this.orderedPropertyMaps.Last().PropertyData.IndexWrite;

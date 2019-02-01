@@ -1,5 +1,7 @@
 ﻿namespace OpenSpreadsheet.Configuration
 {
+    using System;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     using OpenSpreadsheet.Enums;
@@ -7,7 +9,7 @@
     /// <summary>
     /// Encapsulates properties associated with an individual property map.
     /// </summary>
-    public class PropertyMapData
+    public class PropertyMapData<TClass> where TClass : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyMapData"/> class.
@@ -106,8 +108,18 @@
         public virtual PropertyInfo Property { get; }
 
         /// <summary>
+        /// Gets or sets the expression used to resolve the property value when reading.
+        /// </summary>
+        public virtual Func<ReaderRow, object> ReadUsing { get; set; }
+
+        /// <summary>
         /// Gets or sets the column style.
         /// </summary>
         public virtual ColumnStyle Style { get; set; } = new ColumnStyle();
+
+        /// <summary>
+        /// Gets or sets the expression used to resolve the property value when writing.
+        /// </summary>
+        public virtual Func<TClass, object> WriteUsing { get; set; }
     }
 }

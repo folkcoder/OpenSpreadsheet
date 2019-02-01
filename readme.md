@@ -9,7 +9,7 @@ The primary use case for OpenSpreadsheet is efficiently importing and exporting 
 
 ### Configuration
 
-OpenSpreadsheet uses a fluent interface to map object properties to spreadsheet rows.
+OpenSpreadsheet uses a fluent interface to map object properties to spreadsheet rows. The configuration format is modeled after the fantastic [CsvHelper](https://joshclose.github.io/CsvHelper/) library, although OpenSpreadsheet has far fewer features (for now!).
 
 **Basic Example**
 
@@ -202,3 +202,14 @@ OpenSpreadsheet is significantly faster and memory-friendly than ClosedXml, and 
 | [ClosedXml](https://github.com/ClosedXML/ClosedXML) | 250,000 | 30 | 59.999 s | 12027.75 MB
 | [EPPlus](https://github.com/JanKallman/EPPlus) | 250,000 | 30 | 16.526 s | 5041.11 MB
 | [OpenSpreadsheet](https://github.com/FolkCoder/OpenSpreadsheet) | 250,000 | 30 | 11.997 s | 4815.44 MB
+
+
+## Future Plans
++ Custom, reusable type converters
++ Automatic class mapping
++ Support for dynamic and anonymous types
++ Better handling of duplicate header names for reading
++ Greatly improve accuracy and coverage of automated tests and ClassMap validations
++ Allow default worksheet style for entire spreadsheet
++ Provide override for ReadWorksheet to accept tab position index as well as name
++ Improve AutoFit for column (headers are sometimes cut off) 

@@ -8,7 +8,7 @@
         private static void Main()
         {
             var read = BenchmarkRunner.Run<BenchmarkRead>();
-            var write = BenchmarkRunner.Run<BenchmarkWrite>();
+            // var write = BenchmarkRunner.Run<BenchmarkWrite>();
         }
     }
 }

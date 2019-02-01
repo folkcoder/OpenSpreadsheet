@@ -22,7 +22,7 @@
         private const string rowIndexAttribute = "r";
 
         private readonly Dictionary<string, uint> columnCellReferences = new Dictionary<string, uint>();
-        private readonly Dictionary<uint, PropertyMap> propertyMaps;
+        private readonly Dictionary<uint, PropertyMap<TClass>> propertyMaps;
         private readonly OpenXmlReader reader;
         private readonly BidirectionalDictionary<string, string> sharedStrings;
         private readonly SpreadsheetDocument spreadsheetDocument;
@@ -47,7 +47,7 @@
             var worksheetPart = this.spreadsheetDocument.WorkbookPart.GetPartById(worksheetId);
             this.reader = OpenXmlReader.Create(worksheetPart);
             this.reader.Read();
-            this.Headers = ReadHeader(headerRowIndex);
+            this.Headers = this.ReadHeader(headerRowIndex);
 
             // map setup
             this.propertyMaps = CreateOrderedPropertyMaps();
@@ -56,39 +56,7 @@
         /// <summary>
         /// Gets a collection of key value pairs containing a header column index and its name.
         /// </summary>
-        public Dictionary<uint, string> Headers { get; }
-
-        private Dictionary<uint, string> ReadHeader(uint headerRowIndex)
-        {
-            if (headerRowIndex == 0)
-            {
-                return null;
-            }
-
-            this.SkipRows(headerRowIndex - 1);
-
-            var headers = new Dictionary<uint, string>();
-            this.AdvanceToRowStart();
-            if (this.reader.EOF)
-            {
-                throw new InvalidOperationException("There are no rows available to read.");
-            }
-
-            this.reader.ReadFirstChild();
-            do
-            {
-                if (this.reader.ElementType == typeof(Cell))
-                {
-                    var cell = (Cell)this.reader.LoadCurrentElement();
-                    var cellValue = GetCellValue(this.sharedStrings, cell);
-                    var columnIndex = GetColumnIndexFromCellReference(cell.CellReference);
-
-                    headers.Add(columnIndex, cellValue);
-                }
-            } while (this.reader.ReadNextSibling());
-
-            return headers;
-        }
+        public BidirectionalDictionary<uint, string> Headers { get; }
 
         /// <summary>
         /// Read a single row at the current position and map its data to an object.
@@ -96,59 +64,65 @@
         /// <returns>A mapped object.</returns>
         public TClass ReadRow()
         {
-            this.AdvanceToRowStart();
-            if (this.reader.EOF)
+            var readerRow = ReadRowValues();
+            if (readerRow == null)
             {
                 return null;
             }
 
             var record = new TClass();
-            this.reader.ReadFirstChild();
 
-            do
+            foreach (var map in this.propertyMaps)
             {
-                if (this.reader.ElementType == typeof(Cell))
+                var columnIndex = map.Key;
+                var cellValue = readerRow.GetCellValue(columnIndex);
+                var propertyInfo = record.GetType().GetProperty(map.Value.PropertyData.Property.Name);
+
+                if (map.Value.PropertyData.ReadUsing != null)
                 {
-                    var cell = (Cell)this.reader.LoadCurrentElement();
-                    var cellValue = GetCellValue(this.sharedStrings, cell);
-                    var columnIndex = GetColumnIndexFromCellReference(cell.CellReference);
-                    if (this.propertyMaps.ContainsKey(columnIndex))
-                    {
-                        var propertyMap = this.propertyMaps[columnIndex];
-                        var propertyInfo = record.GetType().GetProperty(propertyMap.PropertyData.Property.Name);
-
-                        if (propertyMap.PropertyData.ConstantRead != null)
-                        {
-                            propertyInfo.SetValue(record, propertyMap.PropertyData.ConstantRead);
-                        }
-                        else
-                        {
-                            var propertyType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
-
-                            object safeValue;
-                            if (propertyType == typeof(bool))
-                            {
-                                safeValue = (cellValue == null) ? null : (object)ConvertStringToBool(cellValue);
-                            }
-                            else if (propertyType == typeof(DateTime))
-                            {
-                                safeValue = (cellValue == null) ? null : (object)ConvertDateTime(cellValue);
-                            }
-                            else
-                            {
-                                safeValue = (cellValue == null) ? null : Convert.ChangeType(cellValue, propertyType);
-                            }
-
-                            if (safeValue == null && propertyMap.PropertyData.DefaultRead != null)
-                            {
-                                safeValue = propertyMap.PropertyData.DefaultRead;
-                            }
-
-                            propertyInfo.SetValue(record, safeValue, null);
-                        }
-                    }
+                    var expressionValue = map.Value.PropertyData.ReadUsing(readerRow);
+                    continue;
                 }
-            } while (this.reader.ReadNextSibling());
+
+                if (map.Value.PropertyData.ConstantRead != null)
+                {
+                    propertyInfo.SetValue(record, map.Value.PropertyData.ConstantRead);
+                    continue;
+                }
+
+                if (map.Value.PropertyData.DefaultRead != null && cellValue?.Length == 0)
+                {
+                    propertyInfo.SetValue(record, map.Value.PropertyData.DefaultRead);
+                    continue;
+                }
+
+                var propertyType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+
+                object safeValue;
+                if (propertyType == typeof(bool))
+                {
+                    safeValue = (cellValue == null) ? null : (object)ConvertStringToBool(cellValue);
+                }
+                else if (propertyType == typeof(DateTime))
+                {
+                    safeValue = (cellValue == null) ? null : (object)ConvertDateTime(cellValue);
+                }
+                else if (propertyType.IsEnum)
+                {
+                    safeValue = Enum.Parse(propertyType, cellValue);
+                }
+                else
+                {
+                    safeValue = (cellValue == null) ? null : Convert.ChangeType(cellValue, propertyType);
+                }
+
+                if (safeValue == null && map.Value.PropertyData.DefaultRead != null)
+                {
+                    safeValue = map.Value.PropertyData.DefaultRead;
+                }
+
+                propertyInfo.SetValue(record, safeValue, null);
+            }
 
             return record;
         }
@@ -249,9 +223,9 @@
             }
         }
 
-        private Dictionary<uint, PropertyMap> CreateOrderedPropertyMaps()
+        private Dictionary<uint, PropertyMap<TClass>> CreateOrderedPropertyMaps()
         {
-            var indexes = new Dictionary<uint, PropertyMap>();
+            var indexes = new Dictionary<uint, PropertyMap<TClass>>();
 
             var classMap = Activator.CreateInstance<TClassMap>();
             var propertyMaps = classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreRead);
@@ -261,7 +235,7 @@
                 indexes.Add(map.PropertyData.IndexRead, map);
             }
 
-            var mapsWithUndefinedIndexes = propertyMaps.Where(x => x.PropertyData.IndexRead == 0 && x.PropertyData.ConstantRead == null);
+            var mapsWithUndefinedIndexes = propertyMaps.Where(x => x.PropertyData.IndexRead == 0 && x.PropertyData.ConstantRead == null && x.PropertyData.ReadUsing == null);
             if (mapsWithUndefinedIndexes != null && this.Headers == null)
             {
                 throw new InvalidOperationException("The ClassMap contains invalid read maps. Each property map must define either a column index or a header name.");
@@ -323,6 +297,64 @@
 
             this.columnCellReferences.Add(columnReference, (uint)sum);
             return (uint)sum;
+        }
+
+        private BidirectionalDictionary<uint, string> ReadHeader(uint headerRowIndex)
+        {
+            if (headerRowIndex == 0)
+            {
+                return null;
+            }
+
+            this.SkipRows(headerRowIndex - 1);
+
+            var headers = new BidirectionalDictionary<uint, string>();
+            this.AdvanceToRowStart();
+            if (this.reader.EOF)
+            {
+                throw new InvalidOperationException("There are no rows available to read.");
+            }
+
+            this.reader.ReadFirstChild();
+            do
+            {
+                if (this.reader.ElementType == typeof(Cell))
+                {
+                    var cell = (Cell)this.reader.LoadCurrentElement();
+                    var cellValue = GetCellValue(this.sharedStrings, cell);
+                    var columnIndex = GetColumnIndexFromCellReference(cell.CellReference);
+
+                    headers.Add(columnIndex, cellValue);
+                }
+            } while (this.reader.ReadNextSibling());
+
+            return headers;
+        }
+
+        private ReaderRow ReadRowValues()
+        {
+            this.AdvanceToRowStart();
+            if (this.reader.EOF)
+            {
+                return null;
+            }
+
+            this.reader.ReadFirstChild();
+            var rowValues = new Dictionary<uint, string>();
+
+            do
+            {
+                if (this.reader.ElementType == typeof(Cell))
+                {
+                    var cell = (Cell)this.reader.LoadCurrentElement();
+                    var cellValue = GetCellValue(this.sharedStrings, cell);
+                    var columnIndex = GetColumnIndexFromCellReference(cell.CellReference);
+
+                    rowValues.Add(columnIndex, cellValue);
+                }
+            } while (this.reader.ReadNextSibling());
+
+            return new ReaderRow(this.Headers, rowValues);
         }
 
         #region IDisposable

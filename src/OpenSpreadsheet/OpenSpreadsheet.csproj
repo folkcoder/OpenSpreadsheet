@@ -7,9 +7,14 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Version>1.0.0.0</Version>
     <Authors>Steve Stanzak</Authors>
-    <Product>SpreadsheetHelper</Product>
+    <Product>OpenSpreadsheet</Product>
     <Description>A fast and efficient wrapper around the OpenXml Excel library</Description>
     <PackageId>OpenSpreadsheet</PackageId>
+    <PackageLicenseUrl>MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/FolkCoder/OpenSpreadsheet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FolkCoder/OpenSpreadsheet</RepositoryUrl>
+    <PackageTags>excel, openxml, spreadsheets, productivity, xlsx, openspreadsheet</PackageTags>
+    <Copyright>© 2019 Steve Stanzak</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
