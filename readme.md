@@ -9,11 +9,11 @@ The primary use case for OpenSpreadsheet is efficiently importing and exporting 
 
 ### Configuration
 
-OpenSpreadsheet uses a fluent interface to map object properties to spreadsheet rows. The configuration format is modeled after the fantastic [CsvHelper](https://joshclose.github.io/CsvHelper/) library, although OpenSpreadsheet has far fewer features (for now!).
+OpenSpreadsheet uses a fluent interface to map object properties to spreadsheet rows. The configuration format is modeled after the fantastic [CsvHelper](https://joshclose.github.io/CsvHelper/) library, although OpenSpreadsheet has far fewer mapping options (for now!).
 
 **Basic Example**
 
-Each entity to be read or written to a spreadsheet needs to have a ClassMap defining the relationship between the class's properties and the spreadsheet. A couple notes on the basics:
+Each entity to be read or written to a spreadsheet needs to have a `ClassMap` defining the relationship between the class's properties and the spreadsheet. A couple notes on the basics:
 + Classes being mapped must have either a parameterless constructor or a constructor with optional arguments.
 + Indexes are optional. When reading, OpenSpreadsheet will attempt to match the spreadsheet header with the defined mapping name, or the property name if not defined. For writing, the mapping order will be used unless the index is explicitly defined.
 + The name map is optional. When reading, the name is used to match a property to a header name if not index is defined. When writing, the name will provide the header, defaulting to the property name. 
@@ -34,12 +34,12 @@ public class TestClassMap : ClassMap<TestClass>
     }
 }
 ````
-
+<br />
 
 **Constants and Defaults**
-If you need to supply a constant value to a property during reading or you'd like to write a constant value (with or without an associated property), use the Constant map.
+If you need to supply a constant value to a property during reading or you'd like to write a constant value (with or without an associated property), use the `Constant` map.
 
-If you need to supply a fallback value for null values, use the Default map.
+If you need to supply a fallback value for null values, use the `Default` map.
 
 ```c#
 public class TestClassMap : ClassMap<TestClass>
@@ -51,11 +51,11 @@ public class TestClassMap : ClassMap<TestClass>
     }
 }
 ````
-
+<br />
 
 **Column Styles**
 
-In order to customize the appearance of a style, simply create a new ColumnStyle instance and map it to the property using the Style method. If an explicit ColumnStyle is not specified, a default instance will be used.
+In order to customize the appearance of a style, simply create a new `ColumnStyle` instance and map it to the property using the `Style` method. If an explicit `ColumnStyle` is not specified, a default instance will be used.
 
 ```c#
 public class TestClassMap : ClassMap<TestClass>
@@ -81,6 +81,31 @@ public class TestClassMap : ClassMap<TestClass>
     }
 }
 ```
+<br />
+
+**Data Conversions**
+
+Sometimes you need to provide some additional logic to accurately map between your spreadsheet and your class instance. In these cases, use the `ReadUsing` and `WriteUsing` to provide a delegate to be used for the mapping operation. The `ReadUsing` delegate takes a `ReaderRow` for its input parameter, which allows you to retrieve data from any cell within the row by using its header name or column index. The `WriteUsing` delegate takes the class instance as its input parameter. 
+
+In the example blow, the `ClassMap` contains a map for the boolean property `IsExpired`. During reading, the value of `IsExpired` is determined by comparing the current date a date contained in a cell with a header named "ExpirationDate". When writing, the value written to the cell is 'T' or 'F' rather than the default `IsExpired.ToString()` of `True` or `False`.
+
+```c#
+public class TestClassMap : ClassMap<TestClass>
+{
+    public TestClassMap()
+    {
+        Map(x => x.IsExpired)
+            .ReadUsing(row =>
+            {
+                var expirationTextValue = row.GetCellValue("ExpirationDate");
+                var expirationDate = DateTime.Parse(expirationTextValue);
+                return expirationDate < DateTime.Now;
+            })
+            .WriteUsing(x => x.IsExpired ? "T" : "F");
+    }
+}
+````
+
 
 ### Writing
 

@@ -53,9 +53,9 @@
         internal enum TestEnum
         {
             Unset = 0,
-            A = 1,
-            B = 2,
-            C = 3
+            A,
+            B,
+            C
         }
 
         internal class TestClassMap : ClassMap<TestClass>
