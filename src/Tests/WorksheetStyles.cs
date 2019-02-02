@@ -56,7 +56,7 @@
 
         private static IEnumerable<TestClass> CreateTestRecords(int count)
         {
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 yield return new TestClass();
             }
@@ -73,8 +73,8 @@
         {
             public TestClassMap()
             {
-                Map(x => x.LongText).Index(1).Name("1");
-                Map(x => x.ShortText).Index(2).Name("2");
+                base.Map(x => x.LongText).Index(1).Name("1");
+                base.Map(x => x.ShortText).Index(2).Name("2");
             }
         }
     }

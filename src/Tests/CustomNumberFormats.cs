@@ -54,10 +54,10 @@
         {
             public TestClassMap()
             {
-                Map(x => x.DefaultCurrencyFormat).Index(1).Style(new ColumnStyle() { NumberFormat = OpenXmlNumberingFormat.Currency });
-                Map(x => x.NegativeInParens).Index(2).Style(new ColumnStyle() { CustomNumberFormat = "$#,##0.00;[Black]($#,##0.00);" });
-                Map(x => x.NegativeInRed).Index(4).Style(new ColumnStyle() { CustomNumberFormat = "$#,##0.00;[Red]$#,##0.00;" });
-                Map(x => x.NegativeWithSign).Index(3).Style(new ColumnStyle() { CustomNumberFormat = "$#,##0.00;[Black]$-#,##0.00;" });
+                base.Map(x => x.DefaultCurrencyFormat).Index(1).Style(new ColumnStyle() { NumberFormat = OpenXmlNumberingFormat.Currency });
+                base.Map(x => x.NegativeInParens).Index(2).Style(new ColumnStyle() { CustomNumberFormat = "$#,##0.00;[Black]($#,##0.00);" });
+                base.Map(x => x.NegativeInRed).Index(4).Style(new ColumnStyle() { CustomNumberFormat = "$#,##0.00;[Red]$#,##0.00;" });
+                base.Map(x => x.NegativeWithSign).Index(3).Style(new ColumnStyle() { CustomNumberFormat = "$#,##0.00;[Black]$-#,##0.00;" });
             }
         }
 

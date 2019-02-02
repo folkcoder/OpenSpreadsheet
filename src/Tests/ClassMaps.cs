@@ -67,8 +67,8 @@
         {
             public TestClassMapConstants()
             {
-                Map(x => x.TestData).Index(1).Constant(2312.231M);
-                Map(x => x.TestDataNull).Index(2);
+                base.Map(x => x.TestData).Index(1).Constant(2312.231M);
+                base.Map(x => x.TestDataNull).Index(2);
             }
         }
 
@@ -76,8 +76,8 @@
         {
             public TestClassMapDefaults()
             {
-                Map(x => x.TestDataNull).Index(1).Default(2312.231M);
-                Map(x => x.TestData).Index(2);
+                base.Map(x => x.TestDataNull).Index(1).Default(2312.231M);
+                base.Map(x => x.TestData).Index(2);
             }
         }
 
@@ -85,8 +85,8 @@
         {
             public TestClassMapDuplicateIndexes()
             {
-                Map(x => x.TestData).Index(1);
-                Map(x => x.TestDataNull).Index(1);
+                base.Map(x => x.TestData).Index(1);
+                base.Map(x => x.TestDataNull).Index(1);
             }
         }
 
@@ -94,8 +94,8 @@
         {
             public TestClassMapDuplicateReadProperties()
             {
-                Map(x => x.TestData).Index(1);
-                Map(x => x.TestData).Index(2);
+                base.Map(x => x.TestData).Index(1);
+                base.Map(x => x.TestData).Index(2);
             }
         }
 
@@ -103,8 +103,8 @@
         {
             public TestClassMapIndexOutOfRange()
             {
-                Map(x => x.TestData).Index(1);
-                Map(x => x.TestDataNull).Index(16385);
+                base.Map(x => x.TestData).Index(1);
+                base.Map(x => x.TestDataNull).Index(16385);
             }
         }
 
@@ -113,7 +113,7 @@
             public TestClassMapLongHeaders()
             {
                 string longHeader = new string('a', 256);
-                Map(x => x.TestData).Index(1).Name(longHeader);
+                base.Map(x => x.TestData).Index(1).Name(longHeader);
             }
         }
 
@@ -121,8 +121,8 @@
         {
             public TestClassMapMissingIndexes()
             {
-                Map(x => x.TestData).Index(1);
-                Map(x => x.TestDataNull);
+                base.Map(x => x.TestData).Index(1);
+                base.Map(x => x.TestDataNull);
             }
         }
     }

@@ -92,7 +92,7 @@
             this.worksheetPart = this.spreadsheetDocument.WorkbookPart.AddNewPart<WorksheetPart>();
 
             // property maps
-            this.orderedPropertyMaps = CreateOrderedPropertyMaps().ToList();
+            this.orderedPropertyMaps = this.CreateOrderedPropertyMaps().ToList();
 
             // worksheet setup
             this.CacheWorksheetData();
@@ -103,19 +103,13 @@
         /// <summary>
         /// Skip a single row.
         /// </summary>
-        public void SkipRow()
-        {
-            this.currentRowIndex++;
-        }
+        public void SkipRow() => this.currentRowIndex++;
 
         /// <summary>
         /// Skip one or more rows.
         /// </summary>
         /// <param name="count">The number of rows to skip.</param>
-        public void SkipRows(uint count)
-        {
-            this.currentRowIndex += count;
-        }
+        public void SkipRows(uint count) => this.currentRowIndex += count;
 
         /// <summary>
         /// Writes the worksheet header at the current position.
@@ -126,7 +120,7 @@
             foreach (var propertyMap in this.orderedPropertyMaps)
             {
                 var headerName = ResolveHeader(propertyMap);
-                var cellReference = ConstructExcelCellReference(this.currentRowIndex, propertyMap.PropertyData.IndexWrite);
+                var cellReference = this.ConstructExcelCellReference(this.currentRowIndex, propertyMap.PropertyData.IndexWrite);
                 var headerAttributes = new List<OpenXmlAttribute>() { new OpenXmlAttribute(styleIndexAttribute, null, this.columnStyles[headerStyleKey].ToString()) };
                 this.WriteCellValue(headerName, cellReference, CellValues.SharedString, headerAttributes);
 
@@ -149,7 +143,7 @@
             this.writer.WriteStartElement(new Row(), ConstructRowAttributes(this.currentRowIndex));
             foreach (var propertyMap in this.orderedPropertyMaps)
             {
-                var cellReference = ConstructExcelCellReference(this.currentRowIndex, propertyMap.PropertyData.IndexWrite);
+                var cellReference = this.ConstructExcelCellReference(this.currentRowIndex, propertyMap.PropertyData.IndexWrite);
                 var columnType = this.columnTypes[propertyMap.PropertyData.IndexWrite];
 
                 var cellValue = this.ResolveCellValue(propertyMap, record);
@@ -239,7 +233,7 @@
 
             if (this.worksheetStyle.ShouldFreezeTopRow)
             {
-                var firstFrozenCellReference = ConstructExcelCellReference(this.worksheetStyle.HeaderRowIndex + 1, 1);
+                var firstFrozenCellReference = this.ConstructExcelCellReference(this.worksheetStyle.HeaderRowIndex + 1, 1);
                 var pane = new Pane()
                 {
                     ActivePane = PaneValues.BottomLeft,
@@ -394,7 +388,7 @@
             if (this.worksheetStyle.ShouldAutoFilter)
             {
                 var lastIndex = this.orderedPropertyMaps.Last().PropertyData.IndexWrite;
-                var lastCellReference = ConstructExcelCellReference(1, lastIndex);
+                var lastCellReference = this.ConstructExcelCellReference(1, lastIndex);
                 this.writer.WriteElement(new AutoFilter() { Reference = "A1:" + lastCellReference });
             }
 
@@ -492,10 +486,8 @@
             this.worksheetPart = replacementWorksheetPart;
         }
 
-        private static double ResolveColumnWidth(double actualWidth, double minWidth, double maxWidth)
-        {
-            return actualWidth > maxWidth ? maxWidth : actualWidth < minWidth ? minWidth : actualWidth;
-        }
+        private static double ResolveColumnWidth(double actualWidth, double minWidth, double maxWidth) =>
+            actualWidth > maxWidth ? maxWidth : actualWidth < minWidth ? minWidth : actualWidth;
 
         private void WriteColumnsPart(OpenXmlWriter openXmlWriter)
         {
@@ -514,9 +506,9 @@
                     textLength += filterButtonWidth;
                 }
 
-                double calculatedColumnWidth = CalculateColumnWidth(textLength, propertyMap.PropertyData.Style.Font);
-                double resolvedColumnWidth = ResolveColumnWidth(calculatedColumnWidth, this.worksheetStyle.MinColumnWidth, this.worksheetStyle.MaxColumnWidth);
-                string columnIndexText = propertyMap.PropertyData.IndexWrite.ToString();
+                var calculatedColumnWidth = CalculateColumnWidth(textLength, propertyMap.PropertyData.Style.Font);
+                var resolvedColumnWidth = ResolveColumnWidth(calculatedColumnWidth, this.worksheetStyle.MinColumnWidth, this.worksheetStyle.MaxColumnWidth);
+                var columnIndexText = propertyMap.PropertyData.IndexWrite.ToString();
 
                 openXmlWriter.WriteStartElement(new Column(), new List<OpenXmlAttribute>()
                 {

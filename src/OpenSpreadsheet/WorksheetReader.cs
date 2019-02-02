@@ -50,7 +50,7 @@
             this.Headers = this.ReadHeader(headerRowIndex);
 
             // map setup
-            this.propertyMaps = CreateOrderedPropertyMaps();
+            this.propertyMaps = this.CreateOrderedPropertyMaps();
         }
 
         /// <summary>
@@ -64,7 +64,7 @@
         /// <returns>A mapped object.</returns>
         public TClass ReadRow()
         {
-            var readerRow = ReadRowValues();
+            var readerRow = this.ReadRowValues();
             if (readerRow == null)
             {
                 return null;
@@ -149,10 +149,7 @@
         /// <summary>
         /// Skip a single row.
         /// </summary>
-        public void SkipRow()
-        {
-            this.SkipRows(1);
-        }
+        public void SkipRow() => this.SkipRows(1);
 
         /// <summary>
         /// Skip one or more rows.
@@ -292,7 +289,7 @@
             for (int i = 0; i < columnLetters.Length; i++)
             {
                 sum *= 26;
-                sum += (columnLetters[i] - 'A' + 1);
+                sum += columnLetters[i] - 'A' + 1;
             }
 
             this.columnCellReferences.Add(columnReference, (uint)sum);
@@ -322,7 +319,7 @@
                 {
                     var cell = (Cell)this.reader.LoadCurrentElement();
                     var cellValue = GetCellValue(this.sharedStrings, cell);
-                    var columnIndex = GetColumnIndexFromCellReference(cell.CellReference);
+                    var columnIndex = this.GetColumnIndexFromCellReference(cell.CellReference);
 
                     headers.Add(columnIndex, cellValue);
                 }
@@ -348,7 +345,7 @@
                 {
                     var cell = (Cell)this.reader.LoadCurrentElement();
                     var cellValue = GetCellValue(this.sharedStrings, cell);
-                    var columnIndex = GetColumnIndexFromCellReference(cell.CellReference);
+                    var columnIndex = this.GetColumnIndexFromCellReference(cell.CellReference);
 
                     rowValues.Add(columnIndex, cellValue);
                 }

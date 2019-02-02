@@ -31,10 +31,7 @@
         }
 
         [GlobalCleanup]
-        public void GlobalCleanup()
-        {
-            File.Delete(this.inputPath);
-        }
+        public void GlobalCleanup() => File.Delete(this.inputPath);
 
         [Benchmark]
         public void TestClosedXml()
@@ -92,9 +89,9 @@
         {
             public TestClassMap()
             {
-                Map(x => x.TestData1).Index(1);
-                Map(x => x.TestData2).Index(2);
-                Map(x => x.TestData3).Index(3);
+                base.Map(x => x.TestData1).Index(1);
+                base.Map(x => x.TestData2).Index(2);
+                base.Map(x => x.TestData3).Index(3);
             }
         }
 

@@ -86,11 +86,11 @@
         {
             public TestClassMapImpliedIndexesRead()
             {
-                Map(x => x.TestData5);
-                Map(x => x.TestData2);
-                Map(x => x.TestData1);
-                Map(x => x.TestData3);
-                Map(x => x.TestData4);
+                base.Map(x => x.TestData5);
+                base.Map(x => x.TestData2);
+                base.Map(x => x.TestData1);
+                base.Map(x => x.TestData3);
+                base.Map(x => x.TestData4);
             }
         }
 
@@ -98,11 +98,11 @@
         {
             public TestClassMapUnspecifiedIndexes()
             {
-                Map(x => x.TestData5).IndexWrite(5).ConstantWrite("5");
-                Map(x => x.TestData2).ConstantWrite("2");
-                Map(x => x.TestData1).IndexWrite(1).ConstantWrite("1");
-                Map(x => x.TestData3).ConstantWrite("3");
-                Map(x => x.TestData4).ConstantWrite("4");
+                base.Map(x => x.TestData5).IndexWrite(5).ConstantWrite("5");
+                base.Map(x => x.TestData2).ConstantWrite("2");
+                base.Map(x => x.TestData1).IndexWrite(1).ConstantWrite("1");
+                base.Map(x => x.TestData3).ConstantWrite("3");
+                base.Map(x => x.TestData4).ConstantWrite("4");
             }
         }
     }

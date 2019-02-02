@@ -75,7 +75,7 @@
                 uint columnIndex = 1;
                 foreach (var patternType in (OpenXml.PatternValues[])Enum.GetValues(typeof(OpenXml.PatternValues)))
                 {
-                    Map(x => x.TestData).Index(columnIndex).Name($"{patternType.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { BackgroundColor = Color.DarkBlue, BackgroundPatternType = patternType });
+                    base.Map(x => x.TestData).Index(columnIndex).Name($"{patternType.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { BackgroundColor = Color.DarkBlue, BackgroundPatternType = patternType });
                     columnIndex++;
                 }
             }
@@ -88,9 +88,9 @@
                 uint columnIndex = 1;
                 foreach (var borderPlacement in (BorderPlacement[])Enum.GetValues(typeof(BorderPlacement)))
                 {
-                    Map(x => x.TestData).Index(columnIndex).Name($"{borderPlacement.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { BorderColor = Color.DarkBlue, BorderPlacement = borderPlacement, BorderStyle = OpenXml.BorderStyleValues.Thick });
+                    base.Map(x => x.TestData).Index(columnIndex).Name($"{borderPlacement.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { BorderColor = Color.DarkBlue, BorderPlacement = borderPlacement, BorderStyle = OpenXml.BorderStyleValues.Thick });
                     columnIndex++;
-                    Map().Constant("").Index(columnIndex).Name("");
+                    base.Map().Constant("").Index(columnIndex).Name("");
                     columnIndex++;
                 }
             }
@@ -103,9 +103,9 @@
                 uint columnIndex = 1;
                 foreach (var borderStyle in (OpenXml.BorderStyleValues[])Enum.GetValues(typeof(OpenXml.BorderStyleValues)))
                 {
-                    Map(x => x.TestData).Index(columnIndex).Name($"{borderStyle.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { BorderColor = Color.DarkBlue, BorderPlacement = BorderPlacement.All, BorderStyle = borderStyle });
+                    base.Map(x => x.TestData).Index(columnIndex).Name($"{borderStyle.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { BorderColor = Color.DarkBlue, BorderPlacement = BorderPlacement.All, BorderStyle = borderStyle });
                     columnIndex++;
-                    Map().Constant("").Index(columnIndex).Name("");
+                    base.Map().Constant("").Index(columnIndex).Name("");
                     columnIndex++;
                 }
             }
@@ -115,9 +115,9 @@
         {
             public TestClassMapFonts()
             {
-                Map(x => x.TestData).Index(1).Name("Garamond, 12, Underline, Green").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Garamond", 12, FontStyle.Underline), ForegroundColor = Color.Green });
-                Map(x => x.TestData).Index(2).Name("TNR, 12, Italic, Default").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Times New Roman", 12, FontStyle.Italic) });
-                Map(x => x.TestData).Index(3).Name("Wingdings, 14, Strikeout, Tomato").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Wingdings", 14, FontStyle.Strikeout), ForegroundColor = Color.Tomato });
+                base.Map(x => x.TestData).Index(1).Name("Garamond, 12, Underline, Green").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Garamond", 12, FontStyle.Underline), ForegroundColor = Color.Green });
+                base.Map(x => x.TestData).Index(2).Name("TNR, 12, Italic, Default").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Times New Roman", 12, FontStyle.Italic) });
+                base.Map(x => x.TestData).Index(3).Name("Wingdings, 14, Strikeout, Tomato").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Wingdings", 14, FontStyle.Strikeout), ForegroundColor = Color.Tomato });
             }
         }
 
@@ -128,7 +128,7 @@
                 uint columnIndex = 1;
                 foreach (var alignment in (OpenXml.HorizontalAlignmentValues[])Enum.GetValues(typeof(OpenXml.HorizontalAlignmentValues)))
                 {
-                    Map(x => x.TestData).Index(columnIndex).Name($"{alignment.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { HoizontalAlignment = alignment });
+                    base.Map(x => x.TestData).Index(columnIndex).Name($"{alignment.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { HoizontalAlignment = alignment });
                     columnIndex++;
                 }
             }
@@ -141,7 +141,7 @@
                 uint columnIndex = 1;
                 foreach (var alignment in (OpenXml.VerticalAlignmentValues[])Enum.GetValues(typeof(OpenXml.VerticalAlignmentValues)))
                 {
-                    Map(x => x.TestData).Index(columnIndex).Name($"{alignment.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { VerticalAlignment = alignment });
+                    base.Map(x => x.TestData).Index(columnIndex).Name($"{alignment.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { VerticalAlignment = alignment });
                     columnIndex++;
                 }
             }

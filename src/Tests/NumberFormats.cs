@@ -70,7 +70,7 @@
                 uint columnIndex = 1;
                 foreach (var numberFormat in (OpenXmlNumberingFormat[])Enum.GetValues(typeof(OpenXmlNumberingFormat)))
                 {
-                    Map(x => x.Bool).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
+                    base.Map(x => x.Bool).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
                     columnIndex++;
                 }
             }
@@ -83,7 +83,7 @@
                 uint columnIndex = 1;
                 foreach (var numberFormat in (OpenXmlNumberingFormat[])Enum.GetValues(typeof(OpenXmlNumberingFormat)))
                 {
-                    Map(x => x.Char).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
+                    base.Map(x => x.Char).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
                     columnIndex++;
                 }
             }
@@ -96,7 +96,7 @@
                 uint columnIndex = 1;
                 foreach (var numberFormat in (OpenXmlNumberingFormat[])Enum.GetValues(typeof(OpenXmlNumberingFormat)))
                 {
-                    Map(x => x.DateTime).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
+                    base.Map(x => x.DateTime).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
                     columnIndex++;
                 }
             }
@@ -109,7 +109,7 @@
                 uint columnIndex = 1;
                 foreach (var numberFormat in (OpenXmlNumberingFormat[])Enum.GetValues(typeof(OpenXmlNumberingFormat)))
                 {
-                    Map(x => x.Decimal).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
+                    base.Map(x => x.Decimal).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
                     columnIndex++;
                 }
             }
@@ -122,7 +122,7 @@
                 uint columnIndex = 1;
                 foreach (var numberFormat in (OpenXmlNumberingFormat[])Enum.GetValues(typeof(OpenXmlNumberingFormat)))
                 {
-                    Map(x => x.Float).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
+                    base.Map(x => x.Float).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
                     columnIndex++;
                 }
             }
@@ -135,7 +135,7 @@
                 uint columnIndex = 1;
                 foreach (var numberFormat in (OpenXmlNumberingFormat[])Enum.GetValues(typeof(OpenXmlNumberingFormat)))
                 {
-                    Map(x => x.Long).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
+                    base.Map(x => x.Long).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
                     columnIndex++;
                 }
             }
@@ -148,7 +148,7 @@
                 uint columnIndex = 1;
                 foreach (var numberFormat in (OpenXmlNumberingFormat[])Enum.GetValues(typeof(OpenXmlNumberingFormat)))
                 {
-                    Map(x => x.Text).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
+                    base.Map(x => x.Text).Index(columnIndex).IgnoreRead(true).Name($"{numberFormat.ToString()}").Style(new ColumnStyle() { NumberFormat = numberFormat });
                     columnIndex++;
                 }
             }

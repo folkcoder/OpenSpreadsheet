@@ -20,10 +20,7 @@
         public int RecordCount { get; set; }
 
         [GlobalSetup]
-        public void GlobalSetup()
-        {
-            this.records = CreateRecords(this.RecordCount).ToList();
-        }
+        public void GlobalSetup() => this.records = CreateRecords(this.RecordCount).ToList();
 
         [Benchmark]
         public void TestClosedXml()
@@ -84,7 +81,7 @@
             string outputPath = Path.GetTempPath() + Guid.NewGuid().ToString() + ".xlsx";
             using (var spreadsheet = new Spreadsheet(outputPath))
             {
-                spreadsheet.WriteWorksheet<TestRecord, TestClassMap>("test sheet", records);
+                spreadsheet.WriteWorksheet<TestRecord, TestClassMap>("test sheet", this.records);
             }
 
             File.Delete(outputPath);
@@ -97,7 +94,7 @@
                 for (uint i = 0; i < columnCount; i++)
                 {
                     uint colIndex = i + 1;
-                    Map(x => x.TestData).Index(colIndex).IgnoreRead(true);
+                    base.Map(x => x.TestData).Index(colIndex).IgnoreRead(true);
                 }
             }
         }

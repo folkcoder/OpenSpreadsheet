@@ -41,7 +41,7 @@
                 File.Delete(this.filepath);
             }
 
-            using (var spreadsheet = new Spreadsheet(filepath))
+            using (var spreadsheet = new Spreadsheet(this.filepath))
             {
                 var records = CreateTestRecords(recordCount);
                 spreadsheet.WriteWorksheet<NullableDataTypes, TestClassMapEmpty>(defaultsReadSheetName, records);
@@ -52,7 +52,7 @@
         [Fact]
         public void TestRead()
         {
-            using (var spreadsheet = new Spreadsheet(filepath))
+            using (var spreadsheet = new Spreadsheet(this.filepath))
             {
                 var records = spreadsheet.ReadWorksheet<NullableDataTypes, TestClassMapEmpty>(defaultsReadSheetName).ToList();
                 Assert.Equal(records.Count, recordCount);
@@ -75,7 +75,7 @@
         [Fact]
         public void TestWrite()
         {
-            using (var spreadsheet = new Spreadsheet(filepath))
+            using (var spreadsheet = new Spreadsheet(this.filepath))
             {
                 var records = spreadsheet.ReadWorksheet<NullableDataTypes, TestClassMapDefaults>(defaultsWriteSheetName).ToList();
                 Assert.Equal(records.Count, recordCount);
@@ -116,16 +116,16 @@
         {
             public TestClassMapEmpty()
             {
-                Map(x => x.Bool).Index(1).ConstantWrite(string.Empty).DefaultRead(defaultBool);
-                Map(x => x.Byte).Index(2).ConstantWrite(string.Empty).DefaultRead(defaultByte);
-                Map(x => x.Char).Index(3).ConstantWrite(string.Empty).DefaultRead(defaultChar);
-                Map(x => x.DateTime).Index(4).ConstantWrite(string.Empty).DefaultRead(new DateTime(defaultTicks));
-                Map(x => x.Decimal).Index(5).ConstantWrite(string.Empty).DefaultRead(defaultDecimal);
-                Map(x => x.Double).Index(6).ConstantWrite(string.Empty).DefaultRead(defaultDouble);
-                Map(x => x.Float).Index(7).ConstantWrite(string.Empty).DefaultRead(defaultFloat);
-                Map(x => x.Int).Index(8).ConstantWrite(string.Empty).DefaultRead(defaultInt);
-                Map(x => x.Long).Index(9).ConstantWrite(string.Empty).DefaultRead(defaultLong);
-                Map(x => x.Text).Index(10).ConstantWrite(string.Empty).DefaultRead(defaultText);
+                base.Map(x => x.Bool).Index(1).ConstantWrite(string.Empty).DefaultRead(defaultBool);
+                base.Map(x => x.Byte).Index(2).ConstantWrite(string.Empty).DefaultRead(defaultByte);
+                base.Map(x => x.Char).Index(3).ConstantWrite(string.Empty).DefaultRead(defaultChar);
+                base.Map(x => x.DateTime).Index(4).ConstantWrite(string.Empty).DefaultRead(new DateTime(defaultTicks));
+                base.Map(x => x.Decimal).Index(5).ConstantWrite(string.Empty).DefaultRead(defaultDecimal);
+                base.Map(x => x.Double).Index(6).ConstantWrite(string.Empty).DefaultRead(defaultDouble);
+                base.Map(x => x.Float).Index(7).ConstantWrite(string.Empty).DefaultRead(defaultFloat);
+                base.Map(x => x.Int).Index(8).ConstantWrite(string.Empty).DefaultRead(defaultInt);
+                base.Map(x => x.Long).Index(9).ConstantWrite(string.Empty).DefaultRead(defaultLong);
+                base.Map(x => x.Text).Index(10).ConstantWrite(string.Empty).DefaultRead(defaultText);
             }
         }
 
@@ -133,16 +133,16 @@
         {
             public TestClassMapDefaults()
             {
-                Map(x => x.Bool).Index(1).Default(defaultBool);
-                Map(x => x.Byte).Index(2).Default(defaultByte);
-                Map(x => x.Char).Index(3).Default(defaultChar);
-                Map(x => x.DateTime).Index(4).Default(new DateTime(defaultTicks));
-                Map(x => x.Decimal).Index(5).Default(defaultDecimal);
-                Map(x => x.Double).Index(6).Default(defaultDouble);
-                Map(x => x.Float).Index(7).Default(defaultFloat);
-                Map(x => x.Int).Index(8).Default(defaultInt);
-                Map(x => x.Long).Index(9).Default(defaultLong);
-                Map(x => x.Text).Index(10).Default(defaultText);
+                base.Map(x => x.Bool).Index(1).Default(defaultBool);
+                base.Map(x => x.Byte).Index(2).Default(defaultByte);
+                base.Map(x => x.Char).Index(3).Default(defaultChar);
+                base.Map(x => x.DateTime).Index(4).Default(new DateTime(defaultTicks));
+                base.Map(x => x.Decimal).Index(5).Default(defaultDecimal);
+                base.Map(x => x.Double).Index(6).Default(defaultDouble);
+                base.Map(x => x.Float).Index(7).Default(defaultFloat);
+                base.Map(x => x.Int).Index(8).Default(defaultInt);
+                base.Map(x => x.Long).Index(9).Default(defaultLong);
+                base.Map(x => x.Text).Index(10).Default(defaultText);
             }
         }
     }

@@ -19,10 +19,7 @@
         /// </summary>
         /// <typeparam name="TClass"></typeparam>
         /// <typeparam name="TClassMap"></typeparam>
-        public ConfigurationValidator()
-        {
-            this.classMap = Activator.CreateInstance<TClassMap>();
-        }
+        public ConfigurationValidator() => this.classMap = Activator.CreateInstance<TClassMap>();
 
         /// <summary>
         /// Gets a collection of validation errors.

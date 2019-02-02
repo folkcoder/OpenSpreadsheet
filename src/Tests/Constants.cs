@@ -38,7 +38,7 @@ namespace Tests
                 File.Delete(this.filepath);
             }
 
-            using (var spreadsheet = new Spreadsheet(filepath))
+            using (var spreadsheet = new Spreadsheet(this.filepath))
             {
                 var records = CreateTestRecords(recordCount);
                 spreadsheet.WriteWorksheet<DataTypes, TestClassMapConstants>(constantsSheetName, records);
@@ -48,7 +48,7 @@ namespace Tests
         [Fact]
         public void TestRead()
         {
-            using (var spreadsheet = new Spreadsheet(filepath))
+            using (var spreadsheet = new Spreadsheet(this.filepath))
             {
                 var records = spreadsheet.ReadWorksheet<DataTypes, TestClassMapConstants>(constantsSheetName).ToList();
                 Assert.Equal(records.Count, recordCount);
@@ -89,16 +89,16 @@ namespace Tests
         {
             public TestClassMapConstants()
             {
-                Map(x => x.Bool).Index(1).Constant(constantBool);
-                Map(x => x.Byte).Index(2).Constant(constantByte);
-                Map(x => x.Char).Index(3).Constant(constantChar);
-                Map(x => x.DateTime).Index(4).Constant(new DateTime(constantTicks));
-                Map(x => x.Decimal).Index(5).Constant(constantDecimal);
-                Map(x => x.Double).Index(6).Constant(constantDouble);
-                Map(x => x.Float).Index(7).Constant(constantFloat);
-                Map(x => x.Int).Index(8).Constant(constantInt);
-                Map(x => x.Long).Index(9).Constant(constantLong);
-                Map(x => x.Text).Index(10).Constant(constantText);
+                base.Map(x => x.Bool).Index(1).Constant(constantBool);
+                base.Map(x => x.Byte).Index(2).Constant(constantByte);
+                base.Map(x => x.Char).Index(3).Constant(constantChar);
+                base.Map(x => x.DateTime).Index(4).Constant(new DateTime(constantTicks));
+                base.Map(x => x.Decimal).Index(5).Constant(constantDecimal);
+                base.Map(x => x.Double).Index(6).Constant(constantDouble);
+                base.Map(x => x.Float).Index(7).Constant(constantFloat);
+                base.Map(x => x.Int).Index(8).Constant(constantInt);
+                base.Map(x => x.Long).Index(9).Constant(constantLong);
+                base.Map(x => x.Text).Index(10).Constant(constantText);
             }
         }
     }

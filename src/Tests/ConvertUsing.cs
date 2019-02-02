@@ -62,13 +62,13 @@
         {
             public TestClassMap()
             {
-                Map(x => x.TestEnum1).Name("No Conversion");
+                base.Map(x => x.TestEnum1).Name("No Conversion");
 
-                Map(x => x.TestEnum2).Name("Conversion B")
+                base.Map(x => x.TestEnum2).Name("Conversion B")
                     .ReadUsing(row => ConvertStringToEnum(row.GetCellValue("Conversion B")))
                     .WriteUsing(x => ConvertEnumToString(x.TestEnum2));
 
-                Map(x => x.TestEnum3).Name("Conversion C")
+                base.Map(x => x.TestEnum3).Name("Conversion C")
                     .ReadUsing(row => ConvertStringToEnum(row.GetCellValue("Conversion C")))
                     .WriteUsing(x => ConvertEnumToString(x.TestEnum3));
             }

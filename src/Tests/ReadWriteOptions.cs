@@ -183,10 +183,7 @@
 
         internal class TestClassMap : ClassMap<TestClass>
         {
-            public TestClassMap()
-            {
-                Map(x => x.TestData).Index(1);
-            }
+            public TestClassMap() => base.Map(x => x.TestData).Index(1);
         }
     }
 }
