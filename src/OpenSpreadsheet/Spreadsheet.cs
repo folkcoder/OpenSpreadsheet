@@ -39,6 +39,7 @@
             }
             else
             {
+                this.stylesheet.AddDefaultStyles();
                 this.spreadsheetDocument = SpreadsheetDocument.Create(filePath, SpreadsheetDocumentType.Workbook, true);
                 this.spreadsheetDocument.AddWorkbookPart();
                 WriteWorkbookPart(this.spreadsheetDocument.WorkbookPart);

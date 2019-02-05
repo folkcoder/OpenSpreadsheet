@@ -16,7 +16,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="StylesCollection"/> class.
         /// </summary>
-        public StylesCollection() => this.AddDefaultStyles();
+        public StylesCollection() { }
 
         /// <summary>
         /// Gets a collection of borders and their associated stylehseet position index.
@@ -143,6 +143,19 @@
         }
 
         /// <summary>
+        /// Adds default styles to the styles collection.
+        /// </summary>
+        public void AddDefaultStyles()
+        {
+            this.AddBorder(BorderPlacement.None, OpenXml.BorderStyleValues.None, Color.Black);
+            this.AddCellFormat();
+            this.AddCellStyleFormat();
+            this.AddPatternFill(Color.Transparent, OpenXml.PatternValues.None);
+            this.AddPatternFill(Color.Transparent, OpenXml.PatternValues.Gray125);
+            this.AddFont(new Font(FontFamily.GenericSansSerif, 11, FontStyle.Regular), Color.Black);
+        }
+
+        /// <summary>
         /// Adds a fill to the stylesheet.
         /// </summary>
         /// <param name="fill">The OpenXml fill element to be added.</param>
@@ -252,16 +265,6 @@
         private static string ConvertColorToHex(in Color color) => Color.FromArgb(color.ToArgb()).Name;
 
         private static OpenXml.Color ConvertHexColorToOpenXmlColor(string hexColor) => new OpenXml.Color() { Rgb = new DocumentFormat.OpenXml.HexBinaryValue() { Value = hexColor } };
-
-        private void AddDefaultStyles()
-        {
-            this.AddBorder(BorderPlacement.None, OpenXml.BorderStyleValues.None, Color.Black);
-            this.AddCellFormat();
-            this.AddCellStyleFormat();
-            this.AddPatternFill(Color.Transparent, OpenXml.PatternValues.None);
-            this.AddPatternFill(Color.Transparent, OpenXml.PatternValues.Gray125);
-            this.AddFont(new Font(FontFamily.GenericSansSerif, 11, FontStyle.Regular), Color.Black);
-        }
 
         /// <summary>
         /// Creates an <see cref="OpenXml.Border"/> element.
