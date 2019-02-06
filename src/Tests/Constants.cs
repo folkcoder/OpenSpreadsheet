@@ -85,7 +85,7 @@ namespace Tests
             }
         }
 
-        internal class TestClassMapConstants : ClassMap<DataTypes>
+        private class TestClassMapConstants : ClassMap<DataTypes>
         {
             public TestClassMapConstants()
             {

@@ -63,7 +63,7 @@
             }
         }
 
-        internal class TestClassMapBool : ClassMap<DataTypes>
+        private class TestClassMapBool : ClassMap<DataTypes>
         {
             public TestClassMapBool()
             {
@@ -76,7 +76,7 @@
             }
         }
 
-        internal class TestClassMapChar : ClassMap<DataTypes>
+        private class TestClassMapChar : ClassMap<DataTypes>
         {
             public TestClassMapChar()
             {
@@ -89,7 +89,7 @@
             }
         }
 
-        internal class TestClassMapDateTime : ClassMap<DataTypes>
+        private class TestClassMapDateTime : ClassMap<DataTypes>
         {
             public TestClassMapDateTime()
             {
@@ -102,7 +102,7 @@
             }
         }
 
-        internal class TestClassMapDecimal : ClassMap<DataTypes>
+        private class TestClassMapDecimal : ClassMap<DataTypes>
         {
             public TestClassMapDecimal()
             {
@@ -115,7 +115,7 @@
             }
         }
 
-        internal class TestClassMapFloat : ClassMap<DataTypes>
+        private class TestClassMapFloat : ClassMap<DataTypes>
         {
             public TestClassMapFloat()
             {
@@ -128,7 +128,7 @@
             }
         }
 
-        internal class TestClassMapLong : ClassMap<DataTypes>
+        private class TestClassMapLong : ClassMap<DataTypes>
         {
             public TestClassMapLong()
             {
@@ -141,7 +141,7 @@
             }
         }
 
-        internal class TestClassMapText : ClassMap<DataTypes>
+        private class TestClassMapText : ClassMap<DataTypes>
         {
             public TestClassMapText()
             {

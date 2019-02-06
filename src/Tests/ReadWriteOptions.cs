@@ -176,12 +176,12 @@
             }
         }
 
-        internal class TestClass
+        private class TestClass
         {
             public string TestData { get; set; } = "test data";
         }
 
-        internal class TestClassMap : ClassMap<TestClass>
+        private class TestClassMap : ClassMap<TestClass>
         {
             public TestClassMap() => base.Map(x => x.TestData).Index(1);
         }

@@ -146,7 +146,7 @@
             }
         }
 
-        internal enum ConfigurationType
+        private enum ConfigurationType
         {
             Read,
             Write

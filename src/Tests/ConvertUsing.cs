@@ -43,14 +43,14 @@
             }
         }
 
-        internal class TestClass
+        private class TestClass
         {
             public TestEnum TestEnum1 { get; set; } = TestEnum.A;
             public TestEnum TestEnum2 { get; set; } = TestEnum.B;
             public TestEnum TestEnum3 { get; set; } = TestEnum.C;
         }
 
-        internal enum TestEnum
+        private enum TestEnum
         {
             Unset = 0,
             A,
@@ -58,7 +58,7 @@
             C
         }
 
-        internal class TestClassMap : ClassMap<TestClass>
+        private class TestClassMap : ClassMap<TestClass>
         {
             public TestClassMap()
             {

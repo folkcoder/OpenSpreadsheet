@@ -85,7 +85,7 @@
             }
         }
 
-        internal class TestClassMap : ClassMap<TestRecord>
+        private class TestClassMap : ClassMap<TestRecord>
         {
             public TestClassMap()
             {
@@ -95,7 +95,7 @@
             }
         }
 
-        internal class TestRecord
+        private class TestRecord
         {
             public string TestData1 { get; set; }
             public string TestData2 { get; set; }

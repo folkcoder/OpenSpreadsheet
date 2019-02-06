@@ -87,7 +87,7 @@
             File.Delete(outputPath);
         }
 
-        internal class TestClassMap : ClassMap<TestRecord>
+        private class TestClassMap : ClassMap<TestRecord>
         {
             public TestClassMap()
             {
@@ -99,7 +99,7 @@
             }
         }
 
-        internal class TestRecord
+        private class TestRecord
         {
             public string TestData { get; set; } = "sadassdgsdfsdfsgsdfsdfds";
         }

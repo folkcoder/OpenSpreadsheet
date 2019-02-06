@@ -57,13 +57,13 @@
             Assert.True(validator.Errors.Count == 1);
         }
 
-        internal class TestClass
+        private class TestClass
         {
             public string TestData { get; set; } = "test data";
             public string TestDataNull { get; set; } = null;
         }
 
-        internal class TestClassMapConstants : ClassMap<TestClass>
+        private class TestClassMapConstants : ClassMap<TestClass>
         {
             public TestClassMapConstants()
             {
@@ -72,7 +72,7 @@
             }
         }
 
-        internal class TestClassMapDefaults : ClassMap<TestClass>
+        private class TestClassMapDefaults : ClassMap<TestClass>
         {
             public TestClassMapDefaults()
             {
@@ -81,7 +81,7 @@
             }
         }
 
-        internal class TestClassMapDuplicateIndexes : ClassMap<TestClass>
+        private class TestClassMapDuplicateIndexes : ClassMap<TestClass>
         {
             public TestClassMapDuplicateIndexes()
             {
@@ -90,7 +90,7 @@
             }
         }
 
-        internal class TestClassMapDuplicateReadProperties : ClassMap<TestClass>
+        private class TestClassMapDuplicateReadProperties : ClassMap<TestClass>
         {
             public TestClassMapDuplicateReadProperties()
             {
@@ -99,7 +99,7 @@
             }
         }
 
-        internal class TestClassMapIndexOutOfRange : ClassMap<TestClass>
+        private class TestClassMapIndexOutOfRange : ClassMap<TestClass>
         {
             public TestClassMapIndexOutOfRange()
             {
@@ -108,7 +108,7 @@
             }
         }
 
-        internal class TestClassMapLongHeaders : ClassMap<TestClass>
+        private class TestClassMapLongHeaders : ClassMap<TestClass>
         {
             public TestClassMapLongHeaders()
             {
@@ -117,7 +117,7 @@
             }
         }
 
-        internal class TestClassMapMissingIndexes : ClassMap<TestClass>
+        private class TestClassMapMissingIndexes : ClassMap<TestClass>
         {
             public TestClassMapMissingIndexes()
             {

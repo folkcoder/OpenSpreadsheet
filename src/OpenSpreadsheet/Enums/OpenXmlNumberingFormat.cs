@@ -121,6 +121,12 @@
         DecimalWithNegativeInRedParens = 40,
 
         /// <summary>
+        /// A decimal format that displays currency amounts (mask "'_("$"* #,##0.00_);_("$"* \(#,##0.00\);_("$"* "-"??_);_(@_)';").
+        /// </summary>
+        /// <remarks>This numbering format is not part of the OpenXml standard and may not be supported by all applications.</remarks>
+        Accounting = 44,
+
+        /// <summary>
         /// A timestamp format that displays a time in m:ss format (e.g., 1:15).
         /// </summary>
         TimestampMinuteSecond = 45,

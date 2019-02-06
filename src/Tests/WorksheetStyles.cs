@@ -62,14 +62,14 @@
             }
         }
 
-        internal class TestClass
+        private class TestClass
         {
             public string LongText { get; set; } = "The quick brown fox jumps over the lazy dog.";
 
             public string ShortText { get; set; } = "B";
         }
 
-        internal class TestClassMap : ClassMap<TestClass>
+        private class TestClassMap : ClassMap<TestClass>
         {
             public TestClassMap()
             {

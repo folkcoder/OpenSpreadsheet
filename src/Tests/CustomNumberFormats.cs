@@ -50,7 +50,7 @@
             }
         }
 
-        internal class TestClassMap : ClassMap<TestClass>
+        private class TestClassMap : ClassMap<TestClass>
         {
             public TestClassMap()
             {
@@ -61,7 +61,7 @@
             }
         }
 
-        internal class TestClass
+        private class TestClass
         {
             public decimal DefaultCurrencyFormat { get; set; } = currencyValue;
             public decimal NegativeInParens { get; set; } = currencyValue;

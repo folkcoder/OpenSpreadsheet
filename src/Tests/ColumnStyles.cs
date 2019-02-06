@@ -63,12 +63,12 @@
             }
         }
 
-        internal class TestClass
+        private class TestClass
         {
             public string TestData { get; set; } = "test data";
         }
 
-        internal class TestClassMapBackgroundPatternTypes : ClassMap<TestClass>
+        private class TestClassMapBackgroundPatternTypes : ClassMap<TestClass>
         {
             public TestClassMapBackgroundPatternTypes()
             {
@@ -81,7 +81,7 @@
             }
         }
 
-        internal class TestClassMapBorderPlacement : ClassMap<TestClass>
+        private class TestClassMapBorderPlacement : ClassMap<TestClass>
         {
             public TestClassMapBorderPlacement()
             {
@@ -96,7 +96,7 @@
             }
         }
 
-        internal class TestClassMapBorderStyles : ClassMap<TestClass>
+        private class TestClassMapBorderStyles : ClassMap<TestClass>
         {
             public TestClassMapBorderStyles()
             {
@@ -111,7 +111,7 @@
             }
         }
 
-        internal class TestClassMapFonts : ClassMap<TestClass>
+        private class TestClassMapFonts : ClassMap<TestClass>
         {
             public TestClassMapFonts()
             {
@@ -121,7 +121,7 @@
             }
         }
 
-        internal class TestClassMapHorizontalAlignments : ClassMap<TestClass>
+        private class TestClassMapHorizontalAlignments : ClassMap<TestClass>
         {
             public TestClassMapHorizontalAlignments()
             {
@@ -134,7 +134,7 @@
             }
         }
 
-        internal class TestClassMapVerticalAlignments : ClassMap<TestClass>
+        private class TestClassMapVerticalAlignments : ClassMap<TestClass>
         {
             public TestClassMapVerticalAlignments()
             {

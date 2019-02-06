@@ -73,7 +73,7 @@
             }
         }
 
-        internal class TestClass
+        private class TestClass
         {
             public string TestData1 { get; set; }
             public string TestData2 { get; set; }
@@ -82,7 +82,7 @@
             public string TestData5 { get; set; }
         }
 
-        internal class TestClassMapImpliedIndexesRead : ClassMap<TestClass>
+        private class TestClassMapImpliedIndexesRead : ClassMap<TestClass>
         {
             public TestClassMapImpliedIndexesRead()
             {
@@ -94,7 +94,7 @@
             }
         }
 
-        internal class TestClassMapUnspecifiedIndexes : ClassMap<TestClass>
+        private class TestClassMapUnspecifiedIndexes : ClassMap<TestClass>
         {
             public TestClassMapUnspecifiedIndexes()
             {

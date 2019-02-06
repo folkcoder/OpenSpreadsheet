@@ -112,7 +112,7 @@
             }
         }
 
-        internal class TestClassMapEmpty : ClassMap<NullableDataTypes>
+        private class TestClassMapEmpty : ClassMap<NullableDataTypes>
         {
             public TestClassMapEmpty()
             {
@@ -129,7 +129,7 @@
             }
         }
 
-        internal class TestClassMapDefaults : ClassMap<NullableDataTypes>
+        private class TestClassMapDefaults : ClassMap<NullableDataTypes>
         {
             public TestClassMapDefaults()
             {
