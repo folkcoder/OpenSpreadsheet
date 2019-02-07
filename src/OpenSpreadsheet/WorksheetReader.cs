@@ -75,6 +75,10 @@
             foreach (var map in this.propertyMaps)
             {
                 var propertyInfo = record.GetType().GetProperty(map.PropertyData.Property.Name);
+                if (!propertyInfo.CanWrite)
+                {
+                    continue;
+                }
 
                 if (map.PropertyData.ConstantRead != null)
                 {
