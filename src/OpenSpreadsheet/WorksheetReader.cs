@@ -22,7 +22,7 @@
         private const string rowIndexAttribute = "r";
 
         private readonly Dictionary<string, uint> columnCellReferences = new Dictionary<string, uint>();
-        private readonly Dictionary<uint, PropertyMap<TClass>> propertyMaps;
+        private readonly IReadOnlyCollection<PropertyMap<TClass>> propertyMaps;
         private readonly OpenXmlReader reader;
         private readonly BidirectionalDictionary<string, string> sharedStrings;
         private readonly SpreadsheetDocument spreadsheetDocument;
@@ -47,16 +47,17 @@
             var worksheetPart = this.spreadsheetDocument.WorkbookPart.GetPartById(worksheetId);
             this.reader = OpenXmlReader.Create(worksheetPart);
             this.reader.Read();
-            this.Headers = this.ReadHeader(headerRowIndex);
+            this.ReadHeader(headerRowIndex);
 
             // map setup
-            this.propertyMaps = this.CreateOrderedPropertyMaps();
+            var classMap = Activator.CreateInstance<TClassMap>();
+            this.propertyMaps = classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreRead).ToList().AsReadOnly();
         }
 
         /// <summary>
         /// Gets a collection of key value pairs containing a header column index and its name.
         /// </summary>
-        public BidirectionalDictionary<uint, string> Headers { get; }
+        public BidirectionalDictionary<uint, string> Headers { get; } = new BidirectionalDictionary<uint, string>();
 
         /// <summary>
         /// Read a single row at the current position and map its data to an object.
@@ -71,28 +72,45 @@
             }
 
             var record = new TClass();
-
             foreach (var map in this.propertyMaps)
             {
-                var columnIndex = map.Key;
+                var propertyInfo = record.GetType().GetProperty(map.PropertyData.Property.Name);
+
+                if (map.PropertyData.ConstantRead != null)
+                {
+                    propertyInfo.SetValue(record, map.PropertyData.ConstantRead);
+                    continue;
+                }
+
+                if (map.PropertyData.ReadUsing != null)
+                {
+                    var expressionValue = map.PropertyData.ReadUsing(readerRow);
+                    propertyInfo.SetValue(record, expressionValue);
+                    continue;
+                }
+
+                uint columnIndex;
+                if (map.PropertyData.IndexRead > 0)
+                {
+                    columnIndex = map.PropertyData.IndexRead;
+                }
+                else
+                {
+                    var cellName = string.IsNullOrWhiteSpace(map.PropertyData.NameRead)
+                        ? map.PropertyData.Property.Name
+                        : map.PropertyData.NameRead;
+
+                    if (!this.Headers.TryGetKey(cellName, out columnIndex))
+                    {
+                        throw new InvalidOperationException($"The ClassMap contains invalid read maps. The property {map.PropertyData.Property.Name} has no index defined and there is no spreadsheet column matching either the property name or a defined name property.");
+                    }
+                }
+
                 var cellValue = readerRow.GetCellValue(columnIndex);
-                var propertyInfo = record.GetType().GetProperty(map.Value.PropertyData.Property.Name);
 
-                if (map.Value.PropertyData.ReadUsing != null)
+                if (map.PropertyData.DefaultRead != null && cellValue.Length == 0)
                 {
-                    var expressionValue = map.Value.PropertyData.ReadUsing(readerRow);
-                    continue;
-                }
-
-                if (map.Value.PropertyData.ConstantRead != null)
-                {
-                    propertyInfo.SetValue(record, map.Value.PropertyData.ConstantRead);
-                    continue;
-                }
-
-                if (map.Value.PropertyData.DefaultRead != null && cellValue?.Length == 0)
-                {
-                    propertyInfo.SetValue(record, map.Value.PropertyData.DefaultRead);
+                    propertyInfo.SetValue(record, map.PropertyData.DefaultRead);
                     continue;
                 }
 
@@ -114,11 +132,6 @@
                 else
                 {
                     safeValue = (cellValue == null) ? null : Convert.ChangeType(cellValue, propertyType);
-                }
-
-                if (safeValue == null && map.Value.PropertyData.DefaultRead != null)
-                {
-                    safeValue = map.Value.PropertyData.DefaultRead;
                 }
 
                 propertyInfo.SetValue(record, safeValue, null);
@@ -214,45 +227,8 @@
             {
                 return (bool)Convert.ChangeType(intValue, typeof(bool));
             }
-            else
-            {
-                throw new InvalidCastException();
-            }
-        }
 
-        private Dictionary<uint, PropertyMap<TClass>> CreateOrderedPropertyMaps()
-        {
-            var indexes = new Dictionary<uint, PropertyMap<TClass>>();
-
-            var classMap = Activator.CreateInstance<TClassMap>();
-            var propertyMaps = classMap.PropertyMaps.Where(x => !x.PropertyData.IgnoreRead);
-
-            foreach (var map in propertyMaps.Where(x => x.PropertyData.IndexRead > 0))
-            {
-                indexes.Add(map.PropertyData.IndexRead, map);
-            }
-
-            var mapsWithUndefinedIndexes = propertyMaps.Where(x => x.PropertyData.IndexRead == 0 && x.PropertyData.ConstantRead == null && x.PropertyData.ReadUsing == null);
-            if (mapsWithUndefinedIndexes != null && this.Headers == null)
-            {
-                throw new InvalidOperationException("The ClassMap contains invalid read maps. Each property map must define either a column index or a header name.");
-            }
-
-            foreach (var map in mapsWithUndefinedIndexes)
-            {
-                string mapName = map.PropertyData.NameRead ?? map.PropertyData.Property.Name;
-                var matchedColumnIndex = this.Headers.FirstOrDefault(x => x.Value.Equals(mapName, StringComparison.InvariantCultureIgnoreCase));
-
-                if (matchedColumnIndex.Value == null)
-                {
-                    throw new InvalidOperationException($"The ClassMap contains invalid read maps. The property {map.PropertyData.Property.Name} has no index defined and there is no spreadsheet column matching either the property name or a defined name property.");
-                }
-
-                map.PropertyData.IndexRead = matchedColumnIndex.Key;
-                indexes.Add(map.PropertyData.IndexRead, map);
-            }
-
-            return indexes;
+            throw new InvalidCastException();
         }
 
         private static string GetCellValue(BidirectionalDictionary<string, string> sharedStrings, Cell cell)
@@ -296,16 +272,15 @@
             return (uint)sum;
         }
 
-        private BidirectionalDictionary<uint, string> ReadHeader(uint headerRowIndex)
+        private void ReadHeader(uint headerRowIndex)
         {
             if (headerRowIndex == 0)
             {
-                return null;
+                return;
             }
 
             this.SkipRows(headerRowIndex - 1);
 
-            var headers = new BidirectionalDictionary<uint, string>();
             this.AdvanceToRowStart();
             if (this.reader.EOF)
             {
@@ -321,11 +296,9 @@
                     var cellValue = GetCellValue(this.sharedStrings, cell);
                     var columnIndex = this.GetColumnIndexFromCellReference(cell.CellReference);
 
-                    headers.Add(columnIndex, cellValue);
+                    this.Headers.Add(columnIndex, cellValue);
                 }
             } while (this.reader.ReadNextSibling());
-
-            return headers;
         }
 
         private ReaderRow ReadRowValues()

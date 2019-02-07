@@ -56,8 +56,9 @@
         FractionTwoDigits = 13,
 
         /// <summary>
-        /// A datetime format that displays a date in m/d/yyyy format (e.g., 1/9/2019).
+        /// A datetime format that displays a date in mm-dd-yy format (e.g., 01-09-19).
         /// </summary>
+        /// <remarks>Excel implements this numbering format as m/dd/yyyy rather than the format defined in the standard.</remarks>
         DateMonthDayYear = 14,
 
         /// <summary>
