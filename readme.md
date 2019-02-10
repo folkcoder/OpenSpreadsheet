@@ -31,7 +31,7 @@ public class TestClassMap : ClassMap<TestClass>
         Map(x => x.Id).Index(3).Name("Employee Id");
         Map(x => x.Address).Index(4).IgnoreWrite(true);
         Map(x => x.SSN).IndexRead(10).IndexWrite(5).CustomNumberFormat("000-00-0000");
-        Map(x => x.Amount).Index(6).NumberFormat();
+        Map(x => x.Amount).Index(6).Style(new ColumnStyle() { NumberFormat = OpenXmlNumberingFormat.Accounting });
     }
 }
 ````
@@ -238,4 +238,3 @@ OpenSpreadsheet is significantly faster and memory-friendly than ClosedXml, and 
 + Greatly improve accuracy and coverage of automated tests and ClassMap validations
 + Allow default worksheet style for entire spreadsheet
 + Provide override for ReadWorksheet to accept tab position index as well as name
-+ Improve AutoFit for column (headers are sometimes cut off) 

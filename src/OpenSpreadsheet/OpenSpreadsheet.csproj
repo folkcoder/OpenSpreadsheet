@@ -15,11 +15,7 @@
     <RepositoryUrl>https://github.com/FolkCoder/OpenSpreadsheet</RepositoryUrl>
     <PackageTags>excel, openxml, spreadsheets, productivity, xlsx, openspreadsheet</PackageTags>
     <Copyright>© 2019 Steve Stanzak</Copyright>
-    <PackageReleaseNotes>## Enhancements ##
-+ Added Accounting numbering format.
-
-## Bug Fixes ##
-+ WorksheetReader will no longer try to set properties without a public setter.</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
