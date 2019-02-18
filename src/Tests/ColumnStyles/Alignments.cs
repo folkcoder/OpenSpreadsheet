@@ -1,6 +1,5 @@
 ﻿namespace Tests.ColumnStyles
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -10,11 +9,9 @@
     using OpenSpreadsheet.Configuration;
     using Xunit;
 
-    using OpenXml = DocumentFormat.OpenXml.Spreadsheet;
-
     public class Alignments
     {
-        private readonly Dictionary<uint, HorizontalAlignmentValues> horizontalAlignments = new Dictionary<uint, HorizontalAlignmentValues>()
+        private static readonly Dictionary<uint, HorizontalAlignmentValues> horizontalAlignments = new Dictionary<uint, HorizontalAlignmentValues>()
         {
             { 1, HorizontalAlignmentValues.Center },
             { 2, HorizontalAlignmentValues.CenterContinuous },
@@ -26,7 +23,7 @@
             { 8, HorizontalAlignmentValues.Right },
         };
 
-        private readonly Dictionary<uint, VerticalAlignmentValues> verticalAlignments = new Dictionary<uint, VerticalAlignmentValues>()
+        private static readonly Dictionary<uint, VerticalAlignmentValues> verticalAlignments = new Dictionary<uint, VerticalAlignmentValues>()
         {
             { 1, VerticalAlignmentValues.Bottom },
             { 2, VerticalAlignmentValues.Center },
@@ -55,7 +52,7 @@
                     foreach (var cell in sheet.Descendants<Cell>())
                     {
                         var columnIndex = SpreadsheetHelpers.GetColumnIndexFromCellReference(cell.CellReference);
-                        this.horizontalAlignments.TryGetValue(columnIndex, out HorizontalAlignmentValues expectedAlignment);
+                        var expectedAlignment = horizontalAlignments[columnIndex];
 
                         var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
 
@@ -87,7 +84,7 @@
                     foreach (var cell in sheet.Descendants<Cell>())
                     {
                         var columnIndex = SpreadsheetHelpers.GetColumnIndexFromCellReference(cell.CellReference);
-                        this.verticalAlignments.TryGetValue(columnIndex, out VerticalAlignmentValues expectedAlignment);
+                        verticalAlignments.TryGetValue(columnIndex, out VerticalAlignmentValues expectedAlignment);
 
                         var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
 
@@ -103,27 +100,23 @@
         {
             for (int i = 0; i < count; i++)
             {
-                yield return new TestClass();
+                yield return new TestClass() { TestData = "test data", };
             }
         }
 
         private class TestClass
         {
-            public string TestData { get; set; } = "test data";
+            public string TestData { get; set; }
         }
 
         private class TestClassMapHorizontalAlignments : ClassMap<TestClass>
         {
             public TestClassMapHorizontalAlignments()
             {
-                base.Map(x => x.TestData).Index(1).IgnoreRead(true).Name("Center").Style(new ColumnStyle() { HoizontalAlignment = HorizontalAlignmentValues.Center });
-                base.Map(x => x.TestData).Index(2).IgnoreRead(true).Name("CenterContinuous").Style(new ColumnStyle() { HoizontalAlignment = HorizontalAlignmentValues.CenterContinuous });
-                base.Map(x => x.TestData).Index(3).IgnoreRead(true).Name("Distributed").Style(new ColumnStyle() { HoizontalAlignment = HorizontalAlignmentValues.Distributed });
-                base.Map(x => x.TestData).Index(4).IgnoreRead(true).Name("Fill").Style(new ColumnStyle() { HoizontalAlignment = HorizontalAlignmentValues.Fill });
-                base.Map(x => x.TestData).Index(5).IgnoreRead(true).Name("General").Style(new ColumnStyle() { HoizontalAlignment = HorizontalAlignmentValues.General });
-                base.Map(x => x.TestData).Index(6).IgnoreRead(true).Name("Justify").Style(new ColumnStyle() { HoizontalAlignment = HorizontalAlignmentValues.Justify });
-                base.Map(x => x.TestData).Index(7).IgnoreRead(true).Name("Left").Style(new ColumnStyle() { HoizontalAlignment = HorizontalAlignmentValues.Left });
-                base.Map(x => x.TestData).Index(8).IgnoreRead(true).Name("Right").Style(new ColumnStyle() { HoizontalAlignment = HorizontalAlignmentValues.Right });
+                foreach (var alignment in horizontalAlignments)
+                {
+                    base.Map(x => x.TestData).IgnoreRead(true).Index(alignment.Key).Style(new ColumnStyle() { HoizontalAlignment = alignment.Value });
+                }
             }
         }
 
@@ -131,11 +124,10 @@
         {
             public TestClassMapVerticalAlignments()
             {
-                base.Map(x => x.TestData).Index(1).IgnoreRead(true).Name("Bottom").Style(new ColumnStyle() { VerticalAlignment = VerticalAlignmentValues.Bottom });
-                base.Map(x => x.TestData).Index(2).IgnoreRead(true).Name("Center").Style(new ColumnStyle() { VerticalAlignment = VerticalAlignmentValues.Center });
-                base.Map(x => x.TestData).Index(3).IgnoreRead(true).Name("Distributed").Style(new ColumnStyle() { VerticalAlignment = VerticalAlignmentValues.Distributed });
-                base.Map(x => x.TestData).Index(4).IgnoreRead(true).Name("Justify").Style(new ColumnStyle() { VerticalAlignment = VerticalAlignmentValues.Justify });
-                base.Map(x => x.TestData).Index(5).IgnoreRead(true).Name("Top").Style(new ColumnStyle() { VerticalAlignment = VerticalAlignmentValues.Top });
+                foreach (var alignment in verticalAlignments)
+                {
+                    base.Map(x => x.TestData).IgnoreRead(true).Index(alignment.Key).Style(new ColumnStyle() { VerticalAlignment = alignment.Value });
+                }
             }
         }
     }

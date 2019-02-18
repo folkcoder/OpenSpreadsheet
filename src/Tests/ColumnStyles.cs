@@ -18,7 +18,6 @@
         private const string backgroundsSheetName = "Backgrounds";
         private const string borderPlacementsSheetName = "Border Placements";
         private const string borderStylesSheetName = "Border Styles";
-        private const string fontsSheetName = "Fonts";
         private const int recordCount = 25;
         private readonly string filepath;
 
@@ -34,11 +33,10 @@
 
             using (var spreadsheet = new Spreadsheet(this.filepath))
             {
-                var records = CreateTestRecords(recordCount);
+                var records = this.CreateTestRecords(recordCount);
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapBackgroundPatternTypes>(backgroundsSheetName, records);
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapBorderPlacement>(borderPlacementsSheetName, records);
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapBorderStyles>(borderStylesSheetName, records);
-                spreadsheet.WriteWorksheet<TestClass, TestClassMapFonts>(fontsSheetName, records);
             }
         }
 
@@ -51,7 +49,7 @@
             Assert.False(validator.HasErrors);
         }
 
-        private static IEnumerable<TestClass> CreateTestRecords(int count)
+        private IEnumerable<TestClass> CreateTestRecords(int count)
         {
             for (int i = 0; i < count; i++)
             {
@@ -104,16 +102,6 @@
                     base.Map().Constant("").Index(columnIndex).Name("");
                     columnIndex++;
                 }
-            }
-        }
-
-        private class TestClassMapFonts : ClassMap<TestClass>
-        {
-            public TestClassMapFonts()
-            {
-                base.Map(x => x.TestData).Index(1).Name("Garamond, 12, Underline, Green").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Garamond", 12, FontStyle.Underline), ForegroundColor = Color.Green });
-                base.Map(x => x.TestData).Index(2).Name("TNR, 12, Italic, Default").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Times New Roman", 12, FontStyle.Italic) });
-                base.Map(x => x.TestData).Index(3).Name("Wingdings, 14, Strikeout, Tomato").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Wingdings", 14, FontStyle.Strikeout), ForegroundColor = Color.Tomato });
             }
         }
     }
