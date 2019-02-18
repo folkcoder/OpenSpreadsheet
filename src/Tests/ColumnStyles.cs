@@ -13,18 +13,16 @@
 
     using OpenXml = DocumentFormat.OpenXml.Spreadsheet;
 
-    public class ColumnStyles
+    public class ColumnStyles2
     {
         private const string backgroundsSheetName = "Backgrounds";
         private const string borderPlacementsSheetName = "Border Placements";
         private const string borderStylesSheetName = "Border Styles";
         private const string fontsSheetName = "Fonts";
-        private const string horizontalAlignmentsSheetName = "Horizontal Alignments";
         private const int recordCount = 25;
-        private const string verticalAlignmentsSheetName = "Vertical Alignments";
         private readonly string filepath;
 
-        public ColumnStyles()
+        public ColumnStyles2()
         {
             var folderPath = Path.Combine(Environment.CurrentDirectory, "test_outputs");
             var directory = Directory.CreateDirectory(folderPath);
@@ -41,8 +39,6 @@
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapBorderPlacement>(borderPlacementsSheetName, records);
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapBorderStyles>(borderStylesSheetName, records);
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapFonts>(fontsSheetName, records);
-                spreadsheet.WriteWorksheet<TestClass, TestClassMapHorizontalAlignments>(horizontalAlignmentsSheetName, records, new WorksheetStyle() { MinColumnWidth = 25 });
-                spreadsheet.WriteWorksheet<TestClass, TestClassMapVerticalAlignments>(verticalAlignmentsSheetName, records);
             }
         }
 
@@ -118,32 +114,6 @@
                 base.Map(x => x.TestData).Index(1).Name("Garamond, 12, Underline, Green").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Garamond", 12, FontStyle.Underline), ForegroundColor = Color.Green });
                 base.Map(x => x.TestData).Index(2).Name("TNR, 12, Italic, Default").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Times New Roman", 12, FontStyle.Italic) });
                 base.Map(x => x.TestData).Index(3).Name("Wingdings, 14, Strikeout, Tomato").IgnoreRead(true).Style(new ColumnStyle() { Font = new Font("Wingdings", 14, FontStyle.Strikeout), ForegroundColor = Color.Tomato });
-            }
-        }
-
-        private class TestClassMapHorizontalAlignments : ClassMap<TestClass>
-        {
-            public TestClassMapHorizontalAlignments()
-            {
-                uint columnIndex = 1;
-                foreach (var alignment in (OpenXml.HorizontalAlignmentValues[])Enum.GetValues(typeof(OpenXml.HorizontalAlignmentValues)))
-                {
-                    base.Map(x => x.TestData).Index(columnIndex).Name($"{alignment.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { HoizontalAlignment = alignment });
-                    columnIndex++;
-                }
-            }
-        }
-
-        private class TestClassMapVerticalAlignments : ClassMap<TestClass>
-        {
-            public TestClassMapVerticalAlignments()
-            {
-                uint columnIndex = 1;
-                foreach (var alignment in (OpenXml.VerticalAlignmentValues[])Enum.GetValues(typeof(OpenXml.VerticalAlignmentValues)))
-                {
-                    base.Map(x => x.TestData).Index(columnIndex).Name($"{alignment.ToString()}").IgnoreRead(true).Style(new ColumnStyle() { VerticalAlignment = alignment });
-                    columnIndex++;
-                }
             }
         }
     }
