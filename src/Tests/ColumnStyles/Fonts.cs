@@ -11,7 +11,7 @@
 
     using OpenXml = DocumentFormat.OpenXml.Spreadsheet;
 
-    public class Fonts
+    public class Fonts : SpreadsheetTesterBase
     {
         private static readonly Dictionary<uint, Font> fonts = new Dictionary<uint, Font>()
         {
@@ -26,11 +26,14 @@
         [Fact]
         public void TestFonts()
         {
-            var filepath = Path.ChangeExtension(Path.GetTempFileName(), ".xlsx");
+            var filepath = base.ConstructTempExcelFilePath();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
-                spreadsheet.WriteWorksheet<TestClass, TestClassMapFonts>("Sheet1", CreateTestRecords(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
+                spreadsheet.WriteWorksheet<TestClass, TestClassMapFonts>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
             }
+
+            base.SpreadsheetValidator.Validate(filepath);
+            Assert.False(base.SpreadsheetValidator.HasErrors);
 
             using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -42,7 +45,7 @@
 
                     foreach (var cell in sheet.Descendants<OpenXml.Cell>())
                     {
-                        var columnIndex = SpreadsheetHelpers.GetColumnIndexFromCellReference(cell.CellReference);
+                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
                         fonts.TryGetValue(columnIndex, out Font expectedFont);
                         var cellFont = (OpenXml.Font)workbookPart.WorkbookStylesPart.Stylesheet.Fonts.ChildElements[(int)cell.StyleIndex.Value];
 
@@ -75,17 +78,9 @@
             File.Delete(filepath);
         }
 
-        private static IEnumerable<TestClass> CreateTestRecords(int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                yield return new TestClass() { TestData = "test data", };
-            }
-        }
-
         private class TestClass
         {
-            public string TestData { get; set; }
+            public string TestData { get; set; } = "test data";
         }
 
         private class TestClassMapFonts : ClassMap<TestClass>

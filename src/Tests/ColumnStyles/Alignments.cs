@@ -9,7 +9,7 @@
     using OpenSpreadsheet.Configuration;
     using Xunit;
 
-    public class Alignments
+    public class Alignments : SpreadsheetTesterBase
     {
         private static readonly Dictionary<uint, HorizontalAlignmentValues> horizontalAlignments = new Dictionary<uint, HorizontalAlignmentValues>()
         {
@@ -35,11 +35,14 @@
         [Fact]
         public void TestHorizontalAlignments()
         {
-            var filepath = Path.ChangeExtension(Path.GetTempFileName(), ".xlsx");
+            var filepath = base.ConstructTempExcelFilePath();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
-                spreadsheet.WriteWorksheet<TestClass, TestClassMapHorizontalAlignments>("Sheet1", CreateTestRecords(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
+                spreadsheet.WriteWorksheet<TestClass, TestClassMapHorizontalAlignments>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
             }
+
+            base.SpreadsheetValidator.Validate(filepath);
+            Assert.False(this.SpreadsheetValidator.HasErrors);
 
             using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -51,7 +54,7 @@
 
                     foreach (var cell in sheet.Descendants<Cell>())
                     {
-                        var columnIndex = SpreadsheetHelpers.GetColumnIndexFromCellReference(cell.CellReference);
+                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
                         var expectedAlignment = horizontalAlignments[columnIndex];
 
                         var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
@@ -67,11 +70,14 @@
         [Fact]
         public void TestVerticalAlignments()
         {
-            var filepath = Path.ChangeExtension(Path.GetTempFileName(), ".xlsx");
+            var filepath = base.ConstructTempExcelFilePath();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
-                spreadsheet.WriteWorksheet<TestClass, TestClassMapVerticalAlignments>("Sheet1", CreateTestRecords(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
+                spreadsheet.WriteWorksheet<TestClass, TestClassMapVerticalAlignments>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
             }
+
+            base.SpreadsheetValidator.Validate(filepath);
+            Assert.False(base.SpreadsheetValidator.HasErrors);
 
             using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -83,7 +89,7 @@
 
                     foreach (var cell in sheet.Descendants<Cell>())
                     {
-                        var columnIndex = SpreadsheetHelpers.GetColumnIndexFromCellReference(cell.CellReference);
+                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
                         verticalAlignments.TryGetValue(columnIndex, out VerticalAlignmentValues expectedAlignment);
 
                         var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
@@ -96,17 +102,9 @@
             File.Delete(filepath);
         }
 
-        private static IEnumerable<TestClass> CreateTestRecords(int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                yield return new TestClass() { TestData = "test data", };
-            }
-        }
-
         private class TestClass
         {
-            public string TestData { get; set; }
+            public string TestData { get; set; } = "test data";
         }
 
         private class TestClassMapHorizontalAlignments : ClassMap<TestClass>
