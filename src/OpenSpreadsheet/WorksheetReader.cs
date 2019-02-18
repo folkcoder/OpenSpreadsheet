@@ -242,13 +242,13 @@
                 return string.Empty;
             }
 
-            if (cell.DataType == CellValues.SharedString)
+            if (cell.DataType == null || cell.DataType != CellValues.SharedString)
             {
-                sharedStrings.TryGetKey(cell.CellValue.InnerText, out string sharedStringValue);
-                return sharedStringValue;
+                return cell.CellValue.InnerText;
             }
 
-            return cell.CellValue.InnerText;
+            sharedStrings.TryGetKey(cell.CellValue.InnerText, out string sharedStringValue);
+            return sharedStringValue;
         }
 
         /// <summary>
