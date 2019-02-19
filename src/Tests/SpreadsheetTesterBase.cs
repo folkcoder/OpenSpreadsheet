@@ -9,7 +9,7 @@
     {
         protected SpreadsheetValidator SpreadsheetValidator { get; } = new SpreadsheetValidator();
 
-        public string ConstructTempExcelFilePath() => Path.ChangeExtension(Path.GetTempFileName(), ".xlsx");
+        public string ConstructTempExcelFilePath() => Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".xlsx"));
 
         public uint GetColumnIndexFromCellReference(string cellReference)
         {

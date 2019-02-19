@@ -40,15 +40,6 @@
             }
         }
 
-        [Fact]
-        public void TestWrite()
-        {
-            var validator = new SpreadsheetValidator();
-            validator.Validate(this.filepath);
-
-            Assert.False(validator.HasErrors);
-        }
-
         private IEnumerable<TestClass> CreateTestRecords(int count)
         {
             for (int i = 0; i < count; i++)
