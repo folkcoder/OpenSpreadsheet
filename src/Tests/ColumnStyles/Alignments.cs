@@ -45,22 +45,20 @@
             Assert.False(this.SpreadsheetValidator.HasErrors);
 
             using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
             {
-                using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
+                var workbookPart = spreadsheetDocument.WorkbookPart;
+                var worksheetPart = workbookPart.WorksheetParts.First();
+                var sheet = worksheetPart.Worksheet;
+
+                foreach (var cell in sheet.Descendants<Cell>())
                 {
-                    var workbookPart = spreadsheetDocument.WorkbookPart;
-                    var worksheetPart = workbookPart.WorksheetParts.First();
-                    var sheet = worksheetPart.Worksheet;
+                    var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
+                    var expectedAlignment = horizontalAlignments[columnIndex];
 
-                    foreach (var cell in sheet.Descendants<Cell>())
-                    {
-                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                        var expectedAlignment = horizontalAlignments[columnIndex];
+                    var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
 
-                        var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
-
-                        Assert.Equal<HorizontalAlignmentValues>(expectedAlignment, cellFormat.Alignment.Horizontal);
-                    }
+                    Assert.Equal<HorizontalAlignmentValues>(expectedAlignment, cellFormat.Alignment.Horizontal);
                 }
             }
 
@@ -80,22 +78,20 @@
             Assert.False(base.SpreadsheetValidator.HasErrors);
 
             using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
             {
-                using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
+                var workbookPart = spreadsheetDocument.WorkbookPart;
+                var worksheetPart = workbookPart.WorksheetParts.First();
+                var sheet = worksheetPart.Worksheet;
+
+                foreach (var cell in sheet.Descendants<Cell>())
                 {
-                    var workbookPart = spreadsheetDocument.WorkbookPart;
-                    var worksheetPart = workbookPart.WorksheetParts.First();
-                    var sheet = worksheetPart.Worksheet;
+                    var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
+                    verticalAlignments.TryGetValue(columnIndex, out VerticalAlignmentValues expectedAlignment);
 
-                    foreach (var cell in sheet.Descendants<Cell>())
-                    {
-                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                        verticalAlignments.TryGetValue(columnIndex, out VerticalAlignmentValues expectedAlignment);
+                    var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
 
-                        var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
-
-                        Assert.Equal<VerticalAlignmentValues>(expectedAlignment, cellFormat.Alignment.Vertical);
-                    }
+                    Assert.Equal<VerticalAlignmentValues>(expectedAlignment, cellFormat.Alignment.Vertical);
                 }
             }
 

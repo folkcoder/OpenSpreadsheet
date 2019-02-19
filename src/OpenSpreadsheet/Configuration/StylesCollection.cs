@@ -1,5 +1,6 @@
 ﻿namespace OpenSpreadsheet.Configuration
 {
+    using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
@@ -170,9 +171,9 @@
         /// Adds a font to the styles collection.
         /// </summary>
         /// <param name="font">The font to be added.</param>
-        /// <param name="textColor">The font color to be applied.</param>
+        /// <param name="fontColor">The font color to be applied.</param>
         /// <returns>The stylesheet position index associated with the element.</returns>
-        public uint AddFont(Font font, in Color textColor)
+        public uint AddFont(Font font, in Color fontColor)
         {
             var openXmlFont = new OpenXml.Font();
 
@@ -198,9 +199,14 @@
 
             openXmlFont.AppendChild(new OpenXml.FontSize() { Val = font.Size });
 
-            var colorText = ConvertColorToHex(textColor);
-            openXmlFont.AppendChild(ConvertHexColorToOpenXmlColor(colorText));
+            if (fontColor == Color.Transparent)
+            {
+                throw new ArgumentException("Cannot convert Color.Transparent to a valid OpenXml font color.");
+            }
 
+            var colorText = ConvertColorToHex(fontColor);
+
+            openXmlFont.AppendChild(ConvertHexColorToOpenXmlColor(colorText));
             openXmlFont.AppendChild(new OpenXml.FontName() { Val = font.Name });
 
             return this.ResolveFontKey(openXmlFont);
@@ -272,6 +278,11 @@
         /// <remarks>Appended XML nodes cannot use the same object instance, so that the Color object must be calculated for each border placement.</remarks>
         private OpenXml.Border ConstructBorder(BorderPlacement placement, OpenXml.BorderStyleValues style, in Color color)
         {
+            if (color == Color.Transparent)
+            {
+                throw new ArgumentException("Cannot convert Color.Transparent to a valid OpenXml border color.");
+            }
+
             var colorText = ConvertColorToHex(color);
             var border = new OpenXml.Border();
 

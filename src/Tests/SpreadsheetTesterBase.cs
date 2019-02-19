@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
     using System.IO;
     using System.Linq;
 
@@ -25,6 +26,8 @@
 
             return (uint)sum;
         }
+
+        public string ConvertColorToHex(in Color color) => Color.FromArgb(color.ToArgb()).Name;
 
         public IEnumerable<T> CreateRecords<T>(int count) where T : class
         {

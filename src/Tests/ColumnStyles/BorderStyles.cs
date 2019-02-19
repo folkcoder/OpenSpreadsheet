@@ -1,10 +1,10 @@
 ﻿namespace Tests.ColumnStyles
 {
     using System.Collections.Generic;
+    using System.Drawing;
     using System.IO;
     using System.Linq;
     using DocumentFormat.OpenXml.Packaging;
-    using DocumentFormat.OpenXml.Spreadsheet;
     using OpenSpreadsheet;
     using OpenSpreadsheet.Configuration;
     using OpenSpreadsheet.Enums;
@@ -14,22 +14,13 @@
 
     public class BorderStyles : SpreadsheetTesterBase
     {
-        private static readonly Dictionary<uint, OpenXml.BorderStyleValues> borderColors = new Dictionary<uint, OpenXml.BorderStyleValues>()
+        private static readonly Dictionary<uint, Color> borderColors = new Dictionary<uint, Color>()
         {
-            { 1, OpenXml.BorderStyleValues.DashDot },
-            { 2, OpenXml.BorderStyleValues.DashDotDot },
-            { 3, OpenXml.BorderStyleValues.Dashed },
-            { 4, OpenXml.BorderStyleValues.Dotted },
-            { 5, OpenXml.BorderStyleValues.Double },
-            { 6, OpenXml.BorderStyleValues.Hair },
-            { 7, OpenXml.BorderStyleValues.Medium },
-            { 8, OpenXml.BorderStyleValues.MediumDashDot },
-            { 9, OpenXml.BorderStyleValues.MediumDashDotDot },
-            { 10, OpenXml.BorderStyleValues.MediumDashed },
-            { 11, OpenXml.BorderStyleValues.None },
-            { 12, OpenXml.BorderStyleValues.SlantDashDot },
-            { 13, OpenXml.BorderStyleValues.Thick},
-            { 14, OpenXml.BorderStyleValues.Thin},
+            { 1, Color.Chocolate },
+            { 2, Color.Teal },
+            { 3, Color.Black },
+            { 4, Color.White },
+            { 5, Color.BurlyWood }
         };
 
         private static readonly Dictionary<uint, BorderPlacement> borderPlacements = new Dictionary<uint, BorderPlacement>()
@@ -38,7 +29,7 @@
             { 2, BorderPlacement.Bottom },
             { 3, BorderPlacement.DiagonalDown },
             { 4, BorderPlacement.DiagonalUp },
-            { 5, BorderPlacement.Left},          
+            { 5, BorderPlacement.Left},
             { 6, BorderPlacement.Outside },
             { 7, BorderPlacement.Right },
             { 8, BorderPlacement.Top },
@@ -65,37 +56,35 @@
         };
 
         [Fact]
-        public void TestBorderStyles()
+        public void TestBorderColors()
         {
             var filepath = base.ConstructTempExcelFilePath();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
-                spreadsheet.WriteWorksheet<TestClass, TestClassMapBorderStyles>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
+                spreadsheet.WriteWorksheet<TestClass, TestClassMapBorderColors>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
             }
 
             base.SpreadsheetValidator.Validate(filepath);
             Assert.False(this.SpreadsheetValidator.HasErrors);
 
             using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
             {
-                using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
+                var workbookPart = spreadsheetDocument.WorkbookPart;
+                var worksheetPart = workbookPart.WorksheetParts.First();
+                var sheet = worksheetPart.Worksheet;
+
+                foreach (var cell in sheet.Descendants<OpenXml.Cell>())
                 {
-                    var workbookPart = spreadsheetDocument.WorkbookPart;
-                    var worksheetPart = workbookPart.WorksheetParts.First();
-                    var sheet = worksheetPart.Worksheet;
+                    var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
+                    var expectedColor = borderColors[columnIndex];
+                    var border = (OpenXml.Border)workbookPart.WorkbookStylesPart.Stylesheet.Borders.ChildElements[(int)cell.StyleIndex.Value];
 
-                    foreach (var cell in sheet.Descendants<Cell>())
-                    {
-                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                        var expectedBorderStyle = borderStyles[columnIndex];
-                        var border = (Border)workbookPart.WorkbookStylesPart.Stylesheet.Borders.ChildElements[(int)cell.StyleIndex.Value];
-
-                        Assert.Equal<BorderStyleValues>(expectedBorderStyle, border.BottomBorder.Style);
-                        Assert.Equal<BorderStyleValues>(expectedBorderStyle, border.DiagonalBorder.Style);
-                        Assert.Equal<BorderStyleValues>(expectedBorderStyle, border.LeftBorder.Style);
-                        Assert.Equal<BorderStyleValues>(expectedBorderStyle, border.RightBorder.Style);
-                        Assert.Equal<BorderStyleValues>(expectedBorderStyle, border.TopBorder.Style);
-                    }
+                    Assert.Equal(base.ConvertColorToHex(expectedColor), border.BottomBorder.Color.Rgb.Value);
+                    Assert.Equal(base.ConvertColorToHex(expectedColor), border.DiagonalBorder.Color.Rgb.Value);
+                    Assert.Equal(base.ConvertColorToHex(expectedColor), border.LeftBorder.Color.Rgb.Value);
+                    Assert.Equal(base.ConvertColorToHex(expectedColor), border.RightBorder.Color.Rgb.Value);
+                    Assert.Equal(base.ConvertColorToHex(expectedColor), border.TopBorder.Color.Rgb.Value);
                 }
             }
 
@@ -115,45 +104,79 @@
             Assert.False(this.SpreadsheetValidator.HasErrors);
 
             using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
             {
-                using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
+                var workbookPart = spreadsheetDocument.WorkbookPart;
+                var worksheetPart = workbookPart.WorksheetParts.First();
+                var sheet = worksheetPart.Worksheet;
+
+                foreach (var cell in sheet.Descendants<OpenXml.Cell>())
                 {
-                    var workbookPart = spreadsheetDocument.WorkbookPart;
-                    var worksheetPart = workbookPart.WorksheetParts.First();
-                    var sheet = worksheetPart.Worksheet;
+                    var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
+                    var expectedBorderPlacement = borderPlacements[columnIndex];
+                    var border = (OpenXml.Border)workbookPart.WorkbookStylesPart.Stylesheet.Borders.ChildElements[(int)cell.StyleIndex.Value];
 
-                    foreach (var cell in sheet.Descendants<Cell>())
+                    if (border.BottomBorder != null)
                     {
-                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                        var expectedBorderPlacement = borderPlacements[columnIndex];
-                        var border = (Border)workbookPart.WorkbookStylesPart.Stylesheet.Borders.ChildElements[(int)cell.StyleIndex.Value];
-
-                        if (border.BottomBorder != null)
-                        {
-                            Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Bottom));
-                        }
-
-                        if (border.DiagonalBorder != null)
-                        {
-                            Assert.Equal(expectedBorderPlacement.HasFlag(BorderPlacement.DiagonalDown), border.DiagonalDown.Value);
-                            Assert.Equal(expectedBorderPlacement.HasFlag(BorderPlacement.DiagonalUp), border.DiagonalUp.Value);
-                        }
-
-                        if (border.LeftBorder != null)
-                        {
-                            Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Left));
-                        }
-
-                        if (border.RightBorder != null)
-                        {
-                            Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Right));
-                        }
-
-                        if (border.TopBorder != null)
-                        {
-                            Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Top));
-                        }
+                        Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Bottom));
                     }
+
+                    if (border.DiagonalBorder != null)
+                    {
+                        Assert.Equal(expectedBorderPlacement.HasFlag(BorderPlacement.DiagonalDown), border.DiagonalDown.Value);
+                        Assert.Equal(expectedBorderPlacement.HasFlag(BorderPlacement.DiagonalUp), border.DiagonalUp.Value);
+                    }
+
+                    if (border.LeftBorder != null)
+                    {
+                        Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Left));
+                    }
+
+                    if (border.RightBorder != null)
+                    {
+                        Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Right));
+                    }
+
+                    if (border.TopBorder != null)
+                    {
+                        Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Top));
+                    }
+                }
+            }
+
+            File.Delete(filepath);
+        }
+
+        [Fact]
+        public void TestBorderStyles()
+        {
+            var filepath = base.ConstructTempExcelFilePath();
+            using (var spreadsheet = new Spreadsheet(filepath))
+            {
+                spreadsheet.WriteWorksheet<TestClass, TestClassMapBorderStyles>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
+            }
+
+            base.SpreadsheetValidator.Validate(filepath);
+            Assert.False(this.SpreadsheetValidator.HasErrors);
+
+            using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
+            {
+                var workbookPart = spreadsheetDocument.WorkbookPart;
+                var worksheetPart = workbookPart.WorksheetParts.First();
+                var sheet = worksheetPart.Worksheet;
+
+                foreach (var cell in sheet.Descendants<OpenXml.Cell>())
+                {
+                    var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
+                    var expectedBorderStyle = borderStyles[columnIndex];
+                    var border = (OpenXml.Border)workbookPart.WorkbookStylesPart.Stylesheet.Borders.ChildElements[(int)cell.StyleIndex.Value];
+
+                    Assert.Equal<OpenXml.BorderStyleValues>(expectedBorderStyle, border.BottomBorder.Style);
+                    Assert.Equal<OpenXml.BorderStyleValues>(expectedBorderStyle, border.DiagonalBorder.Style);
+                    Assert.Equal<OpenXml.BorderStyleValues>(expectedBorderStyle, border.LeftBorder.Style);
+                    Assert.Equal<OpenXml.BorderStyleValues>(expectedBorderStyle, border.RightBorder.Style);
+                    Assert.Equal<OpenXml.BorderStyleValues>(expectedBorderStyle, border.TopBorder.Style);
                 }
             }
 
@@ -165,13 +188,24 @@
             public string TestData { get; set; } = "test data";
         }
 
+        private class TestClassMapBorderColors : ClassMap<TestClass>
+        {
+            public TestClassMapBorderColors()
+            {
+                foreach (var color in borderColors)
+                {
+                    base.Map(x => x.TestData).IgnoreRead(true).Index(color.Key).Style(new ColumnStyle() { BorderColor =  color.Value, BorderPlacement = BorderPlacement.All, BorderStyle = OpenXml.BorderStyleValues.Thick });
+                }
+            }
+        }
+
         private class TestClassMapBorderPlacements : ClassMap<TestClass>
         {
             public TestClassMapBorderPlacements()
             {
                 foreach (var borderPlacement in borderPlacements)
                 {
-                    base.Map(x => x.TestData).IgnoreRead(true).Index(borderPlacement.Key).Style(new ColumnStyle() { BorderPlacement = borderPlacement.Value, BorderStyle = BorderStyleValues.Thick });
+                    base.Map(x => x.TestData).IgnoreRead(true).Index(borderPlacement.Key).Style(new ColumnStyle() { BorderPlacement = borderPlacement.Value, BorderStyle = OpenXml.BorderStyleValues.Thick });
                 }
             }
         }
