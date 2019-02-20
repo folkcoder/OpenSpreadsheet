@@ -1,14 +1,10 @@
 ﻿namespace Tests.DataConversions
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
 
     using OpenSpreadsheet;
     using OpenSpreadsheet.Configuration;
-
-    using Tests.Models;
 
     using Xunit;
 

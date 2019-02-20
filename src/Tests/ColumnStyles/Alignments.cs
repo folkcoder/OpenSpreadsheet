@@ -87,8 +87,7 @@
                 foreach (var cell in sheet.Descendants<Cell>())
                 {
                     var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                    verticalAlignments.TryGetValue(columnIndex, out VerticalAlignmentValues expectedAlignment);
-
+                    var expectedAlignment = verticalAlignments[columnIndex];
                     var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
 
                     Assert.Equal<VerticalAlignmentValues>(expectedAlignment, cellFormat.Alignment.Vertical);
