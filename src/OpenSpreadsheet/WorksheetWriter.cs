@@ -326,16 +326,9 @@
             else
             {
                 value = propertyMap.PropertyData.Property.GetValue(record);
-                if ((propertyMap.PropertyData.Property.PropertyType == typeof(char) && (char)value == char.MinValue) || (value == null))
+                if ( value == null || (propertyMap.PropertyData.Property.PropertyType == typeof(char) && (char)value == char.MinValue))
                 {
-                    if (propertyMap.PropertyData.DefaultWrite != null)
-                    {
-                        value = propertyMap.PropertyData.DefaultWrite;
-                    }
-                    else
-                    {
-                        throw new ArgumentNullException($"The property {propertyMap.PropertyData.Property.Name} is null and no default value has been specified.");
-                    }
+                    value = propertyMap.PropertyData.DefaultWrite ?? string.Empty;
                 }
             }
 

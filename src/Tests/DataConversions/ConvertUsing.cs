@@ -1,46 +1,35 @@
-﻿namespace Tests
+﻿namespace Tests.DataConversions
 {
-    using System;
-    using System.Collections.Generic;
     using System.IO;
     using OpenSpreadsheet;
     using OpenSpreadsheet.Configuration;
     using Xunit;
 
-    public class ConvertUsing
+    public class ConvertUsing : SpreadsheetTesterBase
     {
-        private const int recordCount = 25;
-        private readonly string filepath;
-
-        public ConvertUsing()
-        {
-            var folderPath = Path.Combine(Environment.CurrentDirectory, "test_outputs");
-            var directory = Directory.CreateDirectory(folderPath);
-            this.filepath = Path.Combine(folderPath, "convert_using.xlsx");
-            if (File.Exists(this.filepath))
-            {
-                File.Delete(this.filepath);
-            }
-
-            var records = CreateTestRecords(recordCount);
-            using (var spreadsheet = new Spreadsheet(this.filepath))
-            {
-                spreadsheet.WriteWorksheet<TestClass, TestClassMap>("test", records);
-            }
-        }
-
         [Fact]
         public void TestConvertUsing()
         {
-            using (var spreadsheet = new Spreadsheet(this.filepath))
+            var filepath = base.ConstructTempExcelFilePath();
+            using (var spreadsheet = new Spreadsheet(filepath))
             {
-                foreach (var record in spreadsheet.ReadWorksheet<TestClass, TestClassMap>("test"))
+                spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet1", base.CreateRecords<TestClass>(10));
+            }
+
+            base.SpreadsheetValidator.Validate(filepath);
+            Assert.False(base.SpreadsheetValidator.HasErrors);
+
+            using (var spreadsheet = new Spreadsheet(filepath))
+            {
+                foreach (var record in spreadsheet.ReadWorksheet<TestClass, TestClassMap>("Sheet1"))
                 {
                     Assert.Equal(TestEnum.A, record.TestEnum1);
                     Assert.Equal(TestEnum.B, record.TestEnum2);
                     Assert.Equal(TestEnum.C, record.TestEnum3);
                 }
             }
+
+            File.Delete(filepath);
         }
 
         private class TestClass
@@ -71,14 +60,6 @@
                 base.Map(x => x.TestEnum3).Name("Conversion C")
                     .ReadUsing(row => ConvertStringToEnum(row.GetCellValue("Conversion C")))
                     .WriteUsing(x => ConvertEnumToString(x.TestEnum3));
-            }
-        }
-
-        private static IEnumerable<TestClass> CreateTestRecords(int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                yield return new TestClass();
             }
         }
 

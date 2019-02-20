@@ -118,28 +118,28 @@
 
                     if (border.BottomBorder != null)
                     {
-                        Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Bottom));
+                        Assert.True((expectedBorderPlacement & BorderPlacement.Bottom) != 0);
                     }
 
                     if (border.DiagonalBorder != null)
                     {
-                        Assert.Equal(expectedBorderPlacement.HasFlag(BorderPlacement.DiagonalDown), border.DiagonalDown.Value);
-                        Assert.Equal(expectedBorderPlacement.HasFlag(BorderPlacement.DiagonalUp), border.DiagonalUp.Value);
+                        Assert.Equal((expectedBorderPlacement & BorderPlacement.DiagonalDown) != 0, border.DiagonalDown.Value);
+                        Assert.Equal((expectedBorderPlacement & BorderPlacement.DiagonalUp) != 0, border.DiagonalUp.Value);
                     }
 
                     if (border.LeftBorder != null)
                     {
-                        Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Left));
+                        Assert.True((expectedBorderPlacement & BorderPlacement.Left) != 0);
                     }
 
                     if (border.RightBorder != null)
                     {
-                        Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Right));
+                        Assert.True((   expectedBorderPlacement & BorderPlacement.Right) != 0);
                     }
 
                     if (border.TopBorder != null)
                     {
-                        Assert.True(expectedBorderPlacement.HasFlag(BorderPlacement.Top));
+                        Assert.True((expectedBorderPlacement & BorderPlacement.Top) != 0);
                     }
                 }
             }
