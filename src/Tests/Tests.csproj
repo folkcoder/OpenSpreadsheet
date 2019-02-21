@@ -27,4 +27,9 @@
     <ProjectReference Include="..\OpenSpreadsheet\OpenSpreadsheet.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Write\" />
+    <Folder Include="Read\" />
+  </ItemGroup>
+
 </Project>

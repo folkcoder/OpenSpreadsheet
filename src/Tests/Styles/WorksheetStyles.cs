@@ -1,4 +1,4 @@
-﻿namespace Tests
+﻿namespace Tests.Styles
 {
     using System;
     using System.Collections.Generic;
