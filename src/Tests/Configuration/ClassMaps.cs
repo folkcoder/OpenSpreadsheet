@@ -1,4 +1,4 @@
-﻿namespace Tests
+﻿namespace Tests.Configuration
 {
     using OpenSpreadsheet.Configuration;
     using Xunit;

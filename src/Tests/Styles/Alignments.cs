@@ -1,4 +1,4 @@
-﻿namespace Tests.ColumnStyles
+﻿namespace Tests.Styles
 {
     using System.Collections.Generic;
     using System.IO;
