@@ -1,7 +1,8 @@
-﻿namespace OpenSpreadsheet
+namespace OpenSpreadsheet
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DocumentFormat.OpenXml;
@@ -131,11 +132,18 @@
                 }
                 else if (propertyType.IsEnum)
                 {
-                    safeValue = Enum.Parse(propertyType, cellValue);
+                    safeValue = (cellValue == null) ? null : Enum.Parse(propertyType, cellValue);
                 }
                 else
                 {
-                    safeValue = (cellValue == null) ? null : Convert.ChangeType(cellValue, propertyType);
+                    if (double.TryParse(cellValue, NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double doubleValue))
+                    {
+                        safeValue = (cellValue == null) ? null : Convert.ChangeType(doubleValue, propertyType);
+                    }
+                    else
+                    {
+                        safeValue = (cellValue == null) ? null : Convert.ChangeType(cellValue, propertyType);
+                    }
                 }
 
                 propertyInfo.SetValue(record, safeValue, null);
