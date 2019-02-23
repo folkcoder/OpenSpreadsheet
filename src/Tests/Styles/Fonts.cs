@@ -41,48 +41,52 @@
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapFonts>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
             }
 
-            base.SpreadsheetValidator.Validate(filepath);
-            Assert.False(base.SpreadsheetValidator.HasErrors);
-
-            using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
+            var fileSavedByExcel = base.SaveAsExcelFile(filepath);
+            foreach (var spreadsheetFile in new[] { filepath, fileSavedByExcel })
             {
-                var workbookPart = spreadsheetDocument.WorkbookPart;
-                var worksheetPart = workbookPart.WorksheetParts.First();
-                var sheet = worksheetPart.Worksheet;
+                base.SpreadsheetValidator.Validate(spreadsheetFile);
+                Assert.False(base.SpreadsheetValidator.HasErrors);
 
-                foreach (var cell in sheet.Descendants<OpenXml.Cell>())
+                using (var filestream = new FileStream(spreadsheetFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
                 {
-                    var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                    var expectedFont = fonts[columnIndex];
-                    var cellFont = (OpenXml.Font)workbookPart.WorkbookStylesPart.Stylesheet.Fonts.ChildElements[(int)cell.StyleIndex.Value];
+                    var workbookPart = spreadsheetDocument.WorkbookPart;
+                    var worksheetPart = workbookPart.WorksheetParts.First();
+                    var sheet = worksheetPart.Worksheet;
 
-                    if (cellFont.Bold != null)
+                    foreach (var cell in sheet.Descendants<OpenXml.Cell>())
                     {
-                        Assert.True(expectedFont.Bold);
-                    }
+                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
+                        var expectedFont = fonts[columnIndex];
+                        var cellFont = (OpenXml.Font)workbookPart.WorkbookStylesPart.Stylesheet.Fonts.ChildElements[(int)cell.StyleIndex.Value];
 
-                    if (cellFont.Italic != null)
-                    {
-                        Assert.True(expectedFont.Italic);
-                    }
+                        if (cellFont.Bold != null)
+                        {
+                            Assert.True(expectedFont.Bold);
+                        }
 
-                    if (cellFont.Strike != null)
-                    {
-                        Assert.True(expectedFont.Strikeout);
-                    }
+                        if (cellFont.Italic != null)
+                        {
+                            Assert.True(expectedFont.Italic);
+                        }
 
-                    if (cellFont.Underline != null)
-                    {
-                        Assert.True(expectedFont.Underline);
-                    }
+                        if (cellFont.Strike != null)
+                        {
+                            Assert.True(expectedFont.Strikeout);
+                        }
 
-                    Assert.Equal(expectedFont.FontFamily.Name, cellFont.FontName.Val);
-                    Assert.Equal(expectedFont.Size, cellFont.FontSize.Val);
+                        if (cellFont.Underline != null)
+                        {
+                            Assert.True(expectedFont.Underline);
+                        }
+
+                        Assert.Equal(expectedFont.FontFamily.Name, cellFont.FontName.Val);
+                        Assert.Equal(expectedFont.Size, cellFont.FontSize.Val);
+                    }
                 }
-            }
 
-            File.Delete(filepath);
+                File.Delete(spreadsheetFile);
+            }
         }
 
         [Fact]
@@ -94,27 +98,31 @@
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapForegrounds>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
             }
 
-            base.SpreadsheetValidator.Validate(filepath);
-            Assert.False(base.SpreadsheetValidator.HasErrors);
-
-            using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
+            var fileSavedByExcel = base.SaveAsExcelFile(filepath);
+            foreach (var spreadsheetFile in new[] { filepath, fileSavedByExcel })
             {
-                var workbookPart = spreadsheetDocument.WorkbookPart;
-                var worksheetPart = workbookPart.WorksheetParts.First();
-                var sheet = worksheetPart.Worksheet;
+                base.SpreadsheetValidator.Validate(spreadsheetFile);
+                Assert.False(base.SpreadsheetValidator.HasErrors);
 
-                foreach (var cell in sheet.Descendants<OpenXml.Cell>())
+                using (var filestream = new FileStream(spreadsheetFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
                 {
-                    var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                    var expectedForeground = foregroundColors[columnIndex];
-                    var cellFont = (OpenXml.Font)workbookPart.WorkbookStylesPart.Stylesheet.Fonts.ChildElements[(int)cell.StyleIndex.Value];
+                    var workbookPart = spreadsheetDocument.WorkbookPart;
+                    var worksheetPart = workbookPart.WorksheetParts.First();
+                    var sheet = worksheetPart.Worksheet;
 
-                    Assert.Equal(base.ConvertColorToHex(expectedForeground), cellFont.Color.Rgb.Value);
+                    foreach (var cell in sheet.Descendants<OpenXml.Cell>())
+                    {
+                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
+                        var expectedForeground = foregroundColors[columnIndex];
+                        var cellFont = (OpenXml.Font)workbookPart.WorkbookStylesPart.Stylesheet.Fonts.ChildElements[(int)cell.StyleIndex.Value];
+
+                        Assert.Equal(base.ConvertColorToHex(expectedForeground), cellFont.Color.Rgb.Value, true);
+                    }
                 }
-            }
 
-            File.Delete(filepath);
+                File.Delete(spreadsheetFile);
+            }
         }
 
         private class TestClass

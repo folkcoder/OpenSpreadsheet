@@ -21,7 +21,6 @@
             }
 
             var fileSavedByExcel = base.SaveAsExcelFile(filepath);
-
             foreach (var spreadsheetFile in new[] { filepath, fileSavedByExcel })
             {
                 base.SpreadsheetValidator.Validate(spreadsheetFile);
@@ -62,7 +61,6 @@
             }
 
             var fileSavedByExcel = base.SaveAsExcelFile(filepath);
-
             foreach (var spreadsheetFile in new[] { filepath, fileSavedByExcel })
             {
                 base.SpreadsheetValidator.Validate(spreadsheetFile);

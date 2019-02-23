@@ -33,27 +33,31 @@
                 spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet1", base.CreateRecords<TestClass>(10));
             }
 
-            base.SpreadsheetValidator.Validate(filepath);
-            Assert.False(base.SpreadsheetValidator.HasErrors);
-
-            using (var spreadsheet = new Spreadsheet(filepath))
+            var fileSavedByExcel = base.SaveAsExcelFile(filepath);
+            foreach (var spreadsheetFile in new[] { filepath, fileSavedByExcel })
             {
-                foreach (var record in spreadsheet.ReadWorksheet<TestClass, TestClassMapDefaults>("Sheet1"))
-                {
-                    Assert.Equal(testClassWithDefaultValues.Bool, record.Bool.Value);
-                    Assert.Equal(testClassWithDefaultValues.Byte, record.Byte.Value);
-                    Assert.Equal(testClassWithDefaultValues.Char, record.Char.Value);
-                    Assert.Equal(testClassWithDefaultValues.DateTime, record.DateTime.Value);
-                    Assert.Equal(testClassWithDefaultValues.Decimal, record.Decimal.Value);
-                    Assert.Equal(testClassWithDefaultValues.Double, record.Double.Value);
-                    Assert.Equal(testClassWithDefaultValues.Float, record.Float.Value);
-                    Assert.Equal(testClassWithDefaultValues.Int, record.Int.Value);
-                    Assert.Equal(testClassWithDefaultValues.Long, record.Long.Value);
-                    Assert.Equal(testClassWithDefaultValues.Text, record.Text);
-                }
-            }
+                base.SpreadsheetValidator.Validate(spreadsheetFile);
+                Assert.False(base.SpreadsheetValidator.HasErrors);
 
-            File.Delete(filepath);
+                using (var spreadsheet = new Spreadsheet(spreadsheetFile))
+                {
+                    foreach (var record in spreadsheet.ReadWorksheet<TestClass, TestClassMapDefaults>("Sheet1"))
+                    {
+                        Assert.Equal(testClassWithDefaultValues.Bool, record.Bool.Value);
+                        Assert.Equal(testClassWithDefaultValues.Byte, record.Byte.Value);
+                        Assert.Equal(testClassWithDefaultValues.Char, record.Char.Value);
+                        Assert.Equal(testClassWithDefaultValues.DateTime, record.DateTime.Value);
+                        Assert.Equal(testClassWithDefaultValues.Decimal, record.Decimal.Value);
+                        Assert.Equal(testClassWithDefaultValues.Double, record.Double.Value);
+                        Assert.Equal(testClassWithDefaultValues.Float, record.Float.Value);
+                        Assert.Equal(testClassWithDefaultValues.Int, record.Int.Value);
+                        Assert.Equal(testClassWithDefaultValues.Long, record.Long.Value);
+                        Assert.Equal(testClassWithDefaultValues.Text, record.Text);
+                    }
+                }
+
+                File.Delete(spreadsheetFile);
+            }
         }
 
         [Fact]
@@ -65,27 +69,31 @@
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapDefaults>("Sheet1", base.CreateRecords<TestClass>(10));
             }
 
-            base.SpreadsheetValidator.Validate(filepath);
-            Assert.False(base.SpreadsheetValidator.HasErrors);
-
-            using (var spreadsheet = new Spreadsheet(filepath))
+            var fileSavedByExcel = base.SaveAsExcelFile(filepath);
+            foreach (var spreadsheetFile in new[] { filepath, fileSavedByExcel })
             {
-                foreach (var record in spreadsheet.ReadWorksheet<TestClass, TestClassMap>("Sheet1"))
-                {
-                    Assert.Equal(testClassWithDefaultValues.Bool, record.Bool.Value);
-                    Assert.Equal(testClassWithDefaultValues.Byte, record.Byte.Value);
-                    Assert.Equal(testClassWithDefaultValues.Char, record.Char.Value);
-                    Assert.Equal(testClassWithDefaultValues.DateTime, record.DateTime.Value);
-                    Assert.Equal(testClassWithDefaultValues.Decimal, record.Decimal.Value);
-                    Assert.Equal(testClassWithDefaultValues.Double, record.Double.Value);
-                    Assert.Equal(testClassWithDefaultValues.Float, record.Float.Value);
-                    Assert.Equal(testClassWithDefaultValues.Int, record.Int.Value);
-                    Assert.Equal(testClassWithDefaultValues.Long, record.Long.Value);
-                    Assert.Equal(testClassWithDefaultValues.Text, record.Text);
-                }
-            }
+                base.SpreadsheetValidator.Validate(spreadsheetFile);
+                Assert.False(base.SpreadsheetValidator.HasErrors);
 
-            File.Delete(filepath);
+                using (var spreadsheet = new Spreadsheet(spreadsheetFile))
+                {
+                    foreach (var record in spreadsheet.ReadWorksheet<TestClass, TestClassMap>("Sheet1"))
+                    {
+                        Assert.Equal(testClassWithDefaultValues.Bool, record.Bool.Value);
+                        Assert.Equal(testClassWithDefaultValues.Byte, record.Byte.Value);
+                        Assert.Equal(testClassWithDefaultValues.Char, record.Char.Value);
+                        Assert.Equal(testClassWithDefaultValues.DateTime, record.DateTime.Value);
+                        Assert.Equal(testClassWithDefaultValues.Decimal, record.Decimal.Value);
+                        Assert.Equal(testClassWithDefaultValues.Double, record.Double.Value);
+                        Assert.Equal(testClassWithDefaultValues.Float, record.Float.Value);
+                        Assert.Equal(testClassWithDefaultValues.Int, record.Int.Value);
+                        Assert.Equal(testClassWithDefaultValues.Long, record.Long.Value);
+                        Assert.Equal(testClassWithDefaultValues.Text, record.Text);
+                    }
+                }
+
+                File.Delete(spreadsheetFile);
+            }
         }
 
         public class TestClass

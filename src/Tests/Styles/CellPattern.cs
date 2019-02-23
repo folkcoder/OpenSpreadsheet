@@ -56,27 +56,31 @@
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapBackgrounds>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
             }
 
-            base.SpreadsheetValidator.Validate(filepath);
-            Assert.False(this.SpreadsheetValidator.HasErrors);
-
-            using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
+            var fileSavedByExcel = base.SaveAsExcelFile(filepath);
+            foreach (var spreadsheetFile in new[] { filepath, fileSavedByExcel })
             {
-                var workbookPart = spreadsheetDocument.WorkbookPart;
-                var worksheetPart = workbookPart.WorksheetParts.First();
-                var sheet = worksheetPart.Worksheet;
+                base.SpreadsheetValidator.Validate(spreadsheetFile);
+                Assert.False(base.SpreadsheetValidator.HasErrors);
 
-                foreach (var cell in sheet.Descendants<OpenXml.Cell>())
+                using (var filestream = new FileStream(spreadsheetFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
                 {
-                    var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                    var expectedColor = backgrounds[columnIndex];
-                    var fill = (OpenXml.Fill)workbookPart.WorkbookStylesPart.Stylesheet.Fills.ChildElements[(int)columnIndex];
+                    var workbookPart = spreadsheetDocument.WorkbookPart;
+                    var worksheetPart = workbookPart.WorksheetParts.First();
+                    var sheet = worksheetPart.Worksheet;
 
-                    Assert.Equal(base.ConvertColorToHex(expectedColor), fill.PatternFill.ForegroundColor.Rgb.Value);
+                    foreach (var cell in sheet.Descendants<OpenXml.Cell>())
+                    {
+                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
+                        var expectedColor = backgrounds[columnIndex];
+                        var fill = (OpenXml.Fill)workbookPart.WorkbookStylesPart.Stylesheet.Fills.ChildElements[(int)columnIndex];
+
+                        Assert.Equal(base.ConvertColorToHex(expectedColor), fill.PatternFill.ForegroundColor.Rgb.Value, true);
+                    }
                 }
-            }
 
-            File.Delete(filepath);
+                File.Delete(spreadsheetFile);
+            }
         }
 
         [Fact]
@@ -88,27 +92,31 @@
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapPatterns>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
             }
 
-            base.SpreadsheetValidator.Validate(filepath);
-            Assert.False(this.SpreadsheetValidator.HasErrors);
-
-            using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
+            var fileSavedByExcel = base.SaveAsExcelFile(filepath);
+            foreach (var spreadsheetFile in new[] { filepath, fileSavedByExcel })
             {
-                var workbookPart = spreadsheetDocument.WorkbookPart;
-                var worksheetPart = workbookPart.WorksheetParts.First();
-                var sheet = worksheetPart.Worksheet;
+                base.SpreadsheetValidator.Validate(spreadsheetFile);
+                Assert.False(base.SpreadsheetValidator.HasErrors);
 
-                foreach (var cell in sheet.Descendants<OpenXml.Cell>())
+                using (var filestream = new FileStream(spreadsheetFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
                 {
-                    var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                    var expectedPattern = patterns[columnIndex];
-                    var fill = (OpenXml.Fill)workbookPart.WorkbookStylesPart.Stylesheet.Fills.ChildElements[(int)columnIndex];
+                    var workbookPart = spreadsheetDocument.WorkbookPart;
+                    var worksheetPart = workbookPart.WorksheetParts.First();
+                    var sheet = worksheetPart.Worksheet;
 
-                    Assert.Equal<OpenXml.PatternValues>(expectedPattern, fill.PatternFill.PatternType);
+                    foreach (var cell in sheet.Descendants<OpenXml.Cell>())
+                    {
+                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
+                        var expectedPattern = patterns[columnIndex];
+                        var fill = (OpenXml.Fill)workbookPart.WorkbookStylesPart.Stylesheet.Fills.ChildElements[(int)columnIndex];
+
+                        Assert.Equal<OpenXml.PatternValues>(expectedPattern, fill.PatternFill.PatternType);
+                    }
                 }
-            }
 
-            File.Delete(filepath);
+                File.Delete(spreadsheetFile);
+            }
         }
 
         private class TestClass

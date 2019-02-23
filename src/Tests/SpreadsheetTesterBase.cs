@@ -6,7 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Runtime.InteropServices;
-
+    using DocumentFormat.OpenXml.Packaging;
     using Excel = Microsoft.Office.Interop.Excel;
 
     public abstract class SpreadsheetTesterBase
@@ -39,6 +39,9 @@
                 yield return Activator.CreateInstance<T>();
             }
         }
+
+        public string GetSharedStringValue(SharedStringTablePart sharedStringTablePart, string cellValue) =>
+            sharedStringTablePart.SharedStringTable.ElementAt(int.Parse(cellValue)).InnerText;
 
         public string SaveAsExcelFile(string spreadsheetFile)
         {

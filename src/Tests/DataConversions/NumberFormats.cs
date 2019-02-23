@@ -14,9 +14,10 @@
     {
         private static readonly Dictionary<uint, string> customNumberFormats = new Dictionary<uint, string>()
         {
-            { 1, "$#,##0.00;[Black]($#,##0.00);" },
-            { 2, "$#,##0.00;[Red]$#,##0.00;" },
-            { 3, "$#,##0.00;[Black]$-#,##0.00;" },
+            { 1, "\"The number is \"#,##0.00" },
+            { 2, "\"$#,##0.00;[Black]($#,##0.00);\"" },
+            { 3, "\"$#,##0.00;[Red]$#,##0.00\"" },
+            { 4, "\"$#,##0.00;[Black]$-#,##0.00;\"" },
         };
 
         private static readonly Dictionary<uint, OpenXmlNumberingFormat> numberFormats = new Dictionary<uint, OpenXmlNumberingFormat>()
@@ -59,28 +60,32 @@
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapCustomNumberFormats>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
             }
 
-            base.SpreadsheetValidator.Validate(filepath);
-            Assert.False(base.SpreadsheetValidator.HasErrors);
-
-            using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
+            var fileSavedByExcel = base.SaveAsExcelFile(filepath);
+            foreach (var spreadsheetFile in new[] { filepath, fileSavedByExcel })
             {
-                var workbookPart = spreadsheetDocument.WorkbookPart;
-                var worksheetPart = workbookPart.WorksheetParts.First();
-                var sheet = worksheetPart.Worksheet;
+                base.SpreadsheetValidator.Validate(spreadsheetFile);
+                Assert.False(base.SpreadsheetValidator.HasErrors);
 
-                foreach (var cell in sheet.Descendants<Cell>())
+                using (var filestream = new FileStream(spreadsheetFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
                 {
-                    var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                    var expectedNumberFormat = customNumberFormats[columnIndex];
-                    var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
-                    var numberingFormat = (NumberingFormat)workbookPart.WorkbookStylesPart.Stylesheet.NumberingFormats.ChildElements.FirstOrDefault(x => ((NumberingFormat)x).NumberFormatId == cellFormat.NumberFormatId);
+                    var workbookPart = spreadsheetDocument.WorkbookPart;
+                    var worksheetPart = workbookPart.WorksheetParts.First();
+                    var sheet = worksheetPart.Worksheet;
 
-                    Assert.Equal(expectedNumberFormat, numberingFormat.FormatCode);
+                    foreach (var cell in sheet.Descendants<Cell>())
+                    {
+                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
+                        var expectedNumberFormat = customNumberFormats[columnIndex];
+                        var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
+                        var numberingFormat = (NumberingFormat)workbookPart.WorkbookStylesPart.Stylesheet.NumberingFormats.ChildElements.FirstOrDefault(x => ((NumberingFormat)x).NumberFormatId == cellFormat.NumberFormatId);
+
+                        Assert.Equal(expectedNumberFormat, numberingFormat.FormatCode);
+                    }
                 }
-            }
 
-            File.Delete(filepath);
+                File.Delete(spreadsheetFile);
+            }
         }
 
         [Fact]
@@ -92,27 +97,31 @@
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapNumberFormats>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
             }
 
-            base.SpreadsheetValidator.Validate(filepath);
-            Assert.False(base.SpreadsheetValidator.HasErrors);
-
-            using (var filestream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
+            var fileSavedByExcel = base.SaveAsExcelFile(filepath);
+            foreach (var spreadsheetFile in new[] { filepath, fileSavedByExcel })
             {
-                var workbookPart = spreadsheetDocument.WorkbookPart;
-                var worksheetPart = workbookPart.WorksheetParts.First();
-                var sheet = worksheetPart.Worksheet;
+                base.SpreadsheetValidator.Validate(spreadsheetFile);
+                Assert.False(base.SpreadsheetValidator.HasErrors);
 
-                foreach (var cell in sheet.Descendants<Cell>())
+                using (var filestream = new FileStream(spreadsheetFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var spreadsheetDocument = SpreadsheetDocument.Open(filestream, false))
                 {
-                    var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                    var expectedNumberFormat = numberFormats[columnIndex];
-                    var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
+                    var workbookPart = spreadsheetDocument.WorkbookPart;
+                    var worksheetPart = workbookPart.WorksheetParts.First();
+                    var sheet = worksheetPart.Worksheet;
 
-                    Assert.Equal((uint)expectedNumberFormat, (uint)cellFormat.NumberFormatId);
+                    foreach (var cell in sheet.Descendants<Cell>())
+                    {
+                        var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
+                        var expectedNumberFormat = numberFormats[columnIndex];
+                        var cellFormat = (CellFormat)workbookPart.WorkbookStylesPart.Stylesheet.CellFormats.ChildElements[(int)cell.StyleIndex.Value];
+
+                        Assert.Equal((uint)expectedNumberFormat, (uint)cellFormat.NumberFormatId);
+                    }
                 }
-            }
 
-            File.Delete(filepath);
+                File.Delete(spreadsheetFile);
+            }
         }
 
         public class TestClass
