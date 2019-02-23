@@ -68,7 +68,7 @@
         /// <summary>
         /// Gets or sets a value indicating whether the header row should be frozen.
         /// </summary>
-        public virtual bool ShouldFreezeTopRow { get; set; }
+        public virtual bool ShouldFreezeHeaderRow { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the header row should be written.

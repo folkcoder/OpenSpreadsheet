@@ -231,7 +231,7 @@
                 WorkbookViewId = 0U
             };
 
-            if (this.worksheetStyle.ShouldFreezeTopRow)
+            if (this.worksheetStyle.ShouldFreezeHeaderRow)
             {
                 var firstFrozenCellReference = this.ConstructExcelCellReference(this.worksheetStyle.HeaderRowIndex + 1, 1);
                 var pane = new Pane()

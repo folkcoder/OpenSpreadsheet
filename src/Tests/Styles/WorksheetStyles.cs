@@ -31,8 +31,8 @@
             var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
-                spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldFreezeTopRow = true });
-                spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet2", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldFreezeTopRow = false });
+                spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldFreezeHeaderRow = true });
+                spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet2", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldFreezeHeaderRow = false });
             }
 
             var fileSavedByExcel = base.SaveAsExcelFile(filepath);
