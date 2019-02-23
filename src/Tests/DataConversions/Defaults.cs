@@ -27,7 +27,7 @@
         [Fact]
         public void TestRead()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet1", base.CreateRecords<TestClass>(10));
@@ -59,7 +59,7 @@
         [Fact]
         public void TestWrite()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapDefaults>("Sheet1", base.CreateRecords<TestClass>(10));

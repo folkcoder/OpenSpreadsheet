@@ -35,7 +35,7 @@
         [Fact]
         public void TestHorizontalAlignments()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapHorizontalAlignments>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
@@ -68,7 +68,7 @@
         [Fact]
         public void TestVerticalAlignments()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapVerticalAlignments>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });

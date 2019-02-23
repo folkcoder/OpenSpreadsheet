@@ -35,7 +35,7 @@
         [Fact]
         public void TestFonts()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapFonts>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
@@ -88,7 +88,7 @@
         [Fact]
         public void TestForegrounds()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapForegrounds>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });

@@ -10,7 +10,7 @@
         [Fact]
         public void TestConvertUsing()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet1", base.CreateRecords<TestClass>(10));

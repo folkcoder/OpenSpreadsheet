@@ -58,7 +58,7 @@
         [Fact]
         public void TestBorderColors()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapBorderColors>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
@@ -94,7 +94,7 @@
         [Fact]
         public void TestBorderPlacements()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapBorderPlacements>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });
@@ -150,7 +150,7 @@
         [Fact]
         public void TestBorderStyles()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapBorderStyles>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldWriteHeaderRow = false });

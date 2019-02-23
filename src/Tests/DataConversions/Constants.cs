@@ -26,7 +26,7 @@ namespace Tests.DataConversions
         [Fact]
         public void TestRead()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapWithoutConstants>("Sheet1", base.CreateRecords<TestClass>(10));
@@ -58,7 +58,7 @@ namespace Tests.DataConversions
         [Fact]
         public void TestWrite()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMapWithConstants>("Sheet1", base.CreateRecords<TestClass>(10));
