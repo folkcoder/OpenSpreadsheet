@@ -15,7 +15,7 @@
     <RepositoryUrl>https://github.com/FolkCoder/OpenSpreadsheet</RepositoryUrl>
     <PackageTags>excel, openxml, spreadsheets, productivity, xlsx, openspreadsheet</PackageTags>
     <Copyright>© 2019 Steve Stanzak</Copyright>
-    <PackageReleaseNotes>## v1.1.4
+    <PackageReleaseNotes>## v1.2.0
 
 ### Enhancements
 + Continued refactoring test cases to automate testing of additional scenarios.

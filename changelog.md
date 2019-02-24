@@ -1,6 +1,6 @@
 # Release Log
 
-## v1.1.4
+## v1.2.0
 
 ### Enhancements
 + Continued refactoring test cases to automate testing of additional scenarios.
