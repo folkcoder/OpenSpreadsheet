@@ -239,10 +239,14 @@
                     ActivePane = PaneValues.BottomLeft,
                     State = PaneStateValues.Frozen,
                     TopLeftCell = firstFrozenCellReference,
-                    VerticalSplit = 1D,
+                    VerticalSplit = this.worksheetStyle.HeaderRowIndex,
                 };
 
-                var selection = new Selection() { Pane = PaneValues.BottomLeft, };
+                var selection = new Selection()
+                {
+                    ActiveCell = firstFrozenCellReference,
+                    Pane = PaneValues.BottomLeft,
+                };
 
                 sheetView.Append(pane);
                 sheetView.Append(selection);
