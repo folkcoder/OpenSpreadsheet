@@ -1,5 +1,10 @@
 # Release Log
 
+## v1.2.1
+
+### Bug Fixes
++ Fixed `ShouldFreezeHeaderRow` when using a non-default header, and added a better test case to capture the scenario.
+
 ## v1.2.0
 
 ### Enhancements
