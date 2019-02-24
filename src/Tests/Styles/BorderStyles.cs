@@ -50,10 +50,9 @@
             { 9, OpenXml.BorderStyleValues.MediumDashDot },
             { 10, OpenXml.BorderStyleValues.MediumDashDotDot },
             { 11, OpenXml.BorderStyleValues.MediumDashed },
-            { 12, OpenXml.BorderStyleValues.None },
-            { 13, OpenXml.BorderStyleValues.SlantDashDot },
-            { 14, OpenXml.BorderStyleValues.Thick},
-            { 15, OpenXml.BorderStyleValues.Thin},
+            { 12, OpenXml.BorderStyleValues.SlantDashDot },
+            { 13, OpenXml.BorderStyleValues.Thick},
+            { 14, OpenXml.BorderStyleValues.Thin},
         };
 
         [Fact]
@@ -81,14 +80,14 @@
                     foreach (var cell in sheet.Descendants<OpenXml.Cell>())
                     {
                         var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
-                        var expectedColor = borderColors[columnIndex];
-                        var border = (OpenXml.Border)workbookPart.WorkbookStylesPart.Stylesheet.Borders.ChildElements[(int)cell.StyleIndex.Value];
+                        var expectedColor = base.ConvertColorToHex(borderColors[columnIndex]);
+                        var border = (OpenXml.Border)workbookPart.WorkbookStylesPart.Stylesheet.Borders.ChildElements[(int)columnIndex];
 
-                        Assert.Equal(base.ConvertColorToHex(expectedColor), border.BottomBorder.Color.Rgb.Value, true);
-                        Assert.Equal(base.ConvertColorToHex(expectedColor), border.DiagonalBorder.Color.Rgb.Value, true);
-                        Assert.Equal(base.ConvertColorToHex(expectedColor), border.LeftBorder.Color.Rgb.Value, true);
-                        Assert.Equal(base.ConvertColorToHex(expectedColor), border.RightBorder.Color.Rgb.Value, true);
-                        Assert.Equal(base.ConvertColorToHex(expectedColor), border.TopBorder.Color.Rgb.Value, true);
+                        Assert.Equal(expectedColor, border.BottomBorder.Color.Rgb.Value, true);
+                        Assert.Equal(expectedColor, border.DiagonalBorder.Color.Rgb.Value, true);
+                        Assert.Equal(expectedColor, border.LeftBorder.Color.Rgb.Value, true);
+                        Assert.Equal(expectedColor, border.RightBorder.Color.Rgb.Value, true);
+                        Assert.Equal(expectedColor, border.TopBorder.Color.Rgb.Value, true);
                     }
                 }
 
@@ -122,7 +121,7 @@
                     {
                         var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
                         var expectedBorderPlacement = borderPlacements[columnIndex];
-                        var border = (OpenXml.Border)workbookPart.WorkbookStylesPart.Stylesheet.Borders.ChildElements[(int)cell.StyleIndex.Value];
+                        var border = (OpenXml.Border)workbookPart.WorkbookStylesPart.Stylesheet.Borders.ChildElements[(int)columnIndex];
 
                         if (border.BottomBorder?.HasChildren == true)
                         {
@@ -186,7 +185,7 @@
                     {
                         var columnIndex = base.GetColumnIndexFromCellReference(cell.CellReference);
                         var expectedBorderStyle = borderStyles[columnIndex];
-                        var border = (OpenXml.Border)workbookPart.WorkbookStylesPart.Stylesheet.Borders.ChildElements[(int)cell.StyleIndex.Value];
+                        var border = (OpenXml.Border)workbookPart.WorkbookStylesPart.Stylesheet.Borders.ChildElements[(int)columnIndex];
 
                         if (expectedBorderStyle == OpenXml.BorderStyleValues.None)
                         {

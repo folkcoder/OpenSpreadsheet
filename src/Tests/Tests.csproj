@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <IsPackable>false</IsPackable>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
@@ -26,11 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OpenSpreadsheet\OpenSpreadsheet.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Write\" />
-    <Folder Include="Read\" />
   </ItemGroup>
 
 </Project>
