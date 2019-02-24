@@ -231,7 +231,7 @@
                 WorkbookViewId = 0U
             };
 
-            if (this.worksheetStyle.ShouldFreezeTopRow)
+            if (this.worksheetStyle.ShouldFreezeHeaderRow)
             {
                 var firstFrozenCellReference = this.ConstructExcelCellReference(this.worksheetStyle.HeaderRowIndex + 1, 1);
                 var pane = new Pane()
@@ -380,9 +380,10 @@
 
             if (this.worksheetStyle.ShouldAutoFilter)
             {
-                var lastIndex = this.orderedPropertyMaps.Last().PropertyData.IndexWrite;
-                var lastCellReference = this.ConstructExcelCellReference(1, lastIndex);
-                this.writer.WriteElement(new AutoFilter() { Reference = "A1:" + lastCellReference });
+				var firstCellReference = this.ConstructExcelCellReference(this.worksheetStyle.HeaderRowIndex, 1);
+				var lastIndex = this.orderedPropertyMaps.Last().PropertyData.IndexWrite;
+				var lastCellReference = this.ConstructExcelCellReference(this.worksheetStyle.HeaderRowIndex, lastIndex);
+                this.writer.WriteElement(new AutoFilter() { Reference = $"{firstCellReference}:{lastCellReference}" });
             }
 
             this.writer.WriteEndElement(); // Worksheet
@@ -621,11 +622,7 @@
 
         private void CacheWorksheetData()
         {
-            if (this.worksheetStyle.ShouldWriteHeaderRow)
-            {
-                this.CacheHeaderStyles();
-            }
-
+            this.CacheHeaderStyles();
             this.CacheColumnTypes();
             this.CacheColumnStyles();
         }

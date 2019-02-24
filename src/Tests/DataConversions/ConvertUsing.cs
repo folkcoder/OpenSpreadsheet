@@ -10,26 +10,30 @@
         [Fact]
         public void TestConvertUsing()
         {
-            var filepath = base.ConstructTempExcelFilePath();
+            var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet1", base.CreateRecords<TestClass>(10));
             }
 
-            base.SpreadsheetValidator.Validate(filepath);
-            Assert.False(base.SpreadsheetValidator.HasErrors);
-
-            using (var spreadsheet = new Spreadsheet(filepath))
+            var fileSavedByExcel = base.SaveAsExcelFile(filepath);
+            foreach (var spreadsheetFile in new[] { filepath, fileSavedByExcel })
             {
-                foreach (var record in spreadsheet.ReadWorksheet<TestClass, TestClassMap>("Sheet1"))
-                {
-                    Assert.Equal(TestEnum.A, record.TestEnum1);
-                    Assert.Equal(TestEnum.B, record.TestEnum2);
-                    Assert.Equal(TestEnum.C, record.TestEnum3);
-                }
-            }
+                base.SpreadsheetValidator.Validate(spreadsheetFile);
+                Assert.False(base.SpreadsheetValidator.HasErrors);
 
-            File.Delete(filepath);
+                using (var spreadsheet = new Spreadsheet(spreadsheetFile))
+                {
+                    foreach (var record in spreadsheet.ReadWorksheet<TestClass, TestClassMap>("Sheet1"))
+                    {
+                        Assert.Equal(TestEnum.A, record.TestEnum1);
+                        Assert.Equal(TestEnum.B, record.TestEnum2);
+                        Assert.Equal(TestEnum.C, record.TestEnum3);
+                    }
+                }
+
+                File.Delete(spreadsheetFile);
+            }
         }
 
         private class TestClass

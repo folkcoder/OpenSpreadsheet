@@ -1,7 +1,6 @@
 ﻿namespace OpenSpreadsheet.Configuration
 {
     using System.Drawing;
-
     using OpenSpreadsheet.Enums;
 
     using OpenXml = DocumentFormat.OpenXml.Spreadsheet;
