@@ -99,14 +99,14 @@
         }
 
         [Fact]
-        public void TestShouldFreezeTopRow()
+        public void TestShouldFreezeHeaderRow()
         {
             var filepath = base.ConstructTempXlsxSaveName();
             using (var spreadsheet = new Spreadsheet(filepath))
             {
                 spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet1", base.CreateRecords<TestClass>(10), new WorksheetStyle() { HeaderRowIndex = 1, ShouldFreezeHeaderRow = true });
-				spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet2", base.CreateRecords<TestClass>(10), new WorksheetStyle() { HeaderRowIndex = 2, ShouldFreezeHeaderRow = true });
-				spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet3", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldFreezeHeaderRow = false });
+                spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet2", base.CreateRecords<TestClass>(10), new WorksheetStyle() { HeaderRowIndex = 4, ShouldFreezeHeaderRow = true });
+                spreadsheet.WriteWorksheet<TestClass, TestClassMap>("Sheet3", base.CreateRecords<TestClass>(10), new WorksheetStyle() { ShouldFreezeHeaderRow = false });
             }
 
             var fileSavedByExcel = base.SaveAsExcelFile(filepath);
@@ -124,13 +124,15 @@
                     var pane1 = sheet1.SheetViews.FirstOrDefault()?.Descendants<OpenXml.Pane>().FirstOrDefault();
                     Assert.Equal<OpenXml.PaneStateValues>(OpenXml.PaneStateValues.Frozen, pane1.State);
                     Assert.Equal<OpenXml.PaneValues>(OpenXml.PaneValues.BottomLeft, pane1.ActivePane);
+                    Assert.Equal(1, pane1.VerticalSplit);
                     Assert.Equal("A2", pane1.TopLeftCell);
 
 					var sheet2 = ((WorksheetPart)workbookPart.GetPartById(workbookPart.Workbook.Descendants<OpenXml.Sheet>().First(s => "Sheet2".Equals(s.Name)).Id)).Worksheet;
 					var pane2 = sheet2.SheetViews.FirstOrDefault()?.Descendants<OpenXml.Pane>().FirstOrDefault();
 					Assert.Equal<OpenXml.PaneStateValues>(OpenXml.PaneStateValues.Frozen, pane2.State);
 					Assert.Equal<OpenXml.PaneValues>(OpenXml.PaneValues.BottomLeft, pane2.ActivePane);
-					Assert.Equal("A3", pane2.TopLeftCell);
+                    Assert.Equal(4, pane2.VerticalSplit);
+                    Assert.Equal("A5", pane2.TopLeftCell);
 
 					var sheet3 = ((WorksheetPart)workbookPart.GetPartById(workbookPart.Workbook.Descendants<OpenXml.Sheet>().First(s => "Sheet3".Equals(s.Name)).Id)).Worksheet;
                     var pane3 = sheet3.SheetViews.FirstOrDefault()?.Descendants<OpenXml.Pane>().FirstOrDefault();
