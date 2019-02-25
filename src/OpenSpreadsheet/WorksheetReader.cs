@@ -137,16 +137,14 @@ namespace OpenSpreadsheet
                 }
                 else if (propertyType.IsNumeric())
                 {
-                    var doubleValue = double.Parse(cellValue, NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
-                    safeValue = (cellValue == null) ? null : Convert.ChangeType(doubleValue, propertyType);
-                    //if (double.TryParse(cellValue, NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double doubleValue))
-                    //{
-                    //    safeValue = (cellValue == null) ? null : Convert.ChangeType(doubleValue, propertyType);
-                    //}
-                    //else
-                    //{
-                    //    safeValue = (cellValue == null) ? null : Convert.ChangeType(cellValue, propertyType);
-                    //}
+                    if (double.TryParse(cellValue, NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double doubleValue))
+                    {
+                        safeValue = (cellValue == null) ? null : Convert.ChangeType(doubleValue, propertyType);
+                    }
+                    else
+                    {
+                        safeValue = (cellValue == null) ? null : Convert.ChangeType(cellValue, propertyType);
+                    }
                 }
                 else
                 {

@@ -231,7 +231,6 @@ OpenSpreadsheet is significantly faster and memory-friendly than ClosedXml, and 
 
 
 ## Future Plans
-+ Custom, reusable type converters
 + Automatic class mapping
 + Support for dynamic and anonymous types
 + Better handling of duplicate header names for reading

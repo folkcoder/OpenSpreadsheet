@@ -1,5 +1,10 @@
 # Release Log
 
+## v1.2.2
+
+### Bug Fixes
++ Fixed a bug in which `WorksheetReader` and `WorksheetWriter` were still not converting between a `double` and mapped numeric types.
+
 ## v1.2.1
 
 ### Bug Fixes
