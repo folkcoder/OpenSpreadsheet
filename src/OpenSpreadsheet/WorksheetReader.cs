@@ -10,6 +10,7 @@ namespace OpenSpreadsheet
     using DocumentFormat.OpenXml.Spreadsheet;
 
     using OpenSpreadsheet.Configuration;
+    using OpenSpreadsheet.Extensions;
 
     /// <summary>
     /// Writes data to a worksheet.
@@ -134,16 +135,22 @@ namespace OpenSpreadsheet
                 {
                     safeValue = (cellValue == null) ? null : Enum.Parse(propertyType, cellValue);
                 }
+                else if (propertyType.IsNumeric())
+                {
+                    var doubleValue = double.Parse(cellValue, NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+                    safeValue = (cellValue == null) ? null : Convert.ChangeType(doubleValue, propertyType);
+                    //if (double.TryParse(cellValue, NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double doubleValue))
+                    //{
+                    //    safeValue = (cellValue == null) ? null : Convert.ChangeType(doubleValue, propertyType);
+                    //}
+                    //else
+                    //{
+                    //    safeValue = (cellValue == null) ? null : Convert.ChangeType(cellValue, propertyType);
+                    //}
+                }
                 else
                 {
-                    if (double.TryParse(cellValue, NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double doubleValue))
-                    {
-                        safeValue = (cellValue == null) ? null : Convert.ChangeType(doubleValue, propertyType);
-                    }
-                    else
-                    {
-                        safeValue = (cellValue == null) ? null : Convert.ChangeType(cellValue, propertyType);
-                    }
+                    safeValue = (cellValue == null) ? null : Convert.ChangeType(cellValue, propertyType);
                 }
 
                 propertyInfo.SetValue(record, safeValue, null);

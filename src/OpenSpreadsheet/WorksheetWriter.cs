@@ -12,6 +12,7 @@
 
     using OpenSpreadsheet.Configuration;
     using OpenSpreadsheet.Enums;
+    using OpenSpreadsheet.Extensions;
 
     /// <summary>
     /// Writes data to a worksheet.
@@ -35,11 +36,6 @@
             { CellValues.Number, new OpenXmlAttribute(cellTypeAttribute, null, new EnumValue<CellValues>(CellValues.Number)) },
             { CellValues.SharedString, new OpenXmlAttribute(cellTypeAttribute, null, new EnumValue<CellValues>(CellValues.SharedString)) },
             { CellValues.String, new OpenXmlAttribute(cellTypeAttribute, null, new EnumValue<CellValues>(CellValues.String)) },
-        };
-
-        private static readonly HashSet<Type> numericTypes = new HashSet<Type>()
-        {
-            typeof(byte), typeof(decimal), typeof(double), typeof(float), typeof(int), typeof(long), typeof(sbyte), typeof(short), typeof(uint), typeof(ulong), typeof(ushort),
         };
 
         private readonly Dictionary<uint, string> columnCellReferences = new Dictionary<uint, string>();
@@ -344,8 +340,11 @@
                 case CellValues.Date:
                     return ConvertDateTimeToOpenXmlFormat((DateTime)value);
 
+                case CellValues.Number:
+                    return string.IsNullOrWhiteSpace(value.ToString()) ? string.Empty : Convert.ToDouble(value, CultureInfo.InvariantCulture).ToString();
+
                 default:
-                    return value.ToString();
+                    return Convert.ToString(value, CultureInfo.InvariantCulture);
             }
         }
 
@@ -601,7 +600,7 @@
                         {
                             this.columnTypes.Add(propertyMap.PropertyData.IndexWrite, CellValues.Date);
                         }
-                        else if (numericTypes.Contains(propertyType) || numericTypes.Contains(Nullable.GetUnderlyingType(propertyType)))
+                        else if (propertyType.IsNumeric() || Nullable.GetUnderlyingType(propertyType).IsNumeric())
                         {
                             this.columnTypes.Add(propertyMap.PropertyData.IndexWrite, CellValues.Number);
                         }
