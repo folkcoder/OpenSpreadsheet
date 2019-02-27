@@ -187,7 +187,7 @@
             while (dividend > 0)
             {
                 modulo = (dividend - 1) % 26;
-                columnName = Convert.ToChar(65 + modulo).ToString() + columnName;
+                columnName = Convert.ToChar('A' + modulo).ToString() + columnName;
                 dividend = (dividend - modulo) / 26;
             }
 
@@ -240,7 +240,6 @@
 
                 var selection = new Selection()
                 {
-                    ActiveCell = firstFrozenCellReference,
                     Pane = PaneValues.BottomLeft,
                 };
 

@@ -5,7 +5,7 @@
     <LangVersion>7.2</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>1.2.2.0</Version>
+    <Version>1.2.3.0</Version>
     <Authors>Steve Stanzak</Authors>
     <Product>OpenSpreadsheet</Product>
     <Description>A fast and efficient wrapper around the OpenXml Excel library</Description>
@@ -16,8 +16,8 @@
     <PackageTags>excel, openxml, spreadsheets, productivity, xlsx, openspreadsheet</PackageTags>
     <Copyright>© 2019 Steve Stanzak</Copyright>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <AssemblyVersion>1.2.2.0</AssemblyVersion>
-    <FileVersion>1.2.2.0</FileVersion>
+    <AssemblyVersion>1.2.3.0</AssemblyVersion>
+    <FileVersion>1.2.3.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

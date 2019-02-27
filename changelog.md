@@ -1,5 +1,10 @@
 # Release Log
 
+## v1.2.3
+
+### Bug Fixes
++ Removed `ActiveCell` from the selection pane when writing a frozen header row; it does not seem necessary and creates a corrupt worksheet unless the entire row sequence is specified.
+
 ## v1.2.2
 
 ### Bug Fixes
